@@ -477,7 +477,7 @@ st.markdown("""
         <a onclick="changeTemplateImage('https://raw.githubusercontent.com/SttackSite/site/main/testeimagem1.png')" class="carousel-item-link">
             <img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/20.png" alt="Template 1">
         </a>
-        <a onclick="changeTemplateImage('https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/17.png')" class="carousel-item-link">
+        <a onclick="changeTemplateImage('https://raw.githubusercontent.com/SttackSite/site/main/20.png')" class="carousel-item-link">
             <img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/17.png" alt="Template 2">
         </a>
         <a onclick="changeTemplateImage('https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/24.png')" class="carousel-item-link">
