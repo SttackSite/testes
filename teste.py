@@ -492,33 +492,33 @@ st.markdown("""
 <div class="carousel-section" style="padding: 0; background: transparent;">
     <div class="carousel-container">
         <div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/SttackSite/site/main/20.png" alt="Template 1"></div>
-        <div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/SttackSite/site/main/testeimagem1.png" alt="Template 2"></div>
-        <div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/24.png" alt="Template 3"></div>
-        <div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/11.png" alt="Template 4"></div>
-        <div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/22.png" alt="Template 5"></div>
-        <div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/13.png" alt="Template 6"></div>
-        <div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/1.png" alt="Template 7"></div>
-        <div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/21.png" alt="Template 8"></div>
-        <div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/26.png" alt="Template 9"></div>
-        <div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/18.png" alt="Template 10"></div>
-        <div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/14.png" alt="Template 11"></div>
-        <div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/16.png" alt="Template 12"></div>
-        <div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/10.png" alt="Template 13"></div>
-        <div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/8.png" alt="Template 14"></div>
-        <div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/15.png" alt="Template 15"></div>
-        <div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/3.png" alt="Template 16"></div>
-        <div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/27.png" alt="Template 17"></div>
-        <div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/2.png" alt="Template 18"></div>
-        <div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/19.png" alt="Template 19"></div>
-        <div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/28.png" alt="Template 20"></div>
-        <div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/23.png" alt="Template 21"></div>
-        <div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/25.png" alt="Template 22"></div>
-        <div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/6.png" alt="Template 23"></div>
-        <div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/12.png" alt="Template 24"></div>
-        <div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/9.png" alt="Template 25"></div>
-        <div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/5.png" alt="Template 26"></div>
-        <div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/7.png" alt="Template 27"></div>
-        <div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/4.png" alt="Template 28"></div>
+        <div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/SttackSite/site/main/17.png" alt="Template 2"></div>
+        <div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/SttackSite/site/main/24.png" alt="Template 3"></div>
+        <div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/SttackSite/site/main/11.png" alt="Template 4"></div>
+        <div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/SttackSite/site/main/22.png" alt="Template 5"></div>
+        <div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/SttackSite/site/main/13.png" alt="Template 6"></div>
+        <div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/SttackSite/site/main/1.png" alt="Template 7"></div>
+        <div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/SttackSite/site/main/21.png" alt="Template 8"></div>
+        <div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/SttackSite/site/main/26.png" alt="Template 9"></div>
+        <div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/SttackSite/site/main/18.png" alt="Template 10"></div>
+        <div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/SttackSite/site/main/14.png" alt="Template 11"></div>
+        <div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/SttackSite/site/main/16.png" alt="Template 12"></div>
+        <div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/SttackSite/site/main/10.png" alt="Template 13"></div>
+        <div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/SttackSite/site/main/8.png" alt="Template 14"></div>
+        <div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/SttackSite/site/main/15.png" alt="Template 15"></div>
+        <div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/SttackSite/site/main/3.png" alt="Template 16"></div>
+        <div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/SttackSite/site/main/27.png" alt="Template 17"></div>
+        <div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/SttackSite/site/main/2.png" alt="Template 18"></div>
+        <div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/SttackSite/site/main/19.png" alt="Template 19"></div>
+        <div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/SttackSite/site/main/28.png" alt="Template 20"></div>
+        <div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/SttackSite/site/main/23.png" alt="Template 21"></div>
+        <div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/SttackSite/site/main/25.png" alt="Template 22"></div>
+        <div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/SttackSite/site/main/6.png" alt="Template 23"></div>
+        <div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/SttackSite/site/main/12.png" alt="Template 24"></div>
+        <div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/SttackSite/site/main/9.png" alt="Template 25"></div>
+        <div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/SttackSite/site/main/5.png" alt="Template 26"></div>
+        <div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/SttackSite/site/main/7.png" alt="Template 27"></div>
+        <div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/SttackSite/site/main/4.png" alt="Template 28"></div>
     </div>
 </div>
 """, unsafe_allow_html=True)
