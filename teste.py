@@ -1,117 +1,95 @@
 import streamlit as st
 import requests
-import types
+import textwrap
 
-# --- CONFIGURAÇÃO DA PÁGINA (SÓ PODE EXISTIR AQUI) ---
-st.set_page_config(
-    page_title="Sttack Site",
-    page_icon="💎",
-    layout="wide"
-)
+# 1. Configuração de página (obrigatório ser o primeiro comando Streamlit)
+st.set_page_config(page_title="Sttack Site", page_icon="💎", layout="wide")
 
 # --- LÓGICA DE ROTEAMENTO ---
 query_params = st.query_params
-view_mode = query_params.get("view")
+template_id = query_params.get("view")
 
-if view_mode:
-    # Botão flutuante de voltar
+if template_id:
+    # Botão de voltar fixo
     st.markdown("""
-        <a href="/" target="_self" style="position:fixed; top:20px; left:20px; z-index:999999; 
+        <a href="/" target="_self" style="position:fixed; top:20px; left:20px; z-index:9999; 
         background:#7b2cbf; color:white; text-decoration:none; padding:12px 24px; 
-        border-radius:50px; font-weight:900; font-family:sans-serif; border: 2px solid white;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.5);">
-        ← VOLTAR PARA STTACK
-        </a>
+        border-radius:50px; font-weight:900; border: 2px solid white;">← VOLTAR</a>
     """, unsafe_allow_html=True)
-    
+
     try:
-        # Busca o código do GitHub
-        raw_url = f"https://raw.githubusercontent.com/SttackSite/template{view_mode}/main/Template{view_mode}.py"
-        response = requests.get(raw_url)
+        # URL do seu repositório
+        url = f"https://raw.githubusercontent.com/SttackSite/template{template_id}/main/Template{template_id}.py"
+        response = requests.get(url)
         
         if response.status_code == 200:
-            source_code = response.text
+            # O SEGREDO: Usar textwrap.dedent e remover linhas em branco iniciais
+            raw_code = response.text
             
-            # Remove o set_page_config do template para não dar erro de duplicata
-            source_code = source_code.replace("st.set_page_config", "# st.set_page_config")
+            # Remove o set_page_config do template para não conflitar
+            raw_code = raw_code.replace("st.set_page_config", "# st.set_page_config")
             
-            # CRIAÇÃO DE MÓDULO VIRTUAL (Isso ignora erros de indentação global)
-            module_name = f"template_{view_mode}"
-            virtual_module = types.ModuleType(module_name)
-            virtual_module.st = st # Passa o streamlit para dentro do módulo
+            # Limpeza cirúrgica: Remove espaços de indentação global que causam o erro de linha 5
+            # mas preserva a indentação interna de funções/ifs
+            clean_code = textwrap.dedent(raw_code).strip()
             
-            # Executa o código dentro do contexto do módulo virtual
-            exec(source_code, virtual_module.__dict__)
+            # Executa com um dicionário global próprio para isolar o escopo
+            exec(clean_code, globals())
         else:
-            st.error(f"Template {view_mode} não encontrado no repositório.")
+            st.error(f"Template {template_id} não encontrado.")
     except Exception as e:
-        st.error(f"Erro ao carregar template {view_mode}: {e}")
+        st.error(f"Erro ao processar template: {e}")
     
     st.stop()
 
-# --- LANDING PAGE ORIGINAL (RESTAURADA) ---
+# --- LANDING PAGE (SÓ CARREGA SE NÃO HOUVER TEMPLATE_ID) ---
 
+# CSS DO CARROSSEL (Unificado para não quebrar o efeito visual)
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
-    :root { --accent: #7b2cbf; --gold: #d4af37; --dark: #050505; }
-    .stApp { background-color: var(--dark); color: #ffffff; }
+    .stApp { background-color: #050505; color: white; }
     [data-testid="stHeader"] { display: none; }
-    .block-container { padding: 0 !important; max-width: 100% !important; }
+    .block-container { padding: 0 !important; }
 
-    /* NAVBAR */
-    .navbar-elite { display: flex; justify-content: space-between; align-items: center; padding: 25px 8%; background: rgba(5,5,5,0.8); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255,255,255,0.1); width: 100%; box-sizing: border-box; }
-    .logo-elite { font-size: 22px; font-weight: 900; color: var(--gold); font-family: 'Inter'; }
-
-    /* CARROSSEL - VOLTANDO AO ORIGINAL */
-    .carousel-section { padding: 80px 0; background: #050505; }
-    .carousel-container { 
-        display: flex; 
-        gap: 30px; 
-        overflow-x: auto; 
-        padding: 40px 8%; 
+    /* Estilo do Carrossel */
+    .carousel-wrapper {
+        display: flex;
+        gap: 20px;
+        overflow-x: auto;
+        padding: 40px 8%;
         scroll-behavior: smooth;
     }
-    .carousel-container::-webkit-scrollbar { height: 6px; }
-    .carousel-container::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; }
+    .carousel-wrapper::-webkit-scrollbar { height: 5px; }
+    .carousel-wrapper::-webkit-scrollbar-thumb { background: #7b2cbf; }
 
-    .carousel-item-link { 
-        flex: 0 0 500px; 
-        height: 300px; 
-        border-radius: 15px; 
-        overflow: hidden; 
-        border: 1px solid rgba(255,255,255,0.1); 
-        transition: all 0.4s ease;
-        display: block;
+    .card {
+        flex: 0 0 450px;
+        height: 280px;
+        border-radius: 12px;
+        border: 1px solid #333;
+        overflow: hidden;
+        transition: 0.3s;
     }
-    .carousel-item-link:hover { 
-        transform: scale(1.05); 
-        border-color: var(--gold); 
-    }
-    .carousel-item-link img { width: 100%; height: 100%; object-fit: cover; }
-    
-    h2 { font-family: 'Inter'; font-weight: 900; text-transform: uppercase; padding-left: 8%; margin-top: 40px;}
+    .card:hover { transform: translateY(-10px); border-color: #d4af37; }
+    .card img { width: 100%; height: 100%; object-fit: cover; }
 </style>
 """, unsafe_allow_html=True)
 
-# Navbar
-st.markdown('<div class="navbar-elite"><div class="logo-elite">STTACK SITE</div></div>', unsafe_allow_html=True)
+# Navbar Simples
+st.markdown("<div style='padding: 20px 8%; font-weight: 900; color: #d4af37;'>STTACK SITE</div>", unsafe_allow_html=True)
 
-# Seção de Templates
-st.markdown('<h2>Clique na imagem para ver o site completo:</h2>', unsafe_allow_html=True)
+# Título
+st.markdown("<h2 style='padding: 0 8%;'>NOSSOS TEMPLATES</h2>", unsafe_allow_html=True)
 
-# Construção do Carrossel (HTML ÚNICO para não quebrar)
-carousel_items = ""
+# Renderização do Carrossel
+# Montamos todo o HTML antes e damos um único st.markdown para não quebrar as DIVs
+carousel_html = '<div class="carousel-wrapper">'
 for i in range(1, 29):
     img_url = f"https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/{i}.png"
-    carousel_items += f'<a href="/?view={i}" target="_self" class="carousel-item-link"><img src="{img_url}"></a>'
+    carousel_html += f'<a href="/?view={i}" target="_self" class="card"><img src="{img_url}"></a>'
+carousel_html += '</div>'
 
-st.markdown(f"""
-<div class="carousel-section">
-    <div class="carousel-container">
-        {carousel_items}
-    </div>
-</div>
-""", unsafe_allow_html=True)
+st.markdown(carousel_html, unsafe_allow_html=True)
 
-st.markdown("<p style='text-align:center; color:gray;'>Role para o lado para ver mais templates →</p>", unsafe_allow_html=True)
+# Cole aqui o restante da sua Landing Page original (Preços, FAQ, etc)
