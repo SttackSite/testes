@@ -9,7 +9,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# --- CSS RADICAL (PLUNDER + DOCKYARD + QUDRIX) + MODAL ---
+# --- CSS RADICAL (PLUNDER + DOCKYARD + QUDRIX) ---
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,900;1,900&family=Inter:wght@400;700;900&family=Oswald:wght@700&display=swap');
@@ -347,7 +347,7 @@ st.markdown("""
         left: 0;
         width: 100%;
         height: 100%;
-        background: rgba(0, 0, 0, 0.8);
+        background: rgba(0, 0, 0, 0.9);
         backdrop-filter: blur(5px);
         z-index: 9999;
         justify-content: center;
@@ -365,7 +365,7 @@ st.markdown("""
         border-radius: 8px;
         width: 90%;
         height: 90vh;
-        max-width: 1200px;
+        max-width: 1400px;
         display: flex;
         flex-direction: column;
         position: relative;
@@ -376,7 +376,7 @@ st.markdown("""
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 25px;
+        padding: 20px 30px;
         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         background: rgba(5, 5, 5, 0.8);
     }
@@ -405,12 +405,13 @@ st.markdown("""
         flex: 1;
         overflow-y: auto;
         padding: 0;
+        background: white;
     }
 
     .modal-footer {
         display: flex;
         gap: 15px;
-        padding: 25px;
+        padding: 20px 30px;
         border-top: 1px solid rgba(255, 255, 255, 0.1);
         background: rgba(5, 5, 5, 0.8);
         justify-content: center;
@@ -420,9 +421,9 @@ st.markdown("""
         background: linear-gradient(90deg, #7b2cbf, #9d4edd);
         color: white;
         border: none;
-        padding: 15px 40px;
+        padding: 12px 35px;
         font-weight: 900;
-        font-size: 14px;
+        font-size: 12px;
         text-transform: uppercase;
         letter-spacing: 1px;
         border-radius: 0;
@@ -446,7 +447,6 @@ st.markdown("""
         background: rgba(212, 175, 55, 0.1);
     }
 
-    /* Template iframe dentro do modal */
     .template-iframe {
         width: 100%;
         height: 100%;
@@ -465,7 +465,7 @@ st.markdown("""
             <button class="modal-close" onclick="closeTemplateModal()">✕</button>
         </div>
         <div class="modal-body" id="modalBody">
-            <div style="display: flex; justify-content: center; align-items: center; height: 100%; color: #ccc;">
+            <div style="display: flex; justify-content: center; align-items: center; height: 100%; color: #666; font-size: 16px;">
                 Carregando template...
             </div>
         </div>
@@ -479,16 +479,12 @@ st.markdown("""
 <script>
 function openTemplateModal(templateNumber) {
     const modal = document.getElementById('templateModal');
-    const modalBody = document.getElementById('modalBody');
-    
-    // Mostrar carregando
-    modalBody.innerHTML = '<div style="display: flex; justify-content: center; align-items: center; height: 100%; color: #ccc; font-size: 16px;">⏳ Carregando template ' + templateNumber + '...</div>';
     modal.classList.add('active');
     
-    // Chamar Streamlit para carregar o template
+    // Trigger Streamlit to load template
     window.parent.postMessage({
         type: 'streamlit:setComponentValue',
-        key: 'template_viewer',
+        key: 'template_modal_' + templateNumber,
         value: templateNumber
     }, '*');
 }
@@ -500,7 +496,9 @@ function closeTemplateModal() {
 
 function goToPricing() {
     closeTemplateModal();
-    document.getElementById('precos').scrollIntoView({ behavior: 'smooth' });
+    setTimeout(() => {
+        document.getElementById('precos').scrollIntoView({ behavior: 'smooth' });
+    }, 300);
 }
 
 // Fechar modal ao clicar fora
@@ -543,10 +541,99 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# --- CARROSSEL COM MODAL ---
+# --- 5. CLIENTES (FLOATING AVATARS) ---
+st.markdown('<div id="clientes" style="padding: 100px 8%;">', unsafe_allow_html=True)
+st.markdown('<h2>CONFIE EM QUEM JÁ <span class="serif-heavy">DOMINA.</span></h2><br><br>', unsafe_allow_html=True)
+
+col_c1, col_c2, col_c3 = st.columns(3)
+with col_c1:
+    st.markdown("""
+    <div style="text-align: center; padding: 30px;">
+        <div style="font-size: 48px; margin-bottom: 15px;">👥</div>
+        <p style="font-size: 18px; font-weight: 900; margin-bottom: 10px;">+500 CLIENTES</p>
+        <p style="opacity: 0.6;">Satisfeitos com nossos templates</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+with col_c2:
+    st.markdown("""
+    <div style="text-align: center; padding: 30px;">
+        <div style="font-size: 48px; margin-bottom: 15px;">⭐</div>
+        <p style="font-size: 18px; font-weight: 900; margin-bottom: 10px;">4.9/5 ESTRELAS</p>
+        <p style="opacity: 0.6;">Avaliação média dos clientes</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+with col_c3:
+    st.markdown("""
+    <div style="text-align: center; padding: 30px;">
+        <div style="font-size: 48px; margin-bottom: 15px;">🚀</div>
+        <p style="font-size: 18px; font-weight: 900; margin-bottom: 10px;">28 TEMPLATES</p>
+        <p style="opacity: 0.6;">Designs profissionais e prontos</p>
+    </div>
+    """, unsafe_allow_html=True)
+st.markdown('</div>', unsafe_allow_html=True)
+
+# --- 6. QUEM ATENDEMOS ---
+st.markdown('<div id="quem-atendemos" style="padding: 100px 8%; background: #0a0a0a;">', unsafe_allow_html=True)
+st.markdown('<h2>PROPRIETÁRIOS DE NEGÓCIOS E <span class="serif-heavy">EMPREENDEDORES.</span></h2><br><br>', unsafe_allow_html=True)
+
+col_u1, col_u2, col_u3 = st.columns(3)
+
+with col_u1:
+    st.markdown("""
+    <div class="target-card">
+        <h3>Pequenos Negócios</h3>
+        <p>Tenha um site profissional sem gastar fortunas com agências. Nossos templates são a solução perfeita para colocar seu negócio online.</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+with col_u2:
+    st.markdown("""
+    <div class="target-card">
+        <h3>Agências Digitais</h3>
+        <p>Entregue projetos mais rápido e com margem maior. Use nossos templates como base para customizações e ganhe tempo precioso.</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+with col_u3:
+    st.markdown("""
+    <div class="target-card">
+        <h3>Freelancer</h3>
+        <p>Venda nossos sites para seus clientes sem precisar programar do zero e fature com isso, aumentando sua margem de lucro entregando em tempo recorde.</p>
+    </div>
+    """, unsafe_allow_html=True)
+st.markdown('</div>', unsafe_allow_html=True)
+
+# --- 7. PASSO A PASSO (INDUSTRIAL) ---
+st.markdown('<div id="como-funciona" style="padding: 100px 8%; background: #050505;">', unsafe_allow_html=True)
+st.markdown('<h2>PROCESSO <span class="serif-heavy">sem falhas.</span></h2><br><br>', unsafe_allow_html=True)
+
+steps = [
+    ("SELECIONE O MODELO IDEAL", "Escolha entre mais de 30 modelos validados o que mais combina com a identidade do seu negócio."),
+    ("CUSTOMIZAÇÃO RÁPIDA", "Utilize nosso passo a passo detalhado para implementar o código e personalizar cada detalhe sem complicações."),
+    ("SETUP TÉCNICO GRATUITO", "Te ensinamos onde hospedar seu site em segundos, como aplicar técnicas de SEO e configurar seu domínio personalizado sem custo adicional e de forma rápida."),
+    ("LANÇAMENTO IMEDIATO", "Site no ar, otimizado e pronto para escalar seu negócio com uma estrutura de alta performance.")
+]
+
+for i, (title, desc) in enumerate(steps):
+    st.markdown(f"""
+    <div class="step-row">
+        <div class="step-num">0{i+1}</div>
+        <div>
+            <h3 style="color: var(--gold);">{title}</h3>
+            <p style="max-width: 400px; opacity: 0.6;">{desc}</p>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+st.markdown('</div>', unsafe_allow_html=True)
+
+
+# --- 3 & 4. SHOWCASE DE TEMPLATES (GRID ASSIMÉTRICO) ---
+st.markdown('<div id="templates" style="padding: 120px 8%;">', unsafe_allow_html=True)
+st.markdown('<h2>Clique e explore o template que mais combina com <span class="serif-heavy"> seu negócio:</span></h2><br><br>', unsafe_allow_html=True)
 st.markdown("""
 <div class="carousel-section">
-    <div class="carousel-title">CLIQUE E ESCOLHA O TEMPLATE</div>
     <div class="carousel-container">
         <a onclick="openTemplateModal(1)" style="cursor: pointer;" class="carousel-item-link">
             <img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/20.png" alt="Template 1">
@@ -561,49 +648,49 @@ st.markdown("""
             <img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/11.png" alt="Template 4">
         </a>
         <a onclick="openTemplateModal(5)" style="cursor: pointer;" class="carousel-item-link">
-            <img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/8.png" alt="Template 5">
+            <img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/22.png" alt="Template 5">
         </a>
         <a onclick="openTemplateModal(6)" style="cursor: pointer;" class="carousel-item-link">
-            <img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/14.png" alt="Template 6">
+            <img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/13.png" alt="Template 6">
         </a>
         <a onclick="openTemplateModal(7)" style="cursor: pointer;" class="carousel-item-link">
-            <img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/19.png" alt="Template 7">
+            <img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/1.png" alt="Template 7">
         </a>
         <a onclick="openTemplateModal(8)" style="cursor: pointer;" class="carousel-item-link">
-            <img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/3.png" alt="Template 8">
+            <img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/21.png" alt="Template 8">
         </a>
         <a onclick="openTemplateModal(9)" style="cursor: pointer;" class="carousel-item-link">
-            <img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/16.png" alt="Template 9">
+            <img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/26.png" alt="Template 9">
         </a>
         <a onclick="openTemplateModal(10)" style="cursor: pointer;" class="carousel-item-link">
-            <img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/2.png" alt="Template 10">
+            <img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/18.png" alt="Template 10">
         </a>
         <a onclick="openTemplateModal(11)" style="cursor: pointer;" class="carousel-item-link">
-            <img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/10.png" alt="Template 11">
+            <img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/14.png" alt="Template 11">
         </a>
         <a onclick="openTemplateModal(12)" style="cursor: pointer;" class="carousel-item-link">
-            <img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/13.png" alt="Template 12">
+            <img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/16.png" alt="Template 12">
         </a>
         <a onclick="openTemplateModal(13)" style="cursor: pointer;" class="carousel-item-link">
-            <img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/15.png" alt="Template 13">
+            <img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/10.png" alt="Template 13">
         </a>
         <a onclick="openTemplateModal(14)" style="cursor: pointer;" class="carousel-item-link">
-            <img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/1.png" alt="Template 14">
+            <img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/8.png" alt="Template 14">
         </a>
         <a onclick="openTemplateModal(15)" style="cursor: pointer;" class="carousel-item-link">
-            <img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/18.png" alt="Template 15">
+            <img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/15.png" alt="Template 15">
         </a>
         <a onclick="openTemplateModal(16)" style="cursor: pointer;" class="carousel-item-link">
-            <img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/21.png" alt="Template 16">
+            <img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/3.png" alt="Template 16">
         </a>
         <a onclick="openTemplateModal(17)" style="cursor: pointer;" class="carousel-item-link">
-            <img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/22.png" alt="Template 17">
+            <img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/27.png" alt="Template 17">
         </a>
         <a onclick="openTemplateModal(18)" style="cursor: pointer;" class="carousel-item-link">
-            <img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/26.png" alt="Template 18">
+            <img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/2.png" alt="Template 18">
         </a>
         <a onclick="openTemplateModal(19)" style="cursor: pointer;" class="carousel-item-link">
-            <img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/27.png" alt="Template 19">
+            <img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/19.png" alt="Template 19">
         </a>
         <a onclick="openTemplateModal(20)" style="cursor: pointer;" class="carousel-item-link">
             <img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/28.png" alt="Template 20">
@@ -636,7 +723,7 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# --- LÓGICA PARA CARREGAR TEMPLATES ---
+# --- FUNÇÃO PARA CARREGAR TEMPLATES ---
 @st.cache_data(ttl=3600)
 def load_template_code(template_number):
     """Carrega o código do template do GitHub"""
@@ -648,20 +735,17 @@ def load_template_code(template_number):
     except Exception as e:
         return f"Erro ao carregar template: {str(e)}"
 
-# Coluna invisível para capturar cliques no modal
-col_modal = st.columns([1])[0]
-
 # Verificar se há um template selecionado
 if 'selected_template' not in st.session_state:
     st.session_state.selected_template = None
 
 # Sidebar invisível para capturar eventos
 with st.sidebar:
-    selected = st.number_input("Template Selecionado", value=0, key="template_selector", label_visibility="collapsed")
+    selected = st.number_input("Template", value=0, key="template_selector", label_visibility="collapsed")
     if selected > 0 and selected != st.session_state.selected_template:
         st.session_state.selected_template = selected
 
-# Se um template foi selecionado, mostrar no modal
+# Se um template foi selecionado, renderizar no modal
 if st.session_state.selected_template and st.session_state.selected_template > 0:
     template_code = load_template_code(st.session_state.selected_template)
     
@@ -674,10 +758,13 @@ if st.session_state.selected_template and st.session_state.selected_template > 0
             flags=re.DOTALL
         )
         
-        # Renderizar o template em um container
-        st.markdown("""
+        # Injetar HTML para mostrar o template no modal
+        st.markdown(f"""
         <script>
-        document.getElementById('templateModal').classList.add('active');
+        const modalBody = document.getElementById('modalBody');
+        if (modalBody) {{
+            modalBody.innerHTML = '<div style="padding: 30px; background: white; height: 100%; overflow-y: auto;"><p style="color: #666; text-align: center;">Template {st.session_state.selected_template} carregado com sucesso!</p></div>';
+        }}
         </script>
         """, unsafe_allow_html=True)
 
