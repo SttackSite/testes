@@ -158,7 +158,13 @@ st.markdown("""
     }
 
     .carousel-container {
-        display: none;
+        display: flex;
+        gap: 40px;
+        overflow-x: auto;
+        padding: 20px 0;
+        scroll-behavior: smooth;
+        scrollbar-width: thin;
+        scrollbar-color: var(--gold) transparent;
     }
 
     .carousel-container::-webkit-scrollbar {
@@ -463,12 +469,114 @@ st.markdown('</div>', unsafe_allow_html=True)
 # --- 3 & 4. SHOWCASE DE TEMPLATES (GRID ASSIMÉTRICO) ---
 st.markdown('<div id="templates" style="padding: 120px 8%;">', unsafe_allow_html=True)
 st.markdown('<h2>Clique e explore o template que mais combina com <span class="serif-heavy"> seu negócio:</span></h2><br><br>', unsafe_allow_html=True)
+
+# Carrossel com as 28 imagens
 st.markdown("""
-<div class="carousel-section" style="padding: 120px 8%; background: linear-gradient(135deg, #0a0a0a 0%, #1a0a2e 100%);">
-    <div class="template-scroll-container">
-        <img src="https://raw.githubusercontent.com/SttackSite/site/main/testeimagem1.png" alt="Template Completo" class="template-scroll-image">
+<div class="carousel-section">
+    <div class="carousel-container">
+        <a onclick="changeTemplateImage('https://raw.githubusercontent.com/SttackSite/site/main/testeimagem1.png')" class="carousel-item-link">
+            <img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/20.png" alt="Template 1">
+        </a>
+        <a onclick="changeTemplateImage('https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/17.png')" class="carousel-item-link">
+            <img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/17.png" alt="Template 2">
+        </a>
+        <a onclick="changeTemplateImage('https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/24.png')" class="carousel-item-link">
+            <img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/24.png" alt="Template 3">
+        </a>
+        <a onclick="changeTemplateImage('https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/11.png')" class="carousel-item-link">
+            <img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/11.png" alt="Template 4">
+        </a>
+        <a onclick="changeTemplateImage('https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/22.png')" class="carousel-item-link">
+            <img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/22.png" alt="Template 5">
+        </a>
+        <a onclick="changeTemplateImage('https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/13.png')" class="carousel-item-link">
+            <img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/13.png" alt="Template 6">
+        </a>
+        <a onclick="changeTemplateImage('https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/1.png')" class="carousel-item-link">
+            <img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/1.png" alt="Template 7">
+        </a>
+        <a onclick="changeTemplateImage('https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/21.png')" class="carousel-item-link">
+            <img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/21.png" alt="Template 8">
+        </a>
+        <a onclick="changeTemplateImage('https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/26.png')" class="carousel-item-link">
+            <img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/26.png" alt="Template 9">
+        </a>
+        <a onclick="changeTemplateImage('https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/18.png')" class="carousel-item-link">
+            <img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/18.png" alt="Template 10">
+        </a>
+        <a onclick="changeTemplateImage('https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/14.png')" class="carousel-item-link">
+            <img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/14.png" alt="Template 11">
+        </a>
+        <a onclick="changeTemplateImage('https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/16.png')" class="carousel-item-link">
+            <img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/16.png" alt="Template 12">
+        </a>
+        <a onclick="changeTemplateImage('https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/10.png')" class="carousel-item-link">
+            <img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/10.png" alt="Template 13">
+        </a>
+        <a onclick="changeTemplateImage('https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/8.png')" class="carousel-item-link">
+            <img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/8.png" alt="Template 14">
+        </a>
+        <a onclick="changeTemplateImage('https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/15.png')" class="carousel-item-link">
+            <img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/15.png" alt="Template 15">
+        </a>
+        <a onclick="changeTemplateImage('https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/3.png')" class="carousel-item-link">
+            <img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/3.png" alt="Template 16">
+        </a>
+        <a onclick="changeTemplateImage('https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/27.png')" class="carousel-item-link">
+            <img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/27.png" alt="Template 17">
+        </a>
+        <a onclick="changeTemplateImage('https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/2.png')" class="carousel-item-link">
+            <img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/2.png" alt="Template 18">
+        </a>
+        <a onclick="changeTemplateImage('https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/19.png')" class="carousel-item-link">
+            <img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/19.png" alt="Template 19">
+        </a>
+        <a onclick="changeTemplateImage('https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/28.png')" class="carousel-item-link">
+            <img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/28.png" alt="Template 20">
+        </a>
+        <a onclick="changeTemplateImage('https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/23.png')" class="carousel-item-link">
+            <img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/23.png" alt="Template 21">
+        </a>
+        <a onclick="changeTemplateImage('https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/25.png')" class="carousel-item-link">
+            <img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/25.png" alt="Template 22">
+        </a>
+        <a onclick="changeTemplateImage('https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/6.png')" class="carousel-item-link">
+            <img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/6.png" alt="Template 23">
+        </a>
+        <a onclick="changeTemplateImage('https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/12.png')" class="carousel-item-link">
+            <img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/12.png" alt="Template 24">
+        </a>
+        <a onclick="changeTemplateImage('https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/9.png')" class="carousel-item-link">
+            <img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/9.png" alt="Template 25">
+        </a>
+        <a onclick="changeTemplateImage('https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/5.png')" class="carousel-item-link">
+            <img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/5.png" alt="Template 26">
+        </a>
+        <a onclick="changeTemplateImage('https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/7.png')" class="carousel-item-link">
+            <img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/7.png" alt="Template 27">
+        </a>
+        <a onclick="changeTemplateImage('https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/4.png')" class="carousel-item-link">
+            <img src="https://raw.githubusercontent.com/Gm0ur4/cortex-demo/main/4.png" alt="Template 28">
+        </a>
     </div>
 </div>
+
+<!-- Container com scroll vertical -->
+<div class="carousel-section" style="padding: 40px 8%; background: linear-gradient(135deg, #0a0a0a 0%, #1a0a2e 100%);">
+    <div class="template-scroll-container">
+        <img id="templateImage" src="https://raw.githubusercontent.com/SttackSite/site/main/testeimagem1.png" alt="Template Completo" class="template-scroll-image">
+    </div>
+</div>
+
+<script>
+function changeTemplateImage(imageUrl) {
+    const templateImage = document.getElementById('templateImage');
+    if (templateImage) {
+        templateImage.src = imageUrl;
+        templateImage.parentElement.scrollTop = 0; // Volta ao topo do scroll
+    }
+}
+</script>
 """, unsafe_allow_html=True)
 
 
