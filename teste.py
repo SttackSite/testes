@@ -5,7 +5,7 @@ from datetime import datetime
 
 # ✅ CONFIGURAÇÃO DA PÁGINA
 st.set_page_config(
-    page_title="Sttack Site - Editor",
+    page_title="Sttack Site",
     page_icon="💎",
     layout="wide"
 )
@@ -31,7 +31,7 @@ if "config" not in st.session_state:
 
 config = st.session_state.config
 
-# ✅ CSS RADICAL (PLUNDER + DOCKYARD + QUDRIX)
+# ✅ CSS RADICAL
 st.markdown(f"""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,900;1,900&family=Inter:wght@400;700;900&family=Oswald:wght@700&display=swap');
@@ -51,7 +51,6 @@ st.markdown(f"""
     [data-testid="stHeader"] {{ display: none; }}
     .block-container {{ padding: 0 !important; max-width: 100% !important; }}
 
-    /* Tipografia de Impacto Brutalista */
     h1, h2 {{
         font-family: 'Inter', sans-serif;
         font-weight: 900;
@@ -67,7 +66,6 @@ st.markdown(f"""
         letter-spacing: -1px;
     }}
 
-    /* ❌ NÃO ALTERE: NAVBAR ESTILO YOLU ADAPTADO PARA SITE STTACK */
     .navbar-elite {{
         display: flex;
         justify-content: space-between;
@@ -80,7 +78,6 @@ st.markdown(f"""
         box-sizing: border-box;
     }}
     
-    /* ❌ NÃO ALTERE: Logo da navbar */
     .logo-elite {{
         font-size: 22px;
         font-weight: 900;
@@ -90,14 +87,12 @@ st.markdown(f"""
         text-transform: uppercase;
     }}
 
-    /* ❌ NÃO ALTERE: Container de links de navegação */
     .nav-links-container {{
         display: flex;
         gap: 45px;
         align-items: center;
     }}
 
-    /* ❌ NÃO ALTERE: Links de navegação */
     .nav-link-elite {{
         color: #ffffff !important;
         text-decoration: none !important;
@@ -110,18 +105,11 @@ st.markdown(f"""
         text-transform: uppercase;
     }}
 
-    /* ❌ NÃO ALTERE: Efeito hover nos links */
     .nav-link-elite:hover {{
         color: var(--gold) !important;
         text-decoration: none !important;
     }}
 
-    .nav-link-elite:visited {{
-        color: #ffffff !important;
-        text-decoration: none !important;
-    }}
-
-    /* 1 & 2. HERO RADICAL */
     .hero-section {{
         height: 100vh;
         display: flex;
@@ -142,121 +130,6 @@ st.markdown(f"""
         padding-left: 20px;
     }}
 
-    /* 3 & 4. TEMPLATES SHOWCASE (ASSIMÉTRICO) */
-    .template-box {{
-        position: relative;
-        overflow: hidden;
-        border: 1px solid rgba(255,255,255,0.1);
-        background: var(--glass);
-        transition: 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-        cursor: crosshair;
-    }}
-    .template-box:hover {{
-        background: rgba(255,255,255,0.07);
-        border-color: var(--gold);
-        transform: translateY(-10px);
-    }}
-    .template-label {{
-        position: absolute;
-        bottom: 20px;
-        left: 20px;
-        font-family: 'Oswald', sans-serif;
-        font-size: 30px;
-    }}
-
-    /* GRID 2D COM SCROLL HORIZONTAL E VERTICAL */
-    .carousel-section {{
-        padding: 120px 8%;
-        background: linear-gradient(135deg, #0a0a0a 0%, #1a0a2e 100%);
-    }}
-
-    .carousel-title {{
-        text-align: center;
-        font-size: 48px;
-        font-family: 'Inter', sans-serif;
-        color: #ffffff;
-        margin-bottom: 60px;
-        font-weight: 900;
-        text-transform: uppercase;
-        letter-spacing: -2px;
-    }}
-
-    /* ❌ NÃO ALTERE: Container principal com scroll 2D */
-    .carousel-container {{
-        display: flex;
-        gap: 20px;
-        overflow-x: auto;
-        overflow-y: hidden;
-        padding: 20px 0;
-        scroll-behavior: smooth;
-        scrollbar-width: thin;
-        scrollbar-color: var(--gold) transparent;
-        height: 900px;
-    }}
-
-    .carousel-container::-webkit-scrollbar {{
-        height: 8px;
-    }}
-
-    .carousel-container::-webkit-scrollbar-track {{
-        background: transparent;
-    }}
-
-    .carousel-container::-webkit-scrollbar-thumb {{
-        background: var(--gold);
-        border-radius: 4px;
-    }}
-
-    /* ❌ NÃO ALTERE: Container de cada template com scroll vertical */
-    .carousel-item-image-only {{
-        flex: 0 0 800px;
-        min-width: 800px;
-        height: 900px;
-        border-radius: 8px;
-        overflow-y: auto;
-        overflow-x: hidden;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        transition: all 0.4s ease;
-        cursor: pointer;
-        background: rgba(255, 255, 255, 0.02);
-    }}
-
-    .carousel-item-image-only:hover {{
-        border-color: var(--gold);
-        box-shadow: 0 30px 80px rgba(212, 175, 55, 0.3);
-    }}
-
-    .carousel-item-image-only::-webkit-scrollbar {{
-        width: 6px;
-    }}
-
-    .carousel-item-image-only::-webkit-scrollbar-track {{
-        background: transparent;
-    }}
-
-    .carousel-item-image-only::-webkit-scrollbar-thumb {{
-        background: var(--gold);
-        border-radius: 3px;
-    }}
-
-    .carousel-item-image-only img {{
-        width: 100%;
-        height: auto;
-        object-fit: cover;
-        display: block;
-        border-radius: 8px;
-    }}
-
-    /* 5. CLIENTS (FLOATING AVATARS) */
-    .client-section {{
-        padding: 100px 8%;
-        background: #0a0a0a;
-        display: flex;
-        align-items: center;
-        gap: 50px;
-    }}
-
-    /* 6. É PARA VOCÊ QUE (CARDS NEO-BRUTALISTAS) */
     .target-card {{
         padding: 50px;
         background: white;
@@ -266,7 +139,6 @@ st.markdown(f"""
         height: 100%;
     }}
 
-    /* 7. PASSO A PASSO (VERTICAL & BOLD) */
     .step-row {{
         display: flex;
         gap: 30px;
@@ -281,7 +153,6 @@ st.markdown(f"""
         line-height: 0.7;
     }}
 
-    /* 8. PREÇOS (GLASSMORPHISM) */
     .pricing-glass {{
         background: rgba(255, 255, 255, 0.03);
         backdrop-filter: blur(15px);
@@ -294,7 +165,6 @@ st.markdown(f"""
         border-color: var(--accent);
     }}
 
-    /* Botão de Alta Conversão */
     div.stButton > button {{
         background: linear-gradient(90deg, var(--accent), #9d4edd);
         color: white;
@@ -313,7 +183,57 @@ st.markdown(f"""
         box-shadow: 0 0 30px rgba(123, 44, 191, 0.5);
     }}
 
-    /* ❌ NÃO ALTERE: FAQ Destacado - Política de Reembolso */
+    .carousel-section {{
+        padding: 120px 8%;
+        background: linear-gradient(135deg, #0a0a0a 0%, #1a0a2e 100%);
+    }}
+
+    .carousel-container {{
+        display: flex;
+        gap: 20px;
+        overflow-x: auto;
+        overflow-y: hidden;
+        padding: 20px 0;
+        scroll-behavior: smooth;
+        scrollbar-width: thin;
+        scrollbar-color: var(--gold) transparent;
+        height: 900px;
+    }}
+
+    .carousel-item-image-only {{
+        flex: 0 0 800px;
+        min-width: 800px;
+        height: 900px;
+        border-radius: 8px;
+        overflow-y: auto;
+        overflow-x: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: all 0.4s ease;
+        cursor: pointer;
+        background: rgba(255, 255, 255, 0.02);
+    }}
+
+    .carousel-item-image-only:hover {{
+        border-color: var(--gold);
+        box-shadow: 0 30px 80px rgba(212, 175, 55, 0.3);
+    }}
+
+    .carousel-item-image-only img {{
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+        display: block;
+        border-radius: 8px;
+    }}
+
+    .client-section {{
+        padding: 100px 8%;
+        background: #0a0a0a;
+        display: flex;
+        align-items: center;
+        gap: 50px;
+    }}
+
     .faq-highlighted {{
         background: linear-gradient(135deg, rgba(123, 44, 191, 0.2) 0%, rgba(212, 175, 55, 0.1) 100%);
         border: 2px solid var(--gold);
@@ -322,107 +242,12 @@ st.markdown(f"""
         margin-bottom: 40px;
         box-shadow: 0 10px 50px rgba(212, 175, 55, 0.2);
     }}
-
-    /* ❌ NÃO ALTERE: Título do FAQ Destacado */
-    .faq-highlighted-title {{
-        color: var(--gold);
-        font-size: 24px;
-        font-weight: 900;
-        font-family: 'Inter', sans-serif;
-        text-transform: uppercase;
-        letter-spacing: 2px;
-        margin-bottom: 20px;
-    }}
-
-    /* ❌ NÃO ALTERE: Conteúdo do FAQ Destacado */
-    .faq-highlighted-content {{
-        color: #ffffff;
-        font-size: 14px;
-        line-height: 1.8;
-        font-family: 'Inter', sans-serif;
-    }}
-
-    /* ❌ NÃO ALTERE: Ícone de atenção */
-    .faq-highlight-icon {{
-        font-size: 28px;
-        margin-right: 10px;
-        color: var(--gold);
-    }}
-
-    /* PAINEL DE EDIÇÃO */
-    .editor-panel {{
-        position: fixed;
-        right: 0;
-        top: 0;
-        width: 400px;
-        height: 100vh;
-        background: rgba(10, 10, 10, 0.95);
-        border-left: 2px solid var(--gold);
-        overflow-y: auto;
-        padding: 20px;
-        z-index: 1000;
-    }}
-
-    .editor-panel h3 {{
-        color: var(--gold);
-        margin-bottom: 15px;
-        font-size: 18px;
-    }}
-
-    .editor-input {{
-        width: 100%;
-        padding: 10px;
-        margin-bottom: 15px;
-        background: rgba(255, 255, 255, 0.1);
-        border: 1px solid var(--gold);
-        color: white;
-        border-radius: 4px;
-        font-family: 'Inter', sans-serif;
-    }}
-
-    .editor-input::placeholder {{
-        color: rgba(255, 255, 255, 0.5);
-    }}
-
-    .editor-button {{
-        width: 100%;
-        padding: 12px;
-        background: var(--accent);
-        color: white;
-        border: none;
-        border-radius: 4px;
-        font-weight: 900;
-        cursor: pointer;
-        margin-top: 10px;
-        transition: 0.3s;
-    }}
-
-    .editor-button:hover {{
-        background: var(--gold);
-        color: black;
-    }}
-
-    .main-content {{
-        margin-right: 420px;
-    }}
 </style>
 """, unsafe_allow_html=True)
 
-# ✅ NAVBAR
-st.markdown(f"""
-<div class="navbar-elite">
-    <div class="logo-elite">{config.get('navbar', {}).get('logo', 'STTACK')}</div>
-    <div class="nav-links-container">
-        <a href="#quem-atendemos" class="nav-link-elite">Quem Atendemos</a>
-        <a href="#como-funciona" class="nav-link-elite">Como Funciona</a>
-        <a href="#templates" class="nav-link-elite">Templates</a>
-        <a href="#precos" class="nav-link-elite">Preços</a>
-        <a href="#faq" class="nav-link-elite">FAQ</a>
-    </div>
-</div>
-""", unsafe_allow_html=True)
-
-# ✅ PAINEL DE EDIÇÃO (SIDEBAR)
+# ✅ ============================================
+# ✅ PAINEL DE EDIÇÃO NO SIDEBAR
+# ✅ ============================================
 st.sidebar.markdown("## ✏️ EDITOR DE SITE")
 st.sidebar.markdown("---")
 
@@ -442,7 +267,8 @@ navbar_logo = st.sidebar.text_input("Logo", config.get('navbar', {}).get('logo',
 
 # ✅ Seção: Links de Navegação
 st.sidebar.markdown("### 🔗 Links de Navegação")
-for i, link in enumerate(config.get('navbar', {}).get('links', [])):
+navbar_links = config.get('navbar', {}).get('links', [])
+for i, link in enumerate(navbar_links):
     col1, col2 = st.sidebar.columns(2)
     with col1:
         link['name'] = st.text_input(f"Nome Link {i+1}", link.get('name', ''), key=f"link_name_{i}")
@@ -471,6 +297,7 @@ if st.sidebar.button("💾 SALVAR CONFIGURAÇÕES", use_container_width=True):
     config['hero']['title'] = hero_title
     config['hero']['subtitle'] = hero_subtitle
     config['navbar']['logo'] = navbar_logo
+    config['navbar']['links'] = navbar_links
     config['sections']['carousel_title'] = carousel_title
     config['sections']['target_title'] = target_title
     config['sections']['steps_title'] = steps_title
@@ -486,8 +313,23 @@ if st.sidebar.button("💾 SALVAR CONFIGURAÇÕES", use_container_width=True):
     st.sidebar.success("✅ Configurações salvas em config.json!")
     st.sidebar.info(f"Salvo em: {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}")
 
-# ✅ CONTEÚDO PRINCIPAL
-st.markdown('<div class="main-content">', unsafe_allow_html=True)
+# ✅ ============================================
+# ✅ CONTEÚDO PRINCIPAL DO SITE
+# ✅ ============================================
+
+# ✅ NAVBAR
+st.markdown(f"""
+<div class="navbar-elite">
+    <div class="logo-elite">{navbar_logo}</div>
+    <div class="nav-links-container">
+        <a href="#quem-atendemos" class="nav-link-elite">Quem Atendemos</a>
+        <a href="#como-funciona" class="nav-link-elite">Como Funciona</a>
+        <a href="#templates" class="nav-link-elite">Templates</a>
+        <a href="#precos" class="nav-link-elite">Preços</a>
+        <a href="#faq" class="nav-link-elite">FAQ</a>
+    </div>
+</div>
+""", unsafe_allow_html=True)
 
 # ✅ 1 & 2. HERO SECTION
 st.markdown(f"""
@@ -500,7 +342,7 @@ st.markdown(f"""
 <a href="#templates" style="display: inline-block; background: linear-gradient(90deg, {new_accent}, #9d4edd); color: white; border: none; padding: 25px 60px; font-weight: 900; font-size: 22px; text-transform: uppercase; letter-spacing: 2px; border-radius: 0; clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%); text-decoration: none; transition: 0.4s; cursor: pointer;">{cta_main_text} ↓</a>
 """, unsafe_allow_html=True)
 
-# ✅ 5. PROVA SOCIAL (AVATARES FLOATING)
+# ✅ 5. PROVA SOCIAL
 st.markdown("""
 <div id="clientes" class="client-section">
     <h2 style="font-size: 30px; letter-spacing: 0px;">CONFIE EM QUEM<br>JÁ DOMINA.</h2>
@@ -525,8 +367,6 @@ st.markdown(f'<h2>{target_title}</h2>', unsafe_allow_html=True)
 col_u1, col_u2, col_u3 = st.columns(3)
 
 target_cards = config.get('sections', {}).get('target_cards', [])
-
-# ✅ Garantir que temos pelo menos 3 cards
 while len(target_cards) < 3:
     target_cards.append({'title': 'Card', 'description': 'Descrição'})
 
@@ -559,8 +399,6 @@ st.markdown('</div>', unsafe_allow_html=True)
 st.markdown(f'<div id="como-funciona" style="padding: 100px 8%; background: #050505;"><h2>{steps_title}</h2><br><br>', unsafe_allow_html=True)
 
 steps = config.get('sections', {}).get('steps', [])
-
-# ✅ Garantir que temos pelo menos 4 passos
 while len(steps) < 4:
     steps.append({'title': 'Passo', 'description': 'Descrição'})
 
@@ -594,7 +432,6 @@ st.markdown("""
 st.markdown(f'<div id="precos" style="padding: 120px 8%; text-align:center;"><h2>{pricing_title}</h2><br><br>', unsafe_allow_html=True)
 
 pricing_plans = config.get('sections', {}).get('pricing_plans', [])
-
 while len(pricing_plans) < 3:
     pricing_plans.append({'name': 'Plano', 'price': 'R$ 0', 'button_text': 'QUERO', 'button_url': 'https://www.google.com/'})
 
@@ -637,5 +474,4 @@ for faq in faq_items:
     with st.expander(faq.get('question', '')):
         st.write(faq.get('answer', ''))
 
-st.markdown('</div>', unsafe_allow_html=True)
 st.markdown('</div>', unsafe_allow_html=True)
