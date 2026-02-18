@@ -2,599 +2,567 @@ import streamlit as st
 import json
 import os
 from datetime import datetime
+import subprocess
+import base64
 
-# ✅ CONFIGURAÇÃO DA PÁGINA
-st.set_page_config(
-    page_title="Sttack Site",
-    page_icon="💎",
-    layout="wide"
-)
+# ✅ CONFIGURAÇÃO INICIAL
+st.set_page_config(page_title="SttackSite - Multi Cliente", page_icon="🚀", layout="wide")
 
-# ✅ Carregar configurações do config.json
-CONFIG_FILE = "config.json"
+# ✅ VARIÁVEIS DE CONFIGURAÇÃO
+GITHUB_TOKEN = "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"
+GITHUB_REPO = "seu-usuario/seu-repositorio"  # ✅ ALTERE: seu repositório
+GITHUB_BRANCH = "main"
+CONFIGS_DIR = "configs"
 
-def load_config():
-    """✅ Carrega as configurações do arquivo config.json"""
-    if os.path.exists(CONFIG_FILE):
-        with open(CONFIG_FILE, 'r', encoding='utf-8') as f:
+# ✅ Criar diretório de configs se não existir
+os.makedirs(CONFIGS_DIR, exist_ok=True)
+
+# ✅ FUNÇÃO: Fazer commit no GitHub
+def commit_to_github(arquivo, mensagem):
+    """Faz commit automático no GitHub"""
+    try:
+        # Ler o arquivo
+        with open(arquivo, 'r', encoding='utf-8') as f:
+            conteudo = f.read()
+        
+        # Codificar em base64
+        conteudo_b64 = base64.b64encode(conteudo.encode()).decode()
+        
+        # Fazer requisição para GitHub API
+        import requests
+        
+        url = f"https://api.github.com/repos/{GITHUB_REPO}/contents/{arquivo}"
+        headers = {
+            "Authorization": f"token {GITHUB_TOKEN}",
+            "Content-Type": "application/json"
+        }
+        
+        # Primeiro, obter o SHA do arquivo atual
+        response = requests.get(url, headers=headers)
+        
+        if response.status_code == 200:
+            sha = response.json()["sha"]
+        else:
+            sha = None
+        
+        # Dados para o commit
+        data = {
+            "message": mensagem,
+            "content": conteudo_b64,
+            "branch": GITHUB_BRANCH
+        }
+        
+        if sha:
+            data["sha"] = sha
+        
+        # Fazer o commit
+        response = requests.put(url, json=data, headers=headers)
+        
+        if response.status_code in [200, 201]:
+            return True, "✅ Commitado com sucesso no GitHub!"
+        else:
+            return False, f"❌ Erro ao commitar: {response.json()}"
+    
+    except Exception as e:
+        return False, f"❌ Erro: {str(e)}"
+
+# ✅ FUNÇÃO: Carregar config do cliente
+def load_client_config(cliente):
+    """Carrega a configuração do cliente"""
+    config_path = f"{CONFIGS_DIR}/{cliente}.json"
+    
+    if os.path.exists(config_path):
+        with open(config_path, 'r', encoding='utf-8') as f:
             return json.load(f)
-    return {}
+    else:
+        return None
 
-def save_config_to_file(config):
-    """✅ Salva as configurações em config.json"""
-    with open(CONFIG_FILE, 'w', encoding='utf-8') as f:
+# ✅ FUNÇÃO: Salvar config do cliente
+def save_client_config(cliente, config):
+    """Salva a configuração do cliente"""
+    config_path = f"{CONFIGS_DIR}/{cliente}.json"
+    
+    with open(config_path, 'w', encoding='utf-8') as f:
         json.dump(config, f, indent=2, ensure_ascii=False)
 
-# ✅ Inicializar session_state com config
-if "config" not in st.session_state:
-    st.session_state.config = load_config()
+# ✅ OBTER CLIENTE DA URL
+cliente = st.query_params.get("cliente", "paix").lower()
+template = st.query_params.get("template", "design").lower()
 
-if "editor_open" not in st.session_state:
-    st.session_state.editor_open = False
+# ✅ CARREGAR CONFIG
+config = load_client_config(cliente)
 
-config = st.session_state.config
+if config is None:
+    st.error(f"❌ Cliente '{cliente}' não encontrado!")
+    st.stop()
 
-# ✅ CSS RADICAL + PAINEL DE EDIÇÃO FLUTUANTE
-st.markdown(f"""
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,900;1,900&family=Inter:wght@400;700;900&family=Oswald:wght@700&display=swap');
-
-    :root {{
-        --accent: {config.get('colors', {}).get('accent', '#7b2cbf')};
-        --gold: {config.get('colors', {}).get('gold', '#d4af37')};
-        --dark: {config.get('colors', {}).get('dark', '#050505')};
-        --glass: {config.get('colors', {}).get('glass', 'rgba(255, 255, 255, 0.03)')};
-    }}
-
-    .stApp {{
-        background-color: var(--dark);
-        color: #ffffff;
-    }}
-    
-    [data-testid="stHeader"] {{ display: none; }}
-    .block-container {{ padding: 0 !important; max-width: 100% !important; }}
-
-    h1, h2 {{
-        font-family: 'Inter', sans-serif;
-        font-weight: 900;
-        text-transform: uppercase;
-        letter-spacing: -3px;
-        line-height: 0.85;
-    }}
-
-    .serif-heavy {{
-        font-family: 'Playfair Display', serif;
-        font-style: italic;
-        text-transform: none;
-        letter-spacing: -1px;
-    }}
-
-    .navbar-elite {{
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 25px 8%;
-        background: rgba(5, 5, 5, 0.5);
-        backdrop-filter: blur(10px);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        width: 100%;
-        box-sizing: border-box;
-    }}
-    
-    .logo-elite {{
-        font-size: 22px;
-        font-weight: 900;
-        letter-spacing: 2px;
-        font-family: 'Inter', sans-serif;
-        color: var(--gold);
-        text-transform: uppercase;
-    }}
-
-    .nav-links-container {{
-        display: flex;
-        gap: 45px;
-        align-items: center;
-    }}
-
-    .nav-link-elite {{
-        color: #ffffff !important;
-        text-decoration: none !important;
-        font-size: 12px;
-        letter-spacing: 1px;
-        font-weight: 600;
-        font-family: 'Inter', sans-serif;
-        transition: all 0.3s ease;
-        cursor: pointer;
-        text-transform: uppercase;
-    }}
-
-    .nav-link-elite:hover {{
-        color: var(--gold) !important;
-        text-decoration: none !important;
-    }}
-
-    .hero-section {{
-        height: 100vh;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        padding: 0 8%;
-        background: radial-gradient(circle at 80% 20%, #5800AB 0%, #050505 50%);
-        border-bottom: 1px solid rgba(255,255,255,0.1);
-    }}
-
-    .hero-h1 {{ font-size: clamp(60px, 15vw, 180px); margin-bottom: 40px; }}
-    .hero-sub {{ 
-        font-size: 24px; 
-        max-width: 600px; 
-        line-height: 1.4; 
-        color: rgba(255,255,255,0.7);
-        border-left: 4px solid var(--accent);
-        padding-left: 20px;
-    }}
-
-    .target-card {{
-        padding: 50px;
-        background: white;
-        color: black;
-        border: 5px solid var(--accent);
-        box-shadow: 15px 15px 0px var(--accent);
-        height: 100%;
-    }}
-
-    .step-row {{
-        display: flex;
-        gap: 30px;
-        margin-bottom: 60px;
-        align-items: flex-start;
-    }}
-    .step-num {{
-        font-size: 100px;
-        font-weight: 900;
-        color: transparent;
-        -webkit-text-stroke: 1px rgba(255,255,255,0.3);
-        line-height: 0.7;
-    }}
-
-    .pricing-glass {{
-        background: rgba(255, 255, 255, 0.03);
-        backdrop-filter: blur(15px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        padding: 60px 40px;
-        border-radius: 2px;
-        text-align: center;
-    }}
-    .pricing-glass:hover {{
-        border-color: var(--accent);
-    }}
-
-    div.stButton > button {{
-        background: linear-gradient(90deg, var(--accent), #9d4edd);
-        color: white;
-        border: none;
-        padding: 25px 60px;
-        font-weight: 900;
-        font-size: 22px;
-        text-transform: uppercase;
-        letter-spacing: 2px;
-        border-radius: 0;
-        clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%);
-        transition: 0.4s;
-    }}
-    div.stButton > button:hover {{
-        transform: scale(1.05);
-        box-shadow: 0 0 30px rgba(123, 44, 191, 0.5);
-    }}
-
-    .carousel-section {{
-        padding: 120px 8%;
-        background: linear-gradient(135deg, #0a0a0a 0%, #1a0a2e 100%);
-    }}
-
-    .carousel-container {{
-        display: flex;
-        gap: 20px;
-        overflow-x: auto;
-        overflow-y: hidden;
-        padding: 20px 0;
-        scroll-behavior: smooth;
-        scrollbar-width: thin;
-        scrollbar-color: var(--gold) transparent;
-        height: 900px;
-    }}
-
-    .carousel-item-image-only {{
-        flex: 0 0 800px;
-        min-width: 800px;
-        height: 900px;
-        border-radius: 8px;
-        overflow-y: auto;
-        overflow-x: hidden;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        transition: all 0.4s ease;
-        cursor: pointer;
-        background: rgba(255, 255, 255, 0.02);
-    }}
-
-    .carousel-item-image-only:hover {{
-        border-color: var(--gold);
-        box-shadow: 0 30px 80px rgba(212, 175, 55, 0.3);
-    }}
-
-    .carousel-item-image-only img {{
-        width: 100%;
-        height: auto;
-        object-fit: cover;
-        display: block;
-        border-radius: 8px;
-    }}
-
-    .client-section {{
-        padding: 100px 8%;
-        background: #0a0a0a;
-        display: flex;
-        align-items: center;
-        gap: 50px;
-    }}
-
-    /* PAINEL FLUTUANTE DE EDIÇÃO */
-    .editor-panel {{
-        position: fixed;
-        right: 0;
-        top: 0;
-        width: 450px;
-        height: 100vh;
-        background: rgba(5, 5, 5, 0.98);
-        border-left: 3px solid var(--gold);
-        overflow-y: auto;
-        padding: 30px;
-        z-index: 9999;
-        box-shadow: -10px 0 50px rgba(0, 0, 0, 0.8);
-    }}
-
-    .editor-panel h3 {{
-        color: var(--gold);
-        margin-top: 25px;
-        margin-bottom: 15px;
-        font-size: 16px;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-    }}
-
-    .editor-panel h2 {{
-        color: var(--gold);
-        margin-bottom: 20px;
-        font-size: 24px;
-    }}
-
-    .editor-input {{
-        width: 100%;
-        padding: 12px;
-        margin-bottom: 15px;
-        background: rgba(255, 255, 255, 0.08);
-        border: 1px solid var(--gold);
-        color: white;
-        border-radius: 4px;
-        font-family: 'Inter', sans-serif;
-        font-size: 14px;
-    }}
-
-    .editor-input::placeholder {{
-        color: rgba(255, 255, 255, 0.4);
-    }}
-
-    .editor-button {{
-        width: 100%;
-        padding: 14px;
-        background: linear-gradient(90deg, var(--accent), #9d4edd);
-        color: white;
-        border: none;
-        border-radius: 4px;
-        font-weight: 900;
-        cursor: pointer;
-        margin-top: 20px;
-        transition: 0.3s;
-        font-size: 16px;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-    }}
-
-    .editor-button:hover {{
-        transform: scale(1.02);
-        box-shadow: 0 0 30px rgba(123, 44, 191, 0.5);
-    }}
-
-    .close-editor {{
-        position: absolute;
-        top: 20px;
-        right: 20px;
-        background: var(--gold);
-        color: black;
-        border: none;
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        font-size: 24px;
-        cursor: pointer;
-        font-weight: bold;
-        transition: 0.3s;
-    }}
-
-    .close-editor:hover {{
-        background: white;
-    }}
-
-    .editor-overlay {{
-        position: fixed;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.5);
-        z-index: 9998;
-    }}
-
-    .edit-button-fixed {{
-        position: fixed;
-        bottom: 30px;
-        right: 30px;
-        width: 70px;
-        height: 70px;
-        background: linear-gradient(90deg, var(--accent), #9d4edd);
-        color: white;
-        border: none;
-        border-radius: 50%;
-        font-size: 32px;
-        cursor: pointer;
-        z-index: 9997;
-        box-shadow: 0 10px 40px rgba(123, 44, 191, 0.5);
-        transition: 0.3s;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }}
-
-    .edit-button-fixed:hover {{
-        transform: scale(1.1);
-        box-shadow: 0 15px 50px rgba(123, 44, 191, 0.7);
-    }}
-</style>
-""", unsafe_allow_html=True)
-
-# ✅ BOTÃO FLUTUANTE PARA ABRIR EDITOR
-col1, col2, col3 = st.columns([1, 1, 0.15])
+# ✅ BOTÃO DE EDIÇÃO (Canto superior direito)
+col1, col2, col3 = st.columns([1, 1, 0.1])
 with col3:
-    if st.button("✏️", key="open_editor", help="Abrir editor"):
-        st.session_state.editor_open = not st.session_state.editor_open
+    if st.button("✏️", key="edit_btn", help="Editar site"):
+        st.session_state.editing = True
 
-# ✅ PAINEL DE EDIÇÃO FLUTUANTE
-if st.session_state.editor_open:
-    st.markdown("""<div class="editor-overlay"></div>""", unsafe_allow_html=True)
+# ✅ PAINEL DE EDIÇÃO
+if st.session_state.get("editing"):
+    st.markdown("---")
+    st.markdown("## ✏️ EDITOR DE SITE")
     
-    # Criar containers para o painel
-    editor_container = st.container()
+    with st.form("edit_form"):
+        st.markdown("### 🎨 Configurações Gerais")
+        config["page_title"] = st.text_input("Título da Página", config.get("page_title", ""))
+        config["logo"] = st.text_input("Logo/Marca", config.get("logo", ""))
+        
+        st.markdown("### 🚀 Hero Section")
+        config["hero"]["subtitle"] = st.text_input("Subtítulo", config.get("hero", {}).get("subtitle", ""))
+        config["hero"]["title"] = st.text_area("Título Principal", config.get("hero", {}).get("title", ""), height=100)
+        config["hero"]["description"] = st.text_area("Descrição", config.get("hero", {}).get("description", ""), height=100)
+        
+        st.markdown("### 📍 Navegação")
+        for i, link in enumerate(config.get("nav_links", [])):
+            col1, col2 = st.columns(2)
+            with col1:
+                link["name"] = st.text_input(f"Nome Link {i+1}", link.get("name", ""), key=f"nav_name_{i}")
+            with col2:
+                link["url"] = st.text_input(f"URL Link {i+1}", link.get("url", ""), key=f"nav_url_{i}")
+        
+        st.markdown("### 📝 Conteúdo Adicional")
+        if "projects" in config:
+            st.write("**Projetos:**")
+            for i, project in enumerate(config.get("projects", [])):
+                with st.expander(f"Projeto {i+1}"):
+                    project["title"] = st.text_input(f"Título Projeto {i+1}", project.get("title", ""), key=f"proj_title_{i}")
+                    project["location"] = st.text_input(f"Localização {i+1}", project.get("location", ""), key=f"proj_loc_{i}")
+                    project["year"] = st.text_input(f"Ano {i+1}", project.get("year", ""), key=f"proj_year_{i}")
+                    project["image"] = st.text_input(f"URL Imagem {i+1}", project.get("image", ""), key=f"proj_img_{i}")
+        
+        if "products" in config:
+            st.write("**Produtos:**")
+            for i, product in enumerate(config.get("products", [])):
+                with st.expander(f"Produto {i+1}"):
+                    product["title"] = st.text_input(f"Título Produto {i+1}", product.get("title", ""), key=f"prod_title_{i}")
+                    product["category"] = st.text_input(f"Categoria {i+1}", product.get("category", ""), key=f"prod_cat_{i}")
+                    product["description"] = st.text_area(f"Descrição {i+1}", product.get("description", ""), key=f"prod_desc_{i}")
+                    product["image"] = st.text_input(f"URL Imagem {i+1}", product.get("image", ""), key=f"prod_img_{i}")
+        
+        st.markdown("### 📞 Rodapé")
+        if "footer" in config:
+            config["footer"]["company"] = st.text_input("Empresa", config.get("footer", {}).get("company", ""))
+            config["footer"]["email"] = st.text_input("Email", config.get("footer", {}).get("email", ""))
+        
+        st.markdown("---")
+        
+        # ✅ BOTÃO SALVAR
+        if st.form_submit_button("💾 SALVAR E COMMITAR", use_container_width=True):
+            # Salvar localmente
+            save_client_config(cliente, config)
+            
+            # Commitar no GitHub
+            arquivo = f"{CONFIGS_DIR}/{cliente}.json"
+            mensagem = f"Atualizar configurações de {cliente} - {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}"
+            
+            sucesso, mensagem_commit = commit_to_github(arquivo, mensagem)
+            
+            if sucesso:
+                st.success(mensagem_commit)
+                st.session_state.editing = False
+                st.rerun()
+            else:
+                st.error(mensagem_commit)
     
-    with editor_container:
-        st.markdown("""
-        <div class="editor-panel">
-            <h2>✏️ EDITOR DE SITE</h2>
+    st.markdown("---")
+
+# ✅ ============================================
+# ✅ RENDERIZAR TEMPLATE BASEADO NO CLIENTE
+# ✅ ============================================
+
+if template == "design":
+    # ✅ TEMPLATE PAIX (Design Minimalista)
+    st.markdown(f"""
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300&family=Inter:wght@200;400&display=swap');
+
+        .stApp {{
+            background-color: #f7f7f7;
+            color: #1a1a1a;
+        }}
+        
+        [data-testid="stHeader"] {{ display: none; }}
+        .block-container {{ padding: 0 !important; max-width: 100% !important; }}
+
+        html, body, [class*="css"] {{
+            font-family: 'Inter', sans-serif;
+            font-weight: 200;
+            letter-spacing: 0.05em;
+        }}
+
+        h1, h2, .serif-light {{
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 300;
+            font-size: 48px;
+            line-height: 1.1;
+        }}
+
+        .nav-paix {{
+            display: flex;
+            justify-content: space-between;
+            padding: 50px 5%;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }}
+
+        .nav-link {{
+            color: #1a1a1a !important;
+            text-decoration: none !important;
+            transition: 0.3s;
+            cursor: pointer;
+        }}
+
+        .nav-link:hover {{
+            opacity: 0.6;
+            text-decoration: none !important;
+        }}
+
+        .hero-paix {{
+            padding: 100px 5% 150px 5%;
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 100px;
+        }}
+
+        .project-section {{
+            padding: 0 5% 200px 5%;
+        }}
+
+        .project-card {{
+            margin-bottom: 250px;
+            transition: opacity 0.6s ease;
+        }}
+        
+        .project-img {{
+            width: 100%;
+            filter: grayscale(10%) contrast(1.05);
+            margin-bottom: 25px;
+        }}
+
+        .project-title {{
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 32px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }}
+
+        .project-year {{
+            font-size: 10px;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: 2px;
+            color: #888;
+        }}
+
+        .action-button {{
+            display: inline-block !important;
+            background: #1a1a1a !important;
+            color: #f7f7f7 !important;
+            border: none !important;
+            padding: 12px 30px !important;
+            font-family: 'Inter', sans-serif !important;
+            font-weight: 400 !important;
+            text-transform: uppercase !important;
+            letter-spacing: 2px !important;
+            text-decoration: none !important;
+            font-size: 10px !important;
+            transition: 0.3s !important;
+            cursor: pointer !important;
+        }}
+
+        .action-button:hover {{
+            background-color: #333 !important;
+            color: #f7f7f7 !important;
+            text-decoration: none !important;
+        }}
+
+        .footer-paix {{
+            padding: 100px 5%;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            font-size: 10px;
+            letter-spacing: 2px;
+            color: #666;
+        }}
+    </style>
+    """, unsafe_allow_html=True)
+
+    # ✅ NAVEGAÇÃO
+    st.markdown(f"""
+    <div class="nav-paix">
+        <div style="font-weight: 400;">{config.get('logo', 'PAIX DESIGN')}</div>
+        <div style="display: flex; gap: 50px;">
+    """, unsafe_allow_html=True)
+    
+    for link in config.get("nav_links", []):
+        st.markdown(f'<a href="{link.get("url", "#")}" class="nav-link">{link.get("name", "")}</a>', unsafe_allow_html=True)
+    
+    st.markdown("</div></div>", unsafe_allow_html=True)
+
+    # ✅ HERO SECTION
+    st.markdown(f"""
+    <div class="hero-paix">
+        <div>
+            <p style="font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: #888; margin-bottom: 30px;">
+                {config.get('hero', {}).get('subtitle', '')}
+            </p>
+            <h1 class="serif-light">
+                {config.get('hero', {}).get('title', '')}
+            </h1>
+        </div>
+        <div style="font-size: 16px; line-height: 1.8; padding-top: 10px; color: #555;">
+            {config.get('hero', {}).get('description', '')}
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # ✅ PROJETOS
+    st.markdown('<div id="projetos" class="project-section">', unsafe_allow_html=True)
+    
+    for project in config.get("projects", []):
+        st.markdown(f"""
+        <div class="project-card">
+            <img src="{project.get('image', '')}" class="project-img">
+            <div class="project-title">
+                <span>{project.get('title', '')} — {project.get('location', '')}</span>
+                <span class="project-year">{project.get('year', '')}</span>
+            </div>
+            <p style="font-size: 12px; color: #999; text-transform: uppercase; letter-spacing: 1px;">
+                Residencial / Design de Mobiliário
+            </p>
         </div>
         """, unsafe_allow_html=True)
-        
-        # Usar columns para simular o painel
-        col_editor = st.columns([1])[0]
-        
-        with col_editor:
-            st.markdown("### 🎨 Cores")
-            new_accent = st.color_picker("Cor Accent (Roxo)", config.get('colors', {}).get('accent', '#7b2cbf'), key="accent_color")
-            new_gold = st.color_picker("Cor Gold", config.get('colors', {}).get('gold', '#d4af37'), key="gold_color")
-            
-            st.markdown("### 🚀 Hero Section")
-            hero_title = st.text_input("Título Principal", config.get('hero', {}).get('title', ''), key="hero_title_input")
-            hero_subtitle = st.text_area("Subtítulo", config.get('hero', {}).get('subtitle', ''), height=80, key="hero_subtitle_input")
-            
-            st.markdown("### 📍 Navbar")
-            navbar_logo = st.text_input("Logo", config.get('navbar', {}).get('logo', 'STTACK'), key="navbar_logo_input")
-            
-            st.markdown("### 📝 Títulos das Seções")
-            carousel_title = st.text_input("Título Carousel", config.get('sections', {}).get('carousel_title', 'TEMPLATES DISPONÍVEIS'), key="carousel_title_input")
-            target_title = st.text_input("Título Alvo", config.get('sections', {}).get('target_title', 'É PARA VOCÊ QUE'), key="target_title_input")
-            steps_title = st.text_input("Título Passos", config.get('sections', {}).get('steps_title', 'COMO FUNCIONA'), key="steps_title_input")
-            pricing_title = st.text_input("Título Preços", config.get('sections', {}).get('pricing_title', 'PLANOS'), key="pricing_title_input")
-            faq_title = st.text_input("Título FAQ", config.get('sections', {}).get('faq_title', 'PERGUNTAS FREQUENTES'), key="faq_title_input")
-            
-            st.markdown("### 🔘 Botões Principais")
-            cta_main_text = st.text_input("Texto CTA Principal", config.get('buttons', {}).get('cta_main', {}).get('text', 'COMECE AGORA'), key="cta_main_text_input")
-            cta_main_url = st.text_input("URL CTA Principal", config.get('buttons', {}).get('cta_main', {}).get('url', 'https://www.google.com/'), key="cta_main_url_input")
-            
-            st.markdown("---")
-            if st.button("💾 SALVAR CONFIGURAÇÕES", use_container_width=True, key="save_config"):
-                config['colors']['accent'] = new_accent
-                config['colors']['gold'] = new_gold
-                config['hero']['title'] = hero_title
-                config['hero']['subtitle'] = hero_subtitle
-                config['navbar']['logo'] = navbar_logo
-                config['sections']['carousel_title'] = carousel_title
-                config['sections']['target_title'] = target_title
-                config['sections']['steps_title'] = steps_title
-                config['sections']['pricing_title'] = pricing_title
-                config['sections']['faq_title'] = faq_title
-                config['buttons']['cta_main']['text'] = cta_main_text
-                config['buttons']['cta_main']['url'] = cta_main_url
-                
-                save_config_to_file(config)
-                st.session_state.config = config
-                
-                st.success("✅ Configurações salvas em config.json!")
-                st.info(f"Salvo em: {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}")
-                st.rerun()
+    
+    st.markdown('</div>', unsafe_allow_html=True)
 
-# ✅ NAVBAR
-st.markdown(f"""
-<div class="navbar-elite">
-    <div class="logo-elite">{config.get('navbar', {}).get('logo', 'STTACK')}</div>
-    <div class="nav-links-container">
-        <a href="#quem-atendemos" class="nav-link-elite">Quem Atendemos</a>
-        <a href="#como-funciona" class="nav-link-elite">Como Funciona</a>
-        <a href="#templates" class="nav-link-elite">Templates</a>
-        <a href="#precos" class="nav-link-elite">Preços</a>
-        <a href="#faq" class="nav-link-elite">FAQ</a>
-    </div>
-</div>
-""", unsafe_allow_html=True)
-
-# ✅ 1 & 2. HERO SECTION
-hero_title = config.get('hero', {}).get('title', 'Crie seu site profissional em minutos')
-hero_subtitle = config.get('hero', {}).get('subtitle', 'A solução ideal para quem precisa de um site rápido, profissional e editável sem depender de agências ou programadores.')
-new_accent = config.get('colors', {}).get('accent', '#7b2cbf')
-new_gold = config.get('colors', {}).get('gold', '#d4af37')
-cta_main_text = config.get('buttons', {}).get('cta_main', {}).get('text', 'COMECE AGORA')
-
-st.markdown(f"""
-<div class="hero-section">
-    <h1 class="hero-h1">{hero_title}<br><span class="serif-heavy" style="color:{new_gold}">Apenas editando templates prontos.</span></h1>
-    <p class="hero-sub">{hero_subtitle}</p>
-    <div style="margin-top: 50px; width: 300px;">
-        <a href="#templates" style="display: inline-block; background: linear-gradient(90deg, {new_accent}, #9d4edd); color: white; border: none; padding: 25px 60px; font-weight: 900; font-size: 22px; text-transform: uppercase; letter-spacing: 2px; border-radius: 0; clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%); text-decoration: none; transition: 0.4s; cursor: pointer;">{cta_main_text} ↓</a>
-    </div>
-</div>
-""", unsafe_allow_html=True)
-
-# ✅ 5. PROVA SOCIAL
-st.markdown("""
-<div id="clientes" class="client-section">
-    <h2 style="font-size: 30px; letter-spacing: 0px;">CONFIE EM QUEM<br>JÁ DOMINA.</h2>
-    <div style="display: flex;">
-        <img src="https://raw.githubusercontent.com/Gm0ur4/cortex-checkout/main/7.jpg" style="width:80px; height:80px; border-radius:50%; border: 2px solid var(--accent); margin-left: -20px;">
-        <img src="https://raw.githubusercontent.com/Gm0ur4/cortex-checkout/main/8.jpg" style="width:80px; height:80px; border-radius:50%; border: 2px solid var(--accent); margin-left: -20px;">
-        <img src="https://raw.githubusercontent.com/Gm0ur4/cortex-checkout/main/6.jpg" style="width:80px; height:80px; border-radius:50%; border: 2px solid var(--accent); margin-left: -20px;">
-        <img src="https://raw.githubusercontent.com/Gm0ur4/cortex-checkout/main/17.png" style="width:80px; height:80px; border-radius:50%; border: 2px solid var(--accent); margin-left: -20px;">
-        <img src="https://raw.githubusercontent.com/SttackSite/site/main/410.png" style="width:80px; height:80px; border-radius:50%; border: 2px solid var(--accent); margin-left: -20px;">
-        <img src="https://raw.githubusercontent.com/SttackSite/site/main/413.jpg" style="width:80px; height:80px; border-radius:50%; border: 2px solid var(--accent); margin-left: -20px;">
-        <img src="https://raw.githubusercontent.com/SttackSite/site/main/414.jpg" style="width:80px; height:80px; border-radius:50%; border: 2px solid var(--accent); margin-left: -20px;">
-        <img src="https://raw.githubusercontent.com/SttackSite/site/main/415.jpg" style="width:80px; height:80px; border-radius:50%; border: 2px solid var(--accent); margin-left: -20px;">
-        <img src="https://raw.githubusercontent.com/SttackSite/site/main/422.jpg" style="width:80px; height:80px; border-radius:50%; border: 2px solid var(--accent); margin-left: -20px;">
-        <div style="width:80px; height:80px; border-radius:50%; background: var(--accent); margin-left: -20px; display:flex; align-items:center; justify-content:center; font-weight:900;">+500</div>
-    </div>
-</div>
-""", unsafe_allow_html=True)
-
-# ✅ 6. É PARA VOCÊ QUE
-target_title = config.get('sections', {}).get('target_title', 'É PARA VOCÊ QUE')
-st.markdown('<div id="quem-atendemos" style="padding: 120px 8%;">', unsafe_allow_html=True)
-st.markdown(f'<h2>{target_title}</h2>', unsafe_allow_html=True)
-col_u1, col_u2, col_u3 = st.columns(3)
-
-target_cards = config.get('sections', {}).get('target_cards', [])
-while len(target_cards) < 3:
-    target_cards.append({'title': 'Card', 'description': 'Descrição'})
-
-with col_u1:
+    # ✅ SOBRE
     st.markdown(f"""
-    <div class="target-card">
-        <h3>{target_cards[0].get('title', 'Proprietários de negócios')}</h3>
-        <p>{target_cards[0].get('description', '')}</p>
-    </div>
-    """, unsafe_allow_html=True)
-
-with col_u2:
-    st.markdown(f"""
-    <div class="target-card" style="background: var(--accent); color: white; box-shadow: 15px 15px 0px white;">
-        <h3>{target_cards[1].get('title', 'Infoprodutores')}</h3>
-        <p>{target_cards[1].get('description', '')}</p>
-    </div>
-    """, unsafe_allow_html=True)
-
-with col_u3:
-    st.markdown(f"""
-    <div class="target-card">
-        <h3>{target_cards[2].get('title', 'Freelancer')}</h3>
-        <p>{target_cards[2].get('description', '')}</p>
-    </div>
-    """, unsafe_allow_html=True)
-st.markdown('</div>', unsafe_allow_html=True)
-
-# ✅ 7. PASSO A PASSO
-steps_title = config.get('sections', {}).get('steps_title', 'COMO FUNCIONA')
-st.markdown(f'<div id="como-funciona" style="padding: 100px 8%; background: #050505;"><h2>{steps_title}</h2><br><br>', unsafe_allow_html=True)
-
-steps = config.get('sections', {}).get('steps', [])
-while len(steps) < 4:
-    steps.append({'title': 'Passo', 'description': 'Descrição'})
-
-for i, step in enumerate(steps):
-    st.markdown(f"""
-    <div class="step-row">
-        <div class="step-num">0{i+1}</div>
-        <div>
-            <h3 style="color: var(--gold);">{step.get('title', '')}</h3>
-            <p style="max-width: 400px; opacity: 0.6;">{step.get('description', '')}</p>
+    <div id="escritorio" style="padding: 150px 20% 250px 20%; text-align: center;">
+        <h2 class="serif-light" style="font-size: 56px; margin-bottom: 40px;">Atmosferas Tangíveis</h2>
+        <p style="color: #666; line-height: 2;">
+            Trabalhamos em estreita colaboração com artesãos locais para garantir que cada detalhe, 
+            desde a textura da parede até o encaixe da madeira, conte uma história de autenticidade e respeito ao ambiente.
+        </p>
+        <div style="margin-top: 60px;">
+            <a href="https://www.google.com/" target="_blank" class="action-button">Conheça Nosso Trabalho</a>
         </div>
     </div>
     """, unsafe_allow_html=True)
-st.markdown('</div>', unsafe_allow_html=True)
 
-# ✅ 3 & 4. SHOWCASE DE TEMPLATES
-carousel_title = config.get('sections', {}).get('carousel_title', 'TEMPLATES DISPONÍVEIS')
-st.markdown(f'<div id="templates" style="padding: 120px 8%;"><h2>{carousel_title}</h2><br><br>', unsafe_allow_html=True)
-st.markdown("""
-<div class="carousel-section" style="padding: 0; background: transparent;">
-    <div class="carousel-container">
-        <a href="#precos" style="text-decoration: none;"><div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/SttackSite/site/main/20.png" alt="Template 1"></div></a>
-        <a href="#precos" style="text-decoration: none;"><div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/SttackSite/site/main/17.png" alt="Template 2"></div></a>
-        <a href="#precos" style="text-decoration: none;"><div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/SttackSite/site/main/24.png" alt="Template 3"></div></a>
-        <a href="#precos" style="text-decoration: none;"><div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/SttackSite/site/main/11.png" alt="Template 4"></div></a>
-        <a href="#precos" style="text-decoration: none;"><div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/SttackSite/site/main/22.png" alt="Template 5"></div></a>
-    </div>
-</div>
-""", unsafe_allow_html=True)
-
-# ✅ 8. PREÇOS
-pricing_title = config.get('sections', {}).get('pricing_title', 'PLANOS')
-st.markdown(f'<div id="precos" style="padding: 120px 8%; text-align:center;"><h2>{pricing_title}</h2><br><br>', unsafe_allow_html=True)
-
-pricing_plans = config.get('sections', {}).get('pricing_plans', [])
-while len(pricing_plans) < 3:
-    pricing_plans.append({'name': 'Plano', 'price': 'R$ 0', 'button_text': 'QUERO', 'button_url': 'https://www.google.com/'})
-
-p1, p2, p3 = st.columns(3)
-
-with p2:
+    # ✅ FOOTER
     st.markdown(f"""
-    <div class="pricing-glass" style="border-top: 5px solid var(--accent);">
-        <p style="color: var(--gold); letter-spacing: 3px; font-weight: 900;">{pricing_plans[1].get('name', 'PRO')}</p>
-        <h1 style="font-size: 80px; margin: 30px 0;">{pricing_plans[1].get('price', 'R$ 197')}</h1>
+    <div id="contato" class="footer-paix">
+        <div>
+            {config.get('footer', {}).get('company', 'PAIX DESIGN STUDIO')}<br>
+            {config.get('footer', {}).get('address', 'AVENIDA DA LIBERDADE, LISBOA')}
+        </div>
+        <div style="text-align: right;">
+            <a href="https://www.google.com/" target="_blank" style="color: #666; text-decoration: none;">INSTAGRAM</a> / 
+            <a href="https://www.google.com/" target="_blank" style="color: #666; text-decoration: none;">BEHANCE</a> / 
+            <a href="https://www.google.com/" target="_blank" style="color: #666; text-decoration: none;">LINKEDIN</a><br>
+            <a href="mailto:{config.get('footer', {}).get('email', 'hello@paix-design.com')}" style="color: #666; text-decoration: none;">{config.get('footer', {}).get('email', 'hello@paix-design.com')}</a>
+        </div>
+    </div>
+    <div style="padding: 30px 5%; font-size: 9px; color: #bbb; letter-spacing: 1px;">
+        © 2026 {config.get('footer', {}).get('company', 'PAIX DESIGN')}. TODOS OS DIREITOS RESERVADOS.
     </div>
     """, unsafe_allow_html=True)
-    st.button(pricing_plans[1].get('button_text', 'QUERO AGORA'), key="main_p")
 
-with p1:
+elif template == "beauty":
+    # ✅ TEMPLATE YOLU (Noturno/Beauty)
     st.markdown(f"""
-    <div class="pricing-glass">
-        <p>{pricing_plans[0].get('name', 'STARTER')}</p>
-        <h1 style="font-size: 60px; margin: 30px 0;">{pricing_plans[0].get('price', 'R$ 97')}</h1>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;1,300&family=Noto+Sans+JP:wght@100;300;400&display=swap');
+
+        .stApp {{
+            background: linear-gradient(180deg, #050a14 0%, #0f1c3d 50%, #1e1b4b 100%);
+            color: #ffffff;
+        }}
+
+        html, body, [class*="css"] {{
+            font-family: 'Noto Sans JP', sans-serif;
+            font-weight: 300;
+        }}
+
+        h1, h2, .serif-yolu {{
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-weight: 300;
+            letter-spacing: 2px;
+        }}
+
+        .nav-yolu {{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px 6%;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            background: rgba(5, 10, 20, 0.4);
+            backdrop-filter: blur(8px);
+        }}
+        
+        .logo-yolu {{
+            font-size: 28px;
+            letter-spacing: 5px;
+            font-weight: 400;
+        }}
+
+        .nav-link {{
+            color: #ffffff !important;
+            text-decoration: none !important;
+            font-size: 11px;
+            letter-spacing: 1px;
+            transition: 0.3s;
+            cursor: pointer;
+        }}
+
+        .nav-link:hover {{
+            opacity: 0.6;
+            text-decoration: none !important;
+        }}
+
+        .hero-yolu {{
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background-image: url('https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1600');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }}
+        
+        .hero-title-main {{
+            font-size: clamp(40px, 8vw, 100px);
+            line-height: 1;
+            margin-bottom: 20px;
+            text-shadow: 0 0 20px rgba(255,255,255,0.3);
+        }}
+
+        .product-section {{
+            padding: 100px 6%;
+        }}
+
+        .product-card {{
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0px;
+            padding: 40px;
+            text-align: center;
+            transition: 0.5s;
+        }}
+        
+        .product-card:hover {{
+            background: rgba(255, 255, 255, 0.07);
+            border-color: rgba(212, 175, 55, 0.5);
+        }}
+
+        .btn-yolu {{
+            display: inline-block !important;
+            padding: 12px 40px !important;
+            border: 1px solid #fff !important;
+            color: #fff !important;
+            text-decoration: none !important;
+            font-size: 12px !important;
+            letter-spacing: 2px !important;
+            margin-top: 20px !important;
+            transition: 0.3s !important;
+        }}
+        
+        .btn-yolu:hover {{
+            background: #fff !important;
+            color: #050a14 !important;
+            text-decoration: none !important;
+        }}
+
+        [data-testid="stHeader"] {{ display: none; }}
+    </style>
+    """, unsafe_allow_html=True)
+
+    # ✅ NAVEGAÇÃO
+    st.markdown(f"""
+    <div class="nav-yolu">
+        <div class="logo-yolu">{config.get('logo', 'YOLU')}</div>
+        <div style="display: flex; gap: 40px;">
+    """, unsafe_allow_html=True)
+    
+    for link in config.get("nav_links", []):
+        st.markdown(f'<a href="{link.get("url", "#")}" class="nav-link">{link.get("name", "")}</a>', unsafe_allow_html=True)
+    
+    st.markdown("</div></div>", unsafe_allow_html=True)
+
+    # ✅ HERO
+    st.markdown(f"""
+    <div class="hero-yolu">
+        <p style="letter-spacing: 8px; font-size: 12px; margin-bottom: 30px;">{config.get('hero', {}).get('subtitle', '')}</p>
+        <h1 class="hero-title-main serif-yolu">{config.get('hero', {}).get('title', '')}</h1>
+        <p style="max-width: 600px; font-size: 14px; opacity: 0.8; line-height: 2;">
+            {config.get('hero', {}).get('description', '')}
+        </p>
     </div>
     """, unsafe_allow_html=True)
-    st.button(pricing_plans[0].get('button_text', 'INICIAR'), key="p1")
 
-with p3:
+    # ✅ CONCEITO
     st.markdown(f"""
-    <div class="pricing-glass">
-        <p>{pricing_plans[2].get('name', 'ENTERPRISE')}</p>
-        <h1 style="font-size: 60px; margin: 30px 0;">{pricing_plans[2].get('price', 'Sob Consulta')}</h1>
+    <div id="conceito" style="padding: 150px 15%; text-align: center;">
+        <h2 class="serif-yolu" style="font-size: 42px; margin-bottom: 40px;">Por que Cuidados Noturnos?</h2>
+        <p style="font-size: 16px; line-height: 2.2; opacity: 0.7;">
+            Durante a noite, o seu cabelo está livre das agressões externas do dia. 
+            É o momento perfeito para a penetração intensa de nutrientes.
+        </p>
     </div>
     """, unsafe_allow_html=True)
-    st.button(pricing_plans[2].get('button_text', 'FALAR COM VENDAS'), key="p3")
 
-st.markdown('</div>', unsafe_allow_html=True)
+    # ✅ PRODUTOS
+    st.markdown('<div id="produtos" class="product-section">', unsafe_allow_html=True)
+    
+    cols = st.columns(len(config.get("products", [])))
+    
+    for idx, product in enumerate(config.get("products", [])):
+        with cols[idx]:
+            st.markdown(f"""
+            <div class="product-card">
+                <img src="{product.get('image', '')}" style="width:100%; margin-bottom:30px; opacity:0.9;">
+                <h3 class="serif-yolu" style="font-size: 28px;">{product.get('title', '')}</h3>
+                <p style="font-size: 12px; color: #aaa; margin: 20px 0;">{product.get('category', '')}</p>
+                <p style="font-size: 14px; line-height: 1.8;">{product.get('description', '')}</p>
+                <a href="https://www.google.com/" target="_blank" class="btn-yolu">SAIBA MAIS</a>
+            </div>
+            """, unsafe_allow_html=True)
+    
+    st.markdown('</div>', unsafe_allow_html=True)
 
-# ✅ 9. FAQ
-faq_title = config.get('sections', {}).get('faq_title', 'PERGUNTAS FREQUENTES')
-st.markdown(f'<div id="faq" style="padding: 100px 20%; background: #080808;"><h2 style="text-align:center; font-size: 40px;">{faq_title}</h2><br>', unsafe_allow_html=True)
+    # ✅ FOOTER
+    st.markdown(f"""
+    <div id="contato" style="padding: 100px 6% 40px 6%; border-top: 1px solid rgba(255,255,255,0.1); margin-top: 100px;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+            <div>
+                <h2 class="logo-yolu" style="margin-bottom: 20px;">{config.get('footer', {}).get('company', 'YOLU')}</h2>
+                <p style="font-size: 11px; opacity: 0.5;">© 2026 {config.get('footer', {}).get('company', 'YOLU')} | Todos os direitos reservados.</p>
+            </div>
+            <div style="text-align: right; font-size: 11px; letter-spacing: 2px;">
+                <a href="https://www.google.com/" target="_blank" style="color: #fff; text-decoration: none;">INSTAGRAM</a> / 
+                <a href="https://www.google.com/" target="_blank" style="color: #fff; text-decoration: none;">TWITTER</a> / 
+                <a href="https://www.google.com/" target="_blank" style="color: #fff; text-decoration: none;">REVIEWS</a>
+            </div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
 
-faq_items = config.get('sections', {}).get('faq_items', [])
-for faq in faq_items:
-    with st.expander(faq.get('question', '')):
-        st.write(faq.get('answer', ''))
-
-st.markdown('</div>', unsafe_allow_html=True)
+else:
+    st.error(f"❌ Template '{template}' não encontrado!")
