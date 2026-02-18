@@ -29,9 +29,12 @@ def save_config_to_file(config):
 if "config" not in st.session_state:
     st.session_state.config = load_config()
 
+if "editor_open" not in st.session_state:
+    st.session_state.editor_open = False
+
 config = st.session_state.config
 
-# ✅ CSS RADICAL
+# ✅ CSS RADICAL + PAINEL DE EDIÇÃO FLUTUANTE
 st.markdown(f"""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,900;1,900&family=Inter:wght@400;700;900&family=Oswald:wght@700&display=swap');
@@ -234,93 +237,202 @@ st.markdown(f"""
         gap: 50px;
     }}
 
-    .faq-highlighted {{
-        background: linear-gradient(135deg, rgba(123, 44, 191, 0.2) 0%, rgba(212, 175, 55, 0.1) 100%);
-        border: 2px solid var(--gold);
-        border-radius: 8px;
-        padding: 40px;
-        margin-bottom: 40px;
-        box-shadow: 0 10px 50px rgba(212, 175, 55, 0.2);
+    /* PAINEL FLUTUANTE DE EDIÇÃO */
+    .editor-panel {{
+        position: fixed;
+        right: 0;
+        top: 0;
+        width: 450px;
+        height: 100vh;
+        background: rgba(5, 5, 5, 0.98);
+        border-left: 3px solid var(--gold);
+        overflow-y: auto;
+        padding: 30px;
+        z-index: 9999;
+        box-shadow: -10px 0 50px rgba(0, 0, 0, 0.8);
+    }}
+
+    .editor-panel h3 {{
+        color: var(--gold);
+        margin-top: 25px;
+        margin-bottom: 15px;
+        font-size: 16px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }}
+
+    .editor-panel h2 {{
+        color: var(--gold);
+        margin-bottom: 20px;
+        font-size: 24px;
+    }}
+
+    .editor-input {{
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 15px;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid var(--gold);
+        color: white;
+        border-radius: 4px;
+        font-family: 'Inter', sans-serif;
+        font-size: 14px;
+    }}
+
+    .editor-input::placeholder {{
+        color: rgba(255, 255, 255, 0.4);
+    }}
+
+    .editor-button {{
+        width: 100%;
+        padding: 14px;
+        background: linear-gradient(90deg, var(--accent), #9d4edd);
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-weight: 900;
+        cursor: pointer;
+        margin-top: 20px;
+        transition: 0.3s;
+        font-size: 16px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }}
+
+    .editor-button:hover {{
+        transform: scale(1.02);
+        box-shadow: 0 0 30px rgba(123, 44, 191, 0.5);
+    }}
+
+    .close-editor {{
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background: var(--gold);
+        color: black;
+        border: none;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        font-size: 24px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: 0.3s;
+    }}
+
+    .close-editor:hover {{
+        background: white;
+    }}
+
+    .editor-overlay {{
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 9998;
+    }}
+
+    .edit-button-fixed {{
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        width: 70px;
+        height: 70px;
+        background: linear-gradient(90deg, var(--accent), #9d4edd);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        font-size: 32px;
+        cursor: pointer;
+        z-index: 9997;
+        box-shadow: 0 10px 40px rgba(123, 44, 191, 0.5);
+        transition: 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }}
+
+    .edit-button-fixed:hover {{
+        transform: scale(1.1);
+        box-shadow: 0 15px 50px rgba(123, 44, 191, 0.7);
     }}
 </style>
 """, unsafe_allow_html=True)
 
-# ✅ ============================================
-# ✅ PAINEL DE EDIÇÃO NO SIDEBAR
-# ✅ ============================================
-st.sidebar.markdown("## ✏️ EDITOR DE SITE")
-st.sidebar.markdown("---")
+# ✅ BOTÃO FLUTUANTE PARA ABRIR EDITOR
+col1, col2, col3 = st.columns([1, 1, 0.15])
+with col3:
+    if st.button("✏️", key="open_editor", help="Abrir editor"):
+        st.session_state.editor_open = not st.session_state.editor_open
 
-# ✅ Seção: Cores
-st.sidebar.markdown("### 🎨 Cores")
-new_accent = st.sidebar.color_picker("Cor Accent (Roxo)", config.get('colors', {}).get('accent', '#7b2cbf'))
-new_gold = st.sidebar.color_picker("Cor Gold", config.get('colors', {}).get('gold', '#d4af37'))
-
-# ✅ Seção: Hero
-st.sidebar.markdown("### 🚀 Hero Section")
-hero_title = st.sidebar.text_input("Título Principal", config.get('hero', {}).get('title', ''))
-hero_subtitle = st.sidebar.text_area("Subtítulo", config.get('hero', {}).get('subtitle', ''), height=80)
-
-# ✅ Seção: Navbar
-st.sidebar.markdown("### 📍 Navbar")
-navbar_logo = st.sidebar.text_input("Logo", config.get('navbar', {}).get('logo', 'STTACK'))
-
-# ✅ Seção: Links de Navegação
-st.sidebar.markdown("### 🔗 Links de Navegação")
-navbar_links = config.get('navbar', {}).get('links', [])
-for i, link in enumerate(navbar_links):
-    col1, col2 = st.sidebar.columns(2)
-    with col1:
-        link['name'] = st.text_input(f"Nome Link {i+1}", link.get('name', ''), key=f"link_name_{i}")
-    with col2:
-        link['url'] = st.text_input(f"URL Link {i+1}", link.get('url', ''), key=f"link_url_{i}")
-
-# ✅ Seção: Títulos das Seções
-st.sidebar.markdown("### 📝 Títulos das Seções")
-carousel_title = st.sidebar.text_input("Título Carousel", config.get('sections', {}).get('carousel_title', 'TEMPLATES DISPONÍVEIS'))
-target_title = st.sidebar.text_input("Título Alvo", config.get('sections', {}).get('target_title', 'É PARA VOCÊ QUE'))
-steps_title = st.sidebar.text_input("Título Passos", config.get('sections', {}).get('steps_title', 'COMO FUNCIONA'))
-pricing_title = st.sidebar.text_input("Título Preços", config.get('sections', {}).get('pricing_title', 'PLANOS'))
-faq_title = st.sidebar.text_input("Título FAQ", config.get('sections', {}).get('faq_title', 'PERGUNTAS FREQUENTES'))
-
-# ✅ Seção: Botões CTA
-st.sidebar.markdown("### 🔘 Botões Principais")
-cta_main_text = st.sidebar.text_input("Texto CTA Principal", config.get('buttons', {}).get('cta_main', {}).get('text', 'COMECE AGORA'))
-cta_main_url = st.sidebar.text_input("URL CTA Principal", config.get('buttons', {}).get('cta_main', {}).get('url', 'https://www.google.com/'))
-
-# ✅ BOTÃO SALVAR
-st.sidebar.markdown("---")
-if st.sidebar.button("💾 SALVAR CONFIGURAÇÕES", use_container_width=True):
-    # ✅ Atualizar config com valores editados
-    config['colors']['accent'] = new_accent
-    config['colors']['gold'] = new_gold
-    config['hero']['title'] = hero_title
-    config['hero']['subtitle'] = hero_subtitle
-    config['navbar']['logo'] = navbar_logo
-    config['navbar']['links'] = navbar_links
-    config['sections']['carousel_title'] = carousel_title
-    config['sections']['target_title'] = target_title
-    config['sections']['steps_title'] = steps_title
-    config['sections']['pricing_title'] = pricing_title
-    config['sections']['faq_title'] = faq_title
-    config['buttons']['cta_main']['text'] = cta_main_text
-    config['buttons']['cta_main']['url'] = cta_main_url
+# ✅ PAINEL DE EDIÇÃO FLUTUANTE
+if st.session_state.editor_open:
+    st.markdown("""<div class="editor-overlay"></div>""", unsafe_allow_html=True)
     
-    # ✅ Salvar em arquivo
-    save_config_to_file(config)
-    st.session_state.config = config
+    # Criar containers para o painel
+    editor_container = st.container()
     
-    st.sidebar.success("✅ Configurações salvas em config.json!")
-    st.sidebar.info(f"Salvo em: {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}")
-
-# ✅ ============================================
-# ✅ CONTEÚDO PRINCIPAL DO SITE
-# ✅ ============================================
+    with editor_container:
+        st.markdown("""
+        <div class="editor-panel">
+            <h2>✏️ EDITOR DE SITE</h2>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # Usar columns para simular o painel
+        col_editor = st.columns([1])[0]
+        
+        with col_editor:
+            st.markdown("### 🎨 Cores")
+            new_accent = st.color_picker("Cor Accent (Roxo)", config.get('colors', {}).get('accent', '#7b2cbf'), key="accent_color")
+            new_gold = st.color_picker("Cor Gold", config.get('colors', {}).get('gold', '#d4af37'), key="gold_color")
+            
+            st.markdown("### 🚀 Hero Section")
+            hero_title = st.text_input("Título Principal", config.get('hero', {}).get('title', ''), key="hero_title_input")
+            hero_subtitle = st.text_area("Subtítulo", config.get('hero', {}).get('subtitle', ''), height=80, key="hero_subtitle_input")
+            
+            st.markdown("### 📍 Navbar")
+            navbar_logo = st.text_input("Logo", config.get('navbar', {}).get('logo', 'STTACK'), key="navbar_logo_input")
+            
+            st.markdown("### 📝 Títulos das Seções")
+            carousel_title = st.text_input("Título Carousel", config.get('sections', {}).get('carousel_title', 'TEMPLATES DISPONÍVEIS'), key="carousel_title_input")
+            target_title = st.text_input("Título Alvo", config.get('sections', {}).get('target_title', 'É PARA VOCÊ QUE'), key="target_title_input")
+            steps_title = st.text_input("Título Passos", config.get('sections', {}).get('steps_title', 'COMO FUNCIONA'), key="steps_title_input")
+            pricing_title = st.text_input("Título Preços", config.get('sections', {}).get('pricing_title', 'PLANOS'), key="pricing_title_input")
+            faq_title = st.text_input("Título FAQ", config.get('sections', {}).get('faq_title', 'PERGUNTAS FREQUENTES'), key="faq_title_input")
+            
+            st.markdown("### 🔘 Botões Principais")
+            cta_main_text = st.text_input("Texto CTA Principal", config.get('buttons', {}).get('cta_main', {}).get('text', 'COMECE AGORA'), key="cta_main_text_input")
+            cta_main_url = st.text_input("URL CTA Principal", config.get('buttons', {}).get('cta_main', {}).get('url', 'https://www.google.com/'), key="cta_main_url_input")
+            
+            st.markdown("---")
+            if st.button("💾 SALVAR CONFIGURAÇÕES", use_container_width=True, key="save_config"):
+                config['colors']['accent'] = new_accent
+                config['colors']['gold'] = new_gold
+                config['hero']['title'] = hero_title
+                config['hero']['subtitle'] = hero_subtitle
+                config['navbar']['logo'] = navbar_logo
+                config['sections']['carousel_title'] = carousel_title
+                config['sections']['target_title'] = target_title
+                config['sections']['steps_title'] = steps_title
+                config['sections']['pricing_title'] = pricing_title
+                config['sections']['faq_title'] = faq_title
+                config['buttons']['cta_main']['text'] = cta_main_text
+                config['buttons']['cta_main']['url'] = cta_main_url
+                
+                save_config_to_file(config)
+                st.session_state.config = config
+                
+                st.success("✅ Configurações salvas em config.json!")
+                st.info(f"Salvo em: {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}")
+                st.rerun()
 
 # ✅ NAVBAR
 st.markdown(f"""
 <div class="navbar-elite">
-    <div class="logo-elite">{navbar_logo}</div>
+    <div class="logo-elite">{config.get('navbar', {}).get('logo', 'STTACK')}</div>
     <div class="nav-links-container">
         <a href="#quem-atendemos" class="nav-link-elite">Quem Atendemos</a>
         <a href="#como-funciona" class="nav-link-elite">Como Funciona</a>
@@ -332,14 +444,20 @@ st.markdown(f"""
 """, unsafe_allow_html=True)
 
 # ✅ 1 & 2. HERO SECTION
+hero_title = config.get('hero', {}).get('title', 'Crie seu site profissional em minutos')
+hero_subtitle = config.get('hero', {}).get('subtitle', 'A solução ideal para quem precisa de um site rápido, profissional e editável sem depender de agências ou programadores.')
+new_accent = config.get('colors', {}).get('accent', '#7b2cbf')
+new_gold = config.get('colors', {}).get('gold', '#d4af37')
+cta_main_text = config.get('buttons', {}).get('cta_main', {}).get('text', 'COMECE AGORA')
+
 st.markdown(f"""
 <div class="hero-section">
     <h1 class="hero-h1">{hero_title}<br><span class="serif-heavy" style="color:{new_gold}">Apenas editando templates prontos.</span></h1>
     <p class="hero-sub">{hero_subtitle}</p>
     <div style="margin-top: 50px; width: 300px;">
-""", unsafe_allow_html=True)
-st.markdown(f"""
-<a href="#templates" style="display: inline-block; background: linear-gradient(90deg, {new_accent}, #9d4edd); color: white; border: none; padding: 25px 60px; font-weight: 900; font-size: 22px; text-transform: uppercase; letter-spacing: 2px; border-radius: 0; clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%); text-decoration: none; transition: 0.4s; cursor: pointer;">{cta_main_text} ↓</a>
+        <a href="#templates" style="display: inline-block; background: linear-gradient(90deg, {new_accent}, #9d4edd); color: white; border: none; padding: 25px 60px; font-weight: 900; font-size: 22px; text-transform: uppercase; letter-spacing: 2px; border-radius: 0; clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%); text-decoration: none; transition: 0.4s; cursor: pointer;">{cta_main_text} ↓</a>
+    </div>
+</div>
 """, unsafe_allow_html=True)
 
 # ✅ 5. PROVA SOCIAL
@@ -362,6 +480,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ✅ 6. É PARA VOCÊ QUE
+target_title = config.get('sections', {}).get('target_title', 'É PARA VOCÊ QUE')
 st.markdown('<div id="quem-atendemos" style="padding: 120px 8%;">', unsafe_allow_html=True)
 st.markdown(f'<h2>{target_title}</h2>', unsafe_allow_html=True)
 col_u1, col_u2, col_u3 = st.columns(3)
@@ -396,6 +515,7 @@ with col_u3:
 st.markdown('</div>', unsafe_allow_html=True)
 
 # ✅ 7. PASSO A PASSO
+steps_title = config.get('sections', {}).get('steps_title', 'COMO FUNCIONA')
 st.markdown(f'<div id="como-funciona" style="padding: 100px 8%; background: #050505;"><h2>{steps_title}</h2><br><br>', unsafe_allow_html=True)
 
 steps = config.get('sections', {}).get('steps', [])
@@ -415,6 +535,7 @@ for i, step in enumerate(steps):
 st.markdown('</div>', unsafe_allow_html=True)
 
 # ✅ 3 & 4. SHOWCASE DE TEMPLATES
+carousel_title = config.get('sections', {}).get('carousel_title', 'TEMPLATES DISPONÍVEIS')
 st.markdown(f'<div id="templates" style="padding: 120px 8%;"><h2>{carousel_title}</h2><br><br>', unsafe_allow_html=True)
 st.markdown("""
 <div class="carousel-section" style="padding: 0; background: transparent;">
@@ -429,6 +550,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ✅ 8. PREÇOS
+pricing_title = config.get('sections', {}).get('pricing_title', 'PLANOS')
 st.markdown(f'<div id="precos" style="padding: 120px 8%; text-align:center;"><h2>{pricing_title}</h2><br><br>', unsafe_allow_html=True)
 
 pricing_plans = config.get('sections', {}).get('pricing_plans', [])
@@ -467,6 +589,7 @@ with p3:
 st.markdown('</div>', unsafe_allow_html=True)
 
 # ✅ 9. FAQ
+faq_title = config.get('sections', {}).get('faq_title', 'PERGUNTAS FREQUENTES')
 st.markdown(f'<div id="faq" style="padding: 100px 20%; background: #080808;"><h2 style="text-align:center; font-size: 40px;">{faq_title}</h2><br>', unsafe_allow_html=True)
 
 faq_items = config.get('sections', {}).get('faq_items', [])
