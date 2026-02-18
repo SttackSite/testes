@@ -1,50 +1,74 @@
 import streamlit as st
+import json
+import os
+from datetime import datetime
 
-# --- CONFIGURAÇÃO DA PÁGINA ---
+# ✅ CONFIGURAÇÃO DA PÁGINA
 st.set_page_config(
-    page_title="Sttack Site",
+    page_title="Sttack Site - Editor",
     page_icon="💎",
     layout="wide"
 )
 
-# --- CSS RADICAL (PLUNDER + DOCKYARD + QUDRIX) ---
-st.markdown("""
+# ✅ Carregar configurações do config.json
+CONFIG_FILE = "config.json"
+
+def load_config():
+    """✅ Carrega as configurações do arquivo config.json"""
+    if os.path.exists(CONFIG_FILE):
+        with open(CONFIG_FILE, 'r', encoding='utf-8') as f:
+            return json.load(f)
+    return {}
+
+def save_config_to_file(config):
+    """✅ Salva as configurações em config.json"""
+    with open(CONFIG_FILE, 'w', encoding='utf-8') as f:
+        json.dump(config, f, indent=2, ensure_ascii=False)
+
+# ✅ Inicializar session_state com config
+if "config" not in st.session_state:
+    st.session_state.config = load_config()
+
+config = st.session_state.config
+
+# ✅ CSS RADICAL (PLUNDER + DOCKYARD + QUDRIX)
+st.markdown(f"""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,900;1,900&family=Inter:wght@400;700;900&family=Oswald:wght@700&display=swap');
 
-    :root {
-        --accent: #7b2cbf; /* Roxo Profundo */
-        --gold: #d4af37;
-        --dark: #050505;
-        --glass: rgba(255, 255, 255, 0.03);
-    }
+    :root {{
+        --accent: {config.get('colors', {}).get('accent', '#7b2cbf')};
+        --gold: {config.get('colors', {}).get('gold', '#d4af37')};
+        --dark: {config.get('colors', {}).get('dark', '#050505')};
+        --glass: {config.get('colors', {}).get('glass', 'rgba(255, 255, 255, 0.03)')};
+    }}
 
-    .stApp {
+    .stApp {{
         background-color: var(--dark);
         color: #ffffff;
-    }
+    }}
     
-    [data-testid="stHeader"] { display: none; }
-    .block-container { padding: 0 !important; max-width: 100% !important; }
+    [data-testid="stHeader"] {{ display: none; }}
+    .block-container {{ padding: 0 !important; max-width: 100% !important; }}
 
     /* Tipografia de Impacto Brutalista */
-    h1, h2 {
+    h1, h2 {{
         font-family: 'Inter', sans-serif;
         font-weight: 900;
         text-transform: uppercase;
         letter-spacing: -3px;
         line-height: 0.85;
-    }
+    }}
 
-    .serif-heavy {
+    .serif-heavy {{
         font-family: 'Playfair Display', serif;
         font-style: italic;
         text-transform: none;
         letter-spacing: -1px;
-    }
+    }}
 
     /* ❌ NÃO ALTERE: NAVBAR ESTILO YOLU ADAPTADO PARA SITE STTACK */
-    .navbar-elite {
+    .navbar-elite {{
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -54,27 +78,27 @@ st.markdown("""
         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         width: 100%;
         box-sizing: border-box;
-    }
+    }}
     
     /* ❌ NÃO ALTERE: Logo da navbar */
-    .logo-elite {
+    .logo-elite {{
         font-size: 22px;
         font-weight: 900;
         letter-spacing: 2px;
         font-family: 'Inter', sans-serif;
         color: var(--gold);
         text-transform: uppercase;
-    }
+    }}
 
     /* ❌ NÃO ALTERE: Container de links de navegação */
-    .nav-links-container {
+    .nav-links-container {{
         display: flex;
         gap: 45px;
         align-items: center;
-    }
+    }}
 
     /* ❌ NÃO ALTERE: Links de navegação */
-    .nav-link-elite {
+    .nav-link-elite {{
         color: #ffffff !important;
         text-decoration: none !important;
         font-size: 12px;
@@ -84,21 +108,21 @@ st.markdown("""
         transition: all 0.3s ease;
         cursor: pointer;
         text-transform: uppercase;
-    }
+    }}
 
     /* ❌ NÃO ALTERE: Efeito hover nos links */
-    .nav-link-elite:hover {
+    .nav-link-elite:hover {{
         color: var(--gold) !important;
         text-decoration: none !important;
-    }
+    }}
 
-    .nav-link-elite:visited {
+    .nav-link-elite:visited {{
         color: #ffffff !important;
         text-decoration: none !important;
-    }
+    }}
 
     /* 1 & 2. HERO RADICAL */
-    .hero-section {
+    .hero-section {{
         height: 100vh;
         display: flex;
         flex-direction: column;
@@ -106,47 +130,47 @@ st.markdown("""
         padding: 0 8%;
         background: radial-gradient(circle at 80% 20%, #5800AB 0%, #050505 50%);
         border-bottom: 1px solid rgba(255,255,255,0.1);
-    }
+    }}
 
-    .hero-h1 { font-size: clamp(60px, 15vw, 180px); margin-bottom: 40px; }
-    .hero-sub { 
+    .hero-h1 {{ font-size: clamp(60px, 15vw, 180px); margin-bottom: 40px; }}
+    .hero-sub {{ 
         font-size: 24px; 
         max-width: 600px; 
         line-height: 1.4; 
         color: rgba(255,255,255,0.7);
         border-left: 4px solid var(--accent);
         padding-left: 20px;
-    }
+    }}
 
     /* 3 & 4. TEMPLATES SHOWCASE (ASSIMÉTRICO) */
-    .template-box {
+    .template-box {{
         position: relative;
         overflow: hidden;
         border: 1px solid rgba(255,255,255,0.1);
         background: var(--glass);
         transition: 0.6s cubic-bezier(0.23, 1, 0.32, 1);
         cursor: crosshair;
-    }
-    .template-box:hover {
+    }}
+    .template-box:hover {{
         background: rgba(255,255,255,0.07);
         border-color: var(--gold);
         transform: translateY(-10px);
-    }
-    .template-label {
+    }}
+    .template-label {{
         position: absolute;
         bottom: 20px;
         left: 20px;
         font-family: 'Oswald', sans-serif;
         font-size: 30px;
-    }
+    }}
 
     /* GRID 2D COM SCROLL HORIZONTAL E VERTICAL */
-    .carousel-section {
+    .carousel-section {{
         padding: 120px 8%;
         background: linear-gradient(135deg, #0a0a0a 0%, #1a0a2e 100%);
-    }
+    }}
 
-    .carousel-title {
+    .carousel-title {{
         text-align: center;
         font-size: 48px;
         font-family: 'Inter', sans-serif;
@@ -155,10 +179,10 @@ st.markdown("""
         font-weight: 900;
         text-transform: uppercase;
         letter-spacing: -2px;
-    }
+    }}
 
     /* ❌ NÃO ALTERE: Container principal com scroll 2D */
-    .carousel-container {
+    .carousel-container {{
         display: flex;
         gap: 20px;
         overflow-x: auto;
@@ -168,35 +192,23 @@ st.markdown("""
         scrollbar-width: thin;
         scrollbar-color: var(--gold) transparent;
         height: 900px;
-    }
+    }}
 
-    .carousel-container::-webkit-scrollbar {
+    .carousel-container::-webkit-scrollbar {{
         height: 8px;
-    }
+    }}
 
-    .carousel-container::-webkit-scrollbar-track {
+    .carousel-container::-webkit-scrollbar-track {{
         background: transparent;
-    }
+    }}
 
-    .carousel-container::-webkit-scrollbar-thumb {
+    .carousel-container::-webkit-scrollbar-thumb {{
         background: var(--gold);
         border-radius: 4px;
-    }
-
-    /* ❌ NÃO ALTERE: Link do item do carrossel */
-    .carousel-item-link {
-        display: none;
-    }
-
-    /* ❌ NÃO ALTERE: Efeito hover no link do carrossel */
-    .carousel-item-link:hover {
-        border-color: var(--gold);
-        transform: translateY(-15px);
-        box-shadow: 0 30px 80px rgba(212, 175, 55, 0.3);
-    }
+    }}
 
     /* ❌ NÃO ALTERE: Container de cada template com scroll vertical */
-    .carousel-item-image-only {
+    .carousel-item-image-only {{
         flex: 0 0 800px;
         min-width: 800px;
         height: 900px;
@@ -207,94 +219,84 @@ st.markdown("""
         transition: all 0.4s ease;
         cursor: pointer;
         background: rgba(255, 255, 255, 0.02);
-    }
+    }}
 
-    .carousel-item-image-only:hover {
+    .carousel-item-image-only:hover {{
         border-color: var(--gold);
         box-shadow: 0 30px 80px rgba(212, 175, 55, 0.3);
-    }
+    }}
 
-    /* ❌ NÃO ALTERE: Scrollbar vertical de cada template */
-    .carousel-item-image-only::-webkit-scrollbar {
+    .carousel-item-image-only::-webkit-scrollbar {{
         width: 6px;
-    }
+    }}
 
-    .carousel-item-image-only::-webkit-scrollbar-track {
+    .carousel-item-image-only::-webkit-scrollbar-track {{
         background: transparent;
-    }
+    }}
 
-    .carousel-item-image-only::-webkit-scrollbar-thumb {
+    .carousel-item-image-only::-webkit-scrollbar-thumb {{
         background: var(--gold);
         border-radius: 3px;
-    }
+    }}
 
-    .carousel-item-image-only img {
+    .carousel-item-image-only img {{
         width: 100%;
         height: auto;
         object-fit: cover;
         display: block;
         border-radius: 8px;
-    }
-
-    /* ❌ NÃO ALTERE: Imagem dentro do link */
-    .carousel-item-link img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        display: block;
-        border-radius: 8px;
-    }
+    }}
 
     /* 5. CLIENTS (FLOATING AVATARS) */
-    .client-section {
+    .client-section {{
         padding: 100px 8%;
         background: #0a0a0a;
         display: flex;
         align-items: center;
         gap: 50px;
-    }
+    }}
 
     /* 6. É PARA VOCÊ QUE (CARDS NEO-BRUTALISTAS) */
-    .target-card {
+    .target-card {{
         padding: 50px;
         background: white;
         color: black;
         border: 5px solid var(--accent);
         box-shadow: 15px 15px 0px var(--accent);
         height: 100%;
-    }
+    }}
 
     /* 7. PASSO A PASSO (VERTICAL & BOLD) */
-    .step-row {
+    .step-row {{
         display: flex;
         gap: 30px;
         margin-bottom: 60px;
         align-items: flex-start;
-    }
-    .step-num {
+    }}
+    .step-num {{
         font-size: 100px;
         font-weight: 900;
         color: transparent;
         -webkit-text-stroke: 1px rgba(255,255,255,0.3);
         line-height: 0.7;
-    }
+    }}
 
     /* 8. PREÇOS (GLASSMORPHISM) */
-    .pricing-glass {
+    .pricing-glass {{
         background: rgba(255, 255, 255, 0.03);
         backdrop-filter: blur(15px);
         border: 1px solid rgba(255, 255, 255, 0.1);
         padding: 60px 40px;
         border-radius: 2px;
         text-align: center;
-    }
-    .pricing-glass:hover {
+    }}
+    .pricing-glass:hover {{
         border-color: var(--accent);
-    }
+    }}
 
     /* Botão de Alta Conversão */
-    div.stButton > button {
-        background: linear-gradient(90deg, #7b2cbf, #9d4edd);
+    div.stButton > button {{
+        background: linear-gradient(90deg, var(--accent), #9d4edd);
         color: white;
         border: none;
         padding: 25px 60px;
@@ -305,24 +307,24 @@ st.markdown("""
         border-radius: 0;
         clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%);
         transition: 0.4s;
-    }
-    div.stButton > button:hover {
+    }}
+    div.stButton > button:hover {{
         transform: scale(1.05);
         box-shadow: 0 0 30px rgba(123, 44, 191, 0.5);
-    }
+    }}
 
     /* ❌ NÃO ALTERE: FAQ Destacado - Política de Reembolso */
-    .faq-highlighted {
+    .faq-highlighted {{
         background: linear-gradient(135deg, rgba(123, 44, 191, 0.2) 0%, rgba(212, 175, 55, 0.1) 100%);
         border: 2px solid var(--gold);
         border-radius: 8px;
         padding: 40px;
         margin-bottom: 40px;
         box-shadow: 0 10px 50px rgba(212, 175, 55, 0.2);
-    }
+    }}
 
     /* ❌ NÃO ALTERE: Título do FAQ Destacado */
-    .faq-highlighted-title {
+    .faq-highlighted-title {{
         color: var(--gold);
         font-size: 24px;
         font-weight: 900;
@@ -330,74 +332,87 @@ st.markdown("""
         text-transform: uppercase;
         letter-spacing: 2px;
         margin-bottom: 20px;
-    }
+    }}
 
     /* ❌ NÃO ALTERE: Conteúdo do FAQ Destacado */
-    .faq-highlighted-content {
+    .faq-highlighted-content {{
         color: #ffffff;
         font-size: 14px;
         line-height: 1.8;
         font-family: 'Inter', sans-serif;
-    }
+    }}
 
     /* ❌ NÃO ALTERE: Ícone de atenção */
-    .faq-highlight-icon {
+    .faq-highlight-icon {{
         font-size: 28px;
         margin-right: 10px;
         color: var(--gold);
-    }
+    }}
 
-    /* ✅ CONTAINER COM SCROLL VERTICAL PARA TEMPLATES */
-    .template-scroll-container {
+    /* PAINEL DE EDIÇÃO */
+    .editor-panel {{
+        position: fixed;
+        right: 0;
+        top: 0;
+        width: 400px;
+        height: 100vh;
+        background: rgba(10, 10, 10, 0.95);
+        border-left: 2px solid var(--gold);
+        overflow-y: auto;
+        padding: 20px;
+        z-index: 1000;
+    }}
+
+    .editor-panel h3 {{
+        color: var(--gold);
+        margin-bottom: 15px;
+        font-size: 18px;
+    }}
+
+    .editor-input {{
         width: 100%;
-        max-width: 1000px;
-        height: 800px;
-        margin: 0 auto;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 8px;
-        overflow-y: scroll;
-        overflow-x: hidden;
-        background: rgba(255, 255, 255, 0.02);
-        padding: 0;
-        scroll-behavior: smooth;
-    }
+        padding: 10px;
+        margin-bottom: 15px;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid var(--gold);
+        color: white;
+        border-radius: 4px;
+        font-family: 'Inter', sans-serif;
+    }}
 
-    /* ✅ SCROLLBAR ESTILIZADA */
-    .template-scroll-container::-webkit-scrollbar {
-        width: 12px;
-    }
+    .editor-input::placeholder {{
+        color: rgba(255, 255, 255, 0.5);
+    }}
 
-    .template-scroll-container::-webkit-scrollbar-track {
-        background: rgba(255, 255, 255, 0.05);
-        border-radius: 10px;
-    }
+    .editor-button {{
+        width: 100%;
+        padding: 12px;
+        background: var(--accent);
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-weight: 900;
+        cursor: pointer;
+        margin-top: 10px;
+        transition: 0.3s;
+    }}
 
-    .template-scroll-container::-webkit-scrollbar-thumb {
+    .editor-button:hover {{
         background: var(--gold);
-        border-radius: 10px;
-        border: 2px solid rgba(5, 5, 5, 0.5);
-    }
+        color: black;
+    }}
 
-    .template-scroll-container::-webkit-scrollbar-thumb:hover {
-        background: #e8c547;
-    }
-
-    /* ✅ IMAGEM DENTRO DO CONTAINER */
-    .template-scroll-image {
-        width: 100%;
-        height: auto;
-        display: block;
-        border-radius: 0;
-    }
+    .main-content {{
+        margin-right: 420px;
+    }}
 </style>
 """, unsafe_allow_html=True)
 
-# --- NAVBAR ELITE ---
-st.markdown("""
+# ✅ NAVBAR
+st.markdown(f"""
 <div class="navbar-elite">
-    <div class="logo-elite">STTACK SITE</div>
+    <div class="logo-elite">{config.get('navbar', {}).get('logo', 'STTACK')}</div>
     <div class="nav-links-container">
-        <a href="#clientes" class="nav-link-elite">Clientes</a>
         <a href="#quem-atendemos" class="nav-link-elite">Quem Atendemos</a>
         <a href="#como-funciona" class="nav-link-elite">Como Funciona</a>
         <a href="#templates" class="nav-link-elite">Templates</a>
@@ -407,18 +422,85 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# --- 1 & 2. HERO SECTION ---
-st.markdown("""
+# ✅ PAINEL DE EDIÇÃO (SIDEBAR)
+st.sidebar.markdown("## ✏️ EDITOR DE SITE")
+st.sidebar.markdown("---")
+
+# ✅ Seção: Cores
+st.sidebar.markdown("### 🎨 Cores")
+new_accent = st.sidebar.color_picker("Cor Accent (Roxo)", config.get('colors', {}).get('accent', '#7b2cbf'))
+new_gold = st.sidebar.color_picker("Cor Gold", config.get('colors', {}).get('gold', '#d4af37'))
+
+# ✅ Seção: Hero
+st.sidebar.markdown("### 🚀 Hero Section")
+hero_title = st.sidebar.text_input("Título Principal", config.get('hero', {}).get('title', ''))
+hero_subtitle = st.sidebar.text_area("Subtítulo", config.get('hero', {}).get('subtitle', ''), height=80)
+
+# ✅ Seção: Navbar
+st.sidebar.markdown("### 📍 Navbar")
+navbar_logo = st.sidebar.text_input("Logo", config.get('navbar', {}).get('logo', 'STTACK'))
+
+# ✅ Seção: Links de Navegação
+st.sidebar.markdown("### 🔗 Links de Navegação")
+for i, link in enumerate(config.get('navbar', {}).get('links', [])):
+    col1, col2 = st.sidebar.columns(2)
+    with col1:
+        link['name'] = st.text_input(f"Nome Link {i+1}", link.get('name', ''), key=f"link_name_{i}")
+    with col2:
+        link['url'] = st.text_input(f"URL Link {i+1}", link.get('url', ''), key=f"link_url_{i}")
+
+# ✅ Seção: Títulos das Seções
+st.sidebar.markdown("### 📝 Títulos das Seções")
+carousel_title = st.sidebar.text_input("Título Carousel", config.get('sections', {}).get('carousel_title', 'TEMPLATES DISPONÍVEIS'))
+target_title = st.sidebar.text_input("Título Alvo", config.get('sections', {}).get('target_title', 'É PARA VOCÊ QUE'))
+steps_title = st.sidebar.text_input("Título Passos", config.get('sections', {}).get('steps_title', 'COMO FUNCIONA'))
+pricing_title = st.sidebar.text_input("Título Preços", config.get('sections', {}).get('pricing_title', 'PLANOS'))
+faq_title = st.sidebar.text_input("Título FAQ", config.get('sections', {}).get('faq_title', 'PERGUNTAS FREQUENTES'))
+
+# ✅ Seção: Botões CTA
+st.sidebar.markdown("### 🔘 Botões Principais")
+cta_main_text = st.sidebar.text_input("Texto CTA Principal", config.get('buttons', {}).get('cta_main', {}).get('text', 'COMECE AGORA'))
+cta_main_url = st.sidebar.text_input("URL CTA Principal", config.get('buttons', {}).get('cta_main', {}).get('url', 'https://www.google.com/'))
+
+# ✅ BOTÃO SALVAR
+st.sidebar.markdown("---")
+if st.sidebar.button("💾 SALVAR CONFIGURAÇÕES", use_container_width=True):
+    # ✅ Atualizar config com valores editados
+    config['colors']['accent'] = new_accent
+    config['colors']['gold'] = new_gold
+    config['hero']['title'] = hero_title
+    config['hero']['subtitle'] = hero_subtitle
+    config['navbar']['logo'] = navbar_logo
+    config['sections']['carousel_title'] = carousel_title
+    config['sections']['target_title'] = target_title
+    config['sections']['steps_title'] = steps_title
+    config['sections']['pricing_title'] = pricing_title
+    config['sections']['faq_title'] = faq_title
+    config['buttons']['cta_main']['text'] = cta_main_text
+    config['buttons']['cta_main']['url'] = cta_main_url
+    
+    # ✅ Salvar em arquivo
+    save_config_to_file(config)
+    st.session_state.config = config
+    
+    st.sidebar.success("✅ Configurações salvas em config.json!")
+    st.sidebar.info(f"Salvo em: {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}")
+
+# ✅ CONTEÚDO PRINCIPAL
+st.markdown('<div class="main-content">', unsafe_allow_html=True)
+
+# ✅ 1 & 2. HERO SECTION
+st.markdown(f"""
 <div class="hero-section">
-    <h1 class="hero-h1">Crie seu site profissional em minutos<br><span class="serif-heavy" style="color:var(--gold)">Apenas editando templates prontos.</span></h1>
-    <p class="hero-sub">A solução ideal para quem precisa de um site rápido, profissional e editável sem depender de agências ou programadores.</p>
+    <h1 class="hero-h1">{hero_title}<br><span class="serif-heavy" style="color:{new_gold}">Apenas editando templates prontos.</span></h1>
+    <p class="hero-sub">{hero_subtitle}</p>
     <div style="margin-top: 50px; width: 300px;">
 """, unsafe_allow_html=True)
-st.markdown("""
-<a href="#templates" style="display: inline-block; background: linear-gradient(90deg, #7b2cbf, #9d4edd); color: white; border: none; padding: 25px 60px; font-weight: 900; font-size: 22px; text-transform: uppercase; letter-spacing: 2px; border-radius: 0; clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%); text-decoration: none; transition: 0.4s; cursor: pointer;">CONHEÇA NOSSOS TEMPLATES ↓</a>
+st.markdown(f"""
+<a href="#templates" style="display: inline-block; background: linear-gradient(90deg, {new_accent}, #9d4edd); color: white; border: none; padding: 25px 60px; font-weight: 900; font-size: 22px; text-transform: uppercase; letter-spacing: 2px; border-radius: 0; clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%); text-decoration: none; transition: 0.4s; cursor: pointer;">{cta_main_text} ↓</a>
 """, unsafe_allow_html=True)
 
-# --- 5. PROVA SOCIAL (AVATARES FLOATING) ---
+# ✅ 5. PROVA SOCIAL (AVATARES FLOATING)
 st.markdown("""
 <div id="clientes" class="client-section">
     <h2 style="font-size: 30px; letter-spacing: 0px;">CONFIE EM QUEM<br>JÁ DOMINA.</h2>
@@ -437,62 +519,55 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# --- 6. É PARA VOCÊ QUE ---
+# ✅ 6. É PARA VOCÊ QUE
 st.markdown('<div id="quem-atendemos" style="padding: 120px 8%;">', unsafe_allow_html=True)
+st.markdown(f'<h2>{target_title}</h2>', unsafe_allow_html=True)
 col_u1, col_u2, col_u3 = st.columns(3)
 
+target_cards = config.get('sections', {}).get('target_cards', [])
 with col_u1:
-    st.markdown("""
+    st.markdown(f"""
     <div class="target-card">
-        <h3>Proprietários de negócios</h3>
-        <p>Que busca colocar sua empresa na internet com o menor custo do mercado, garantindo sua presença digital em minutos.</p>
+        <h3>{target_cards[0].get('title', 'Proprietários de negócios')}</h3>
+        <p>{target_cards[0].get('description', '')}</p>
     </div>
     """, unsafe_allow_html=True)
 
 with col_u2:
-    st.markdown("""
+    st.markdown(f"""
     <div class="target-card" style="background: var(--accent); color: white; box-shadow: 15px 15px 0px white;">
-        <h3>Infoprodutores/ prestadores de serviço</h3>
-        <p>Temos estruturas otimizadas para converter visitantes em compradores reais. Destaque seus serviços com um design que transmite autoridade e confiança.</p>
+        <h3>{target_cards[1].get('title', 'Infoprodutores')}</h3>
+        <p>{target_cards[1].get('description', '')}</p>
     </div>
     """, unsafe_allow_html=True)
 
 with col_u3:
-    st.markdown("""
+    st.markdown(f"""
     <div class="target-card">
-        <h3>Freelancer</h3>
-        <p>Venda nossos sites para seus clientes sem precisar programar do zero e fature com isso, aumentando sua margem de lucro entregando em tempo recorde.</p>
+        <h3>{target_cards[2].get('title', 'Freelancer')}</h3>
+        <p>{target_cards[2].get('description', '')}</p>
     </div>
     """, unsafe_allow_html=True)
 st.markdown('</div>', unsafe_allow_html=True)
 
-# --- 7. PASSO A PASSO (INDUSTRIAL) ---
-st.markdown('<div id="como-funciona" style="padding: 100px 8%; background: #050505;">', unsafe_allow_html=True)
-st.markdown('<h2>PROCESSO <span class="serif-heavy">sem falhas.</span></h2><br><br>', unsafe_allow_html=True)
+# ✅ 7. PASSO A PASSO
+st.markdown(f'<div id="como-funciona" style="padding: 100px 8%; background: #050505;"><h2>{steps_title}</h2><br><br>', unsafe_allow_html=True)
 
-steps = [
-    ("SELECIONE O MODELO IDEAL", "Escolha entre mais de 30 modelos validados o que mais combina com a identidade do seu negócio."),
-    ("CUSTOMIZAÇÃO RÁPIDA", "Utilize nosso passo a passo detalhado para implementar o código e personalizar cada detalhe sem complicações."),
-    ("SETUP TÉCNICO GRATUITO", "Te ensinamos onde hospedar seu site em segundos, como aplicar técnicas de SEO e configurar seu domínio personalizado sem custo adicional e de forma rápida."),
-    ("LANÇAMENTO IMEDIATO", "Site no ar, otimizado e pronto para escalar seu negócio com uma estrutura de alta performance.")
-]
-
-for i, (title, desc) in enumerate(steps):
+steps = config.get('sections', {}).get('steps', [])
+for i, step in enumerate(steps):
     st.markdown(f"""
     <div class="step-row">
         <div class="step-num">0{i+1}</div>
         <div>
-            <h3 style="color: var(--gold);">{title}</h3>
-            <p style="max-width: 400px; opacity: 0.6;">{desc}</p>
+            <h3 style="color: var(--gold);">{step.get('title', '')}</h3>
+            <p style="max-width: 400px; opacity: 0.6;">{step.get('description', '')}</p>
         </div>
     </div>
     """, unsafe_allow_html=True)
 st.markdown('</div>', unsafe_allow_html=True)
 
-
-# --- 3 & 4. SHOWCASE DE TEMPLATES (GRID 2D COM SCROLL) ---
-st.markdown('<div id="templates" style="padding: 120px 8%;">', unsafe_allow_html=True)
-st.markdown('<h2>Deslize e explore alguns dos nossos templates ideais para <span class="serif-heavy"> seu negócio:</span></h2><br><br>', unsafe_allow_html=True)
+# ✅ 3 & 4. SHOWCASE DE TEMPLATES
+st.markdown(f'<div id="templates" style="padding: 120px 8%;"><h2>{carousel_title}</h2><br><br>', unsafe_allow_html=True)
 st.markdown("""
 <div class="carousel-section" style="padding: 0; background: transparent;">
     <div class="carousel-container">
@@ -501,123 +576,52 @@ st.markdown("""
         <a href="#precos" style="text-decoration: none;"><div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/SttackSite/site/main/24.png" alt="Template 3"></div></a>
         <a href="#precos" style="text-decoration: none;"><div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/SttackSite/site/main/11.png" alt="Template 4"></div></a>
         <a href="#precos" style="text-decoration: none;"><div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/SttackSite/site/main/22.png" alt="Template 5"></div></a>
-        <a href="#precos" style="text-decoration: none;"><div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/SttackSite/site/main/13.png" alt="Template 6"></div></a>
-        <a href="#precos" style="text-decoration: none;"><div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/SttackSite/site/main/1.png" alt="Template 7"></div></a>
-        <a href="#precos" style="text-decoration: none;"><div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/SttackSite/site/main/21.png" alt="Template 8"></div></a>
-        <a href="#precos" style="text-decoration: none;"><div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/SttackSite/site/main/26.png" alt="Template 9"></div></a>
-        <a href="#precos" style="text-decoration: none;"><div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/SttackSite/site/main/18.png" alt="Template 10"></div></a>
-        <a href="#precos" style="text-decoration: none;"><div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/SttackSite/site/main/16.png" alt="Template 12"></div></a>
-        <a href="#precos" style="text-decoration: none;"><div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/SttackSite/site/main/15.png" alt="Template 15"></div></a>
-        <a href="#precos" style="text-decoration: none;"><div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/SttackSite/site/main/3.png" alt="Template 16"></div></a>
-        <a href="#precos" style="text-decoration: none;"><div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/SttackSite/site/main/27.png" alt="Template 17"></div></a>
-        <a href="#precos" style="text-decoration: none;"><div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/SttackSite/site/main/19.png" alt="Template 19"></div></a>
-        <a href="#precos" style="text-decoration: none;"><div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/SttackSite/site/main/23.png" alt="Template 21"></div></a>
-        <a href="#precos" style="text-decoration: none;"><div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/SttackSite/site/main/25.png" alt="Template 22"></div></a>
-        <a href="#precos" style="text-decoration: none;"><div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/SttackSite/site/main/6.png" alt="Template 23"></div></a>
-        <a href="#precos" style="text-decoration: none;"><div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/SttackSite/site/main/12.png" alt="Template 24"></div></a>
-        <a href="#precos" style="text-decoration: none;"><div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/SttackSite/site/main/7.png" alt="Template 27"></div></a>
-        <a href="#precos" style="text-decoration: none;"><div class="carousel-item-image-only"><img src="https://raw.githubusercontent.com/SttackSite/site/main/4.png" alt="Template 28"></div></a>
     </div>
 </div>
 """, unsafe_allow_html=True)
 
+# ✅ 8. PREÇOS
+st.markdown(f'<div id="precos" style="padding: 120px 8%; text-align:center;"><h2>{pricing_title}</h2><br><br>', unsafe_allow_html=True)
 
-
-# --- 8. PREÇOS (ELITE) ---
-st.markdown('<div id="precos" style="padding: 120px 8%; text-align:center;">', unsafe_allow_html=True)
-st.markdown('<h2>INVISTA NA SUA <span class="serif-heavy">Presença.</span></h2><br><br>', unsafe_allow_html=True)
-
+pricing_plans = config.get('sections', {}).get('pricing_plans', [])
 p1, p2, p3 = st.columns(3)
 
-with p2: # Featured
-    st.markdown("""
+with p2:
+    st.markdown(f"""
     <div class="pricing-glass" style="border-top: 5px solid var(--accent);">
-        <p style="color: var(--gold); letter-spacing: 3px; font-weight: 900;">PROFESSIONAL</p>
-        <h1 style="font-size: 80px; margin: 30px 0;">R$ 197</h1>
-        <p>✓ Acesso vitalício aos templates atuais</p>
-        <p>✓ 02 consultorias mensais para customização</p>
-        <p>✓ Pagamento mensal</p>
-        <p>✓ Integração do seu site ao seu WhatsApp</p>
-        <p>✓ Manual completo de customização e setup</p>
-        <p>✓ Suporte técnico ágil via e-mail</p>
-        <p>✓ Acesso imediato</p>
-        <p>✓ Atualizações de novos templates inclusas</p>
+        <p style="color: var(--gold); letter-spacing: 3px; font-weight: 900;">{pricing_plans[1].get('name', 'PRO')}</p>
+        <h1 style="font-size: 80px; margin: 30px 0;">{pricing_plans[1].get('price', 'R$ 197')}</h1>
     </div>
     """, unsafe_allow_html=True)
-    st.button("QUERO O ELITE BUNDLE", key="main_p")
+    st.button(pricing_plans[1].get('button_text', 'QUERO AGORA'), key="main_p")
 
 with p1:
-    st.markdown("""
+    st.markdown(f"""
     <div class="pricing-glass">
-        <p>STARTER</p>
-        <h1 style="font-size: 60px; margin: 30px 0;">R$ 67</h1>
-        <p>✓ Acesso vitalício aos templates atuais</p>
-        <p>✓ Pagamento único</p>
-        <p>✓ Manual completo de customização e setup</p>
-        <p>✓ Suporte técnico ágil via e-mail</p>
-        <p>✓ Acesso imediato</p>
-        <p>✓ Atualizações de novos templates inclusas</p>
+        <p>{pricing_plans[0].get('name', 'STARTER')}</p>
+        <h1 style="font-size: 60px; margin: 30px 0;">{pricing_plans[0].get('price', 'R$ 97')}</h1>
     </div>
     """, unsafe_allow_html=True)
-    st.button("INICIAR", key="p1")
+    st.button(pricing_plans[0].get('button_text', 'INICIAR'), key="p1")
 
 with p3:
-    st.markdown("""
+    st.markdown(f"""
     <div class="pricing-glass">
-        <p>BUSINESS</p>
-        <h1 style="font-size: 60px; margin: 30px 0;">R$ 297</h1>
-        <p>✓ Acesso vitalício aos templates atuais</p>
-        <p>✓ Pagamento mensal</p>
-        <p>✓ Licença comercial para revenda ilimitada</p>
-        <p>✓ Selo de parceiro desenvolvedor</p>
-        <p>✓ Manual completo de customização e setup</p>
-        <p>✓ Suporte técnico ágil via e-mail</p>
-        <p>✓ Acesso imediato</p>
-        <p>✓ Atualizações de novos templates inclusas</p>
+        <p>{pricing_plans[2].get('name', 'ENTERPRISE')}</p>
+        <h1 style="font-size: 60px; margin: 30px 0;">{pricing_plans[2].get('price', 'Sob Consulta')}</h1>
     </div>
     """, unsafe_allow_html=True)
-    st.button("SER VITALÍCIO", key="p3")
+    st.button(pricing_plans[2].get('button_text', 'FALAR COM VENDAS'), key="p3")
+
 st.markdown('</div>', unsafe_allow_html=True)
 
-# --- 9. FAQ ---
-st.markdown('<div id="faq" style="padding: 100px 20%; background: #080808;">', unsafe_allow_html=True)
-st.markdown('<h2 style="text-align:center; font-size: 40px;">FAQ / <span class="serif-heavy">Respostas.</span></h2><br>', unsafe_allow_html=True)
+# ✅ 9. FAQ
+st.markdown(f'<div id="faq" style="padding: 100px 20%; background: #080808;"><h2 style="text-align:center; font-size: 40px;">{faq_title}</h2><br>', unsafe_allow_html=True)
 
-faq = {
-    "Preciso saber programação para usar os templates?": "Não é preciso. O código é entregue pronto e você segue o nosso guia detalhado para personalizar os textos, cores, imagens e o que precisar.",
-    "É seguro realizar a compra?": "Sim! Toda a compra é processada pela Eduzz, uma das plataformas de pagamentos e educação mais seguras e reconhecidas do Brasil. Nenhum dado sensível passa por nós, tudo ocorre diretamente no ambiente da Eduzz, com criptografia, certificados de segurança e antifraude.",
-    "⚠️ POLÍTICA DE REEMBOLSO (LEIA COM ATENÇÃO)": """<strong style='color: var(--gold); font-size: 16px;'>Prazo Legal – 7 dias:</strong> Nos termos do Art. 49 do Código de Defesa do Consumidor, você pode solicitar reembolso em até 7 dias corridos após a compra realizada online. Respeitamos integralmente esse direito.<br><br>
+faq_items = config.get('sections', {}).get('faq_items', [])
+for faq in faq_items:
+    with st.expander(faq.get('question', '')):
+        st.write(faq.get('answer', ''))
 
-<strong style='color: var(--gold); font-size: 16px;'>Proteção Legal do Produto:</strong> Nossos templates são produtos digitais protegidos pela Lei 9.610/98 (Lei de Direitos Autorais). O código-fonte possui rastreio ofuscado e constitui obra intelectual protegida por lei.<br><br>
-
-<strong style='color: var(--gold); font-size: 16px;'>Condição para Reembolso:</strong> A solicitação de reembolso implica na interrupção imediata do uso do material adquirido, incluindo:<br>
-- Remoção do código de qualquer repositório<br>
-- Remoção do deploy em qualquer servidor na internet (site)<br>
-- Interrupção total da utilização comercial ou pessoal<br><br>
-
-<strong style='color: var(--gold); font-size: 16px;'>Uso Indevido Após Reembolso:</strong> A permanência do uso do código após o reembolso configura violação de direito autoral (Art. 184 do Código Penal), uso indevido de propriedade intelectual e possível enriquecimento ilícito.<br><br>
-
-Reservamo-nos o direito de registrar evidências técnicas de utilização indevida.<br><br>
-
-Clientes legítimos são sempre respeitados. Todos os casos de má-fé até aqui foram tratados conforme a legislação vigente.<br><br>""",
-    "Existe algum tipo de suporte?": "Com certeza. Todos os planos incluem suporte humano ágil via e-mail e com o plano professional você tem direito a 2 consultorias mensais para customização.",
-    "Por onde acesso os templates?": "O acesso é 100% digital e imediato. Após a confirmação do pagamento, você receberá um e-mail da Eduzz com seus dados de acesso à área de membros. Lá, você encontrará os arquivos de todos os templates, além dos guias de setup e explicações organizados por módulos.",
-    "A hospedagem é mesmo gratuita?": "Sim. Nosso método utiliza infraestruturas globais de alta performance que permitem manter sites profissionais online sem mensalidades de hospedagem. No passo a passo, ensinamos como configurar essa estrutura gratuita de forma segura, garantindo que você tenha um site rápido e estável sem custos fixos recorrentes.",
-    "Posso vender os sites para clientes?": "Com o plano Business, você tem licença comercial completa para lucrar com nossos designs."
-}
-
-for i, (q, a) in enumerate(faq.items()):
-    if i == 0:  # Primeiro item (Política de Reembolso) com destaque
-        with st.expander(q):
-            st.markdown(f"<p style='color: var(--gold); font-size: 15px; font-weight: 600;'>{a}</p>", unsafe_allow_html=True)
-    else:  # Demais itens normais
-        with st.expander(q):
-            st.markdown(f"<p style='color: #ccc;'>{a}</p>", unsafe_allow_html=True)
 st.markdown('</div>', unsafe_allow_html=True)
-
-# --- FOOTER ---
-st.markdown("""
-<div style="padding: 60px 8%; border-top: 1px solid rgba(255,255,255,0.1); text-align: center; font-size: 10px; opacity: 0.4; letter-spacing: 5px;">
-    STTACK SITE ® - DOMINANDO A WEB DESDE 2019. Todos os direitos reservados
-</div>
-""", unsafe_allow_html=True)
+st.markdown('</div>', unsafe_allow_html=True)
