@@ -1,0 +1,56 @@
+{
+  "template": "beauty",
+  "page_title": "YOLU | Night Care para Cabelos",
+  "page_icon": "🌙",
+  "logo": "YOLU",
+  "nav_links": [
+    {
+      "name": "CONCEITO",
+      "url": "#conceito"
+    },
+    {
+      "name": "PRODUTOS",
+      "url": "#produtos"
+    },
+    {
+      "name": "CONTATO",
+      "url": "#contato"
+    }
+  ],
+  "hero": {
+    "subtitle": "BELEZA QUE NASCE À NOITE",
+    "title": "A Night Calm Experience",
+    "description": "Reparação profunda enquanto você dorme. Sinta a tranquilidade da noite em cada fio."
+  },
+  "concept": {
+    "title": "Por que Cuidados Noturnos?",
+    "description": "Durante a noite, o seu cabelo está livre das agressões externas do dia. É o momento perfeito para a penetração intensa de nutrientes. Nossa fórmula inspirada no 'sono reparador' protege as cutículas do atrito com o travesseiro, garantindo um despertar radiante."
+  },
+  "products": [
+    {
+      "title": "Calm Night Repair",
+      "category": "SHAMPOO & TRATAMENTO",
+      "description": "Para cabelos secos e indisciplinados. Foco em hidratação profunda.",
+      "image": "https://images.unsplash.com/photo-1626784215021-2e39ccf971cd?w=600",
+      "button_text": "SAIBA MAIS",
+      "button_url": "https://www.google.com/"
+    },
+    {
+      "title": "Relax Night Repair",
+      "category": "CUIDADO INTENSIVO",
+      "description": "Para cabelos danificados por processos químicos. Foco em reconstrução.",
+      "image": "https://images.unsplash.com/photo-1626784215021-2e39ccf971cd?w=600",
+      "button_text": "SAIBA MAIS",
+      "button_url": "https://www.google.com/"
+    }
+  ],
+  "footer": {
+    "company": "YOLU",
+    "copyright": "© 2026 YOLU | I-ne Co., Ltd. Todos os direitos reservados.",
+    "social": {
+      "instagram": "https://www.google.com/",
+      "twitter": "https://www.google.com/",
+      "reviews": "https://www.google.com/"
+    }
+  }
+}
