@@ -525,6 +525,11 @@ st.markdown(f'<h2>{target_title}</h2>', unsafe_allow_html=True)
 col_u1, col_u2, col_u3 = st.columns(3)
 
 target_cards = config.get('sections', {}).get('target_cards', [])
+
+# ✅ Garantir que temos pelo menos 3 cards
+while len(target_cards) < 3:
+    target_cards.append({'title': 'Card', 'description': 'Descrição'})
+
 with col_u1:
     st.markdown(f"""
     <div class="target-card">
@@ -554,6 +559,11 @@ st.markdown('</div>', unsafe_allow_html=True)
 st.markdown(f'<div id="como-funciona" style="padding: 100px 8%; background: #050505;"><h2>{steps_title}</h2><br><br>', unsafe_allow_html=True)
 
 steps = config.get('sections', {}).get('steps', [])
+
+# ✅ Garantir que temos pelo menos 4 passos
+while len(steps) < 4:
+    steps.append({'title': 'Passo', 'description': 'Descrição'})
+
 for i, step in enumerate(steps):
     st.markdown(f"""
     <div class="step-row">
@@ -584,6 +594,10 @@ st.markdown("""
 st.markdown(f'<div id="precos" style="padding: 120px 8%; text-align:center;"><h2>{pricing_title}</h2><br><br>', unsafe_allow_html=True)
 
 pricing_plans = config.get('sections', {}).get('pricing_plans', [])
+
+while len(pricing_plans) < 3:
+    pricing_plans.append({'name': 'Plano', 'price': 'R$ 0', 'button_text': 'QUERO', 'button_url': 'https://www.google.com/'})
+
 p1, p2, p3 = st.columns(3)
 
 with p2:
