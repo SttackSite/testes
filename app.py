@@ -2,69 +2,15 @@ import streamlit as st
 import json
 import os
 from datetime import datetime
-import subprocess
-import base64
 
 # ✅ CONFIGURAÇÃO INICIAL
 st.set_page_config(page_title="SttackSite - Multi Cliente", page_icon="🚀", layout="wide")
 
 # ✅ VARIÁVEIS DE CONFIGURAÇÃO
-GITHUB_TOKEN = "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"
-GITHUB_REPO = "seu-usuario/seu-repositorio"  # ✅ ALTERE: seu repositório
-GITHUB_BRANCH = "main"
 CONFIGS_DIR = "configs"
 
 # ✅ Criar diretório de configs se não existir
 os.makedirs(CONFIGS_DIR, exist_ok=True)
-
-# ✅ FUNÇÃO: Fazer commit no GitHub
-def commit_to_github(arquivo, mensagem):
-    """Faz commit automático no GitHub"""
-    try:
-        # Ler o arquivo
-        with open(arquivo, 'r', encoding='utf-8') as f:
-            conteudo = f.read()
-        
-        # Codificar em base64
-        conteudo_b64 = base64.b64encode(conteudo.encode()).decode()
-        
-        # Fazer requisição para GitHub API
-        import requests
-        
-        url = f"https://api.github.com/repos/{GITHUB_REPO}/contents/{arquivo}"
-        headers = {
-            "Authorization": f"token {GITHUB_TOKEN}",
-            "Content-Type": "application/json"
-        }
-        
-        # Primeiro, obter o SHA do arquivo atual
-        response = requests.get(url, headers=headers)
-        
-        if response.status_code == 200:
-            sha = response.json()["sha"]
-        else:
-            sha = None
-        
-        # Dados para o commit
-        data = {
-            "message": mensagem,
-            "content": conteudo_b64,
-            "branch": GITHUB_BRANCH
-        }
-        
-        if sha:
-            data["sha"] = sha
-        
-        # Fazer o commit
-        response = requests.put(url, json=data, headers=headers)
-        
-        if response.status_code in [200, 201]:
-            return True, "✅ Commitado com sucesso no GitHub!"
-        else:
-            return False, f"❌ Erro ao commitar: {response.json()}"
-    
-    except Exception as e:
-        return False, f"❌ Erro: {str(e)}"
 
 # ✅ FUNÇÃO: Carregar config do cliente
 def load_client_config(cliente):
@@ -94,6 +40,7 @@ config = load_client_config(cliente)
 
 if config is None:
     st.error(f"❌ Cliente '{cliente}' não encontrado!")
+    st.info("Clientes disponíveis: paix, yolu")
     st.stop()
 
 # ✅ BOTÃO DE EDIÇÃO (Canto superior direito)
@@ -106,6 +53,7 @@ with col3:
 if st.session_state.get("editing"):
     st.markdown("---")
     st.markdown("## ✏️ EDITOR DE SITE")
+    st.info("💾 As mudanças são salvas automaticamente. Faça commit no GitHub para publicar.")
     
     with st.form("edit_form"):
         st.markdown("### 🎨 Configurações Gerais")
@@ -113,11 +61,15 @@ if st.session_state.get("editing"):
         config["logo"] = st.text_input("Logo/Marca", config.get("logo", ""))
         
         st.markdown("### 🚀 Hero Section")
+        if "hero" not in config:
+            config["hero"] = {}
         config["hero"]["subtitle"] = st.text_input("Subtítulo", config.get("hero", {}).get("subtitle", ""))
         config["hero"]["title"] = st.text_area("Título Principal", config.get("hero", {}).get("title", ""), height=100)
         config["hero"]["description"] = st.text_area("Descrição", config.get("hero", {}).get("description", ""), height=100)
         
         st.markdown("### 📍 Navegação")
+        if "nav_links" not in config:
+            config["nav_links"] = []
         for i, link in enumerate(config.get("nav_links", [])):
             col1, col2 = st.columns(2)
             with col1:
@@ -145,6 +97,8 @@ if st.session_state.get("editing"):
                     product["image"] = st.text_input(f"URL Imagem {i+1}", product.get("image", ""), key=f"prod_img_{i}")
         
         st.markdown("### 📞 Rodapé")
+        if "footer" not in config:
+            config["footer"] = {}
         if "footer" in config:
             config["footer"]["company"] = st.text_input("Empresa", config.get("footer", {}).get("company", ""))
             config["footer"]["email"] = st.text_input("Email", config.get("footer", {}).get("email", ""))
@@ -152,22 +106,12 @@ if st.session_state.get("editing"):
         st.markdown("---")
         
         # ✅ BOTÃO SALVAR
-        if st.form_submit_button("💾 SALVAR E COMMITAR", use_container_width=True):
+        if st.form_submit_button("💾 SALVAR MUDANÇAS", use_container_width=True):
             # Salvar localmente
             save_client_config(cliente, config)
-            
-            # Commitar no GitHub
-            arquivo = f"{CONFIGS_DIR}/{cliente}.json"
-            mensagem = f"Atualizar configurações de {cliente} - {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}"
-            
-            sucesso, mensagem_commit = commit_to_github(arquivo, mensagem)
-            
-            if sucesso:
-                st.success(mensagem_commit)
-                st.session_state.editing = False
-                st.rerun()
-            else:
-                st.error(mensagem_commit)
+            st.success("✅ Mudanças salvas! Agora faça commit no GitHub para publicar.")
+            st.session_state.editing = False
+            st.rerun()
     
     st.markdown("---")
 
@@ -531,7 +475,7 @@ elif template == "beauty":
     # ✅ PRODUTOS
     st.markdown('<div id="produtos" class="product-section">', unsafe_allow_html=True)
     
-    cols = st.columns(len(config.get("products", [])))
+    cols = st.columns(len(config.get("products", [])) if config.get("products") else 1)
     
     for idx, product in enumerate(config.get("products", [])):
         with cols[idx]:
@@ -566,3 +510,4 @@ elif template == "beauty":
 
 else:
     st.error(f"❌ Template '{template}' não encontrado!")
+    st.info("Templates disponíveis: design, beauty")
