@@ -704,6 +704,3 @@ def render():
     # ========== FIM DO TEMPLATE ==========
     # Lembre-se: Altere apenas o que tem ✅ ALTERE
     # Não mexa no que tem ❌ NÃO ALTERE
-
-# Chamar a função render para exibir o template
-render()
