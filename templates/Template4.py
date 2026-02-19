@@ -1,15 +1,18 @@
 import streamlit as st
 
-# ❌ NÃO ALTERE: Configuração da página - Define o título da aba, ícone e layout
-st.set_page_config(
-    page_title="Inovação absoluta",  # ✅ ALTERE: Título da aba do navegador
-    page_icon="⚡",  # ✅ ALTERE: Ícone que aparece na aba
-    layout="wide",  # ❌ NÃO ALTERE: Layout da página
-    initial_sidebar_state="collapsed"  # ❌ NÃO ALTERE: Esconde a sidebar
-)
+def render():
+    """Renderiza o template 4 - Inovação Absoluta"""
+    
+    # ❌ NÃO ALTERE: Configuração da página - Define o título da aba, ícone e layout
+    st.set_page_config(
+        page_title="Inovação absoluta",  # ✅ ALTERE: Título da aba do navegador
+        page_icon="⚡",  # ✅ ALTERE: Ícone que aparece na aba
+        layout="wide",  # ❌ NÃO ALTERE: Layout da página
+        initial_sidebar_state="collapsed"  # ❌ NÃO ALTERE: Esconde a sidebar
+    )
 
-# ❌ NÃO ALTERE: CSS ORIGINAL E INOVADOR - Estilos visuais da página inteira
-custom_css = """
+    # ❌ NÃO ALTERE: CSS ORIGINAL E INOVADOR - Estilos visuais da página inteira
+    custom_css = """
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
     
@@ -621,15 +624,20 @@ custom_css = """
             font-size: 36px;
         }
     }
+    
+    /* ❌ NÃO ALTERE: Esconde o header padrão do Streamlit */
+    [data-testid="stHeader"] { 
+        display: none;  /* Oculta o header */
+    }
 </style>
 """
 
-# ❌ NÃO ALTERE: Injetar CSS na página - Aplica todos os estilos acima
-st.markdown(custom_css, unsafe_allow_html=True)
+    # ❌ NÃO ALTERE: Injetar CSS na página - Aplica todos os estilos acima
+    st.markdown(custom_css, unsafe_allow_html=True)
 
-# ==================== NAVBAR ====================
-# ✅ ALTERE: Navbar - Mude os textos dos links e URLs das seções
-navbar_html = '''<div class="navbar">
+    # ==================== NAVBAR ====================
+    # ✅ ALTERE: Navbar - Mude os textos dos links e URLs das seções
+    navbar_html = '''<div class="navbar">
     <div class="navbar-logo">CHAMPION</div>
     <div class="navbar-links">
         <a href="#recursos" class="navbar-link">Recursos</a>
@@ -639,11 +647,11 @@ navbar_html = '''<div class="navbar">
         <a href="https://www.google.com/" target="_blank" class="navbar-cta">Começar</a>
     </div>
 </div>'''
-st.markdown(navbar_html, unsafe_allow_html=True)
+    st.markdown(navbar_html, unsafe_allow_html=True)
 
-# ==================== HERO SECTION ====================
-# ✅ ALTERE: Hero - Mude os textos dos botões e URLs
-hero_html = '''<div class="hero-section" id="recursos">
+    # ==================== HERO SECTION ====================
+    # ✅ ALTERE: Hero - Mude os textos dos botões e URLs
+    hero_html = '''<div class="hero-section" id="recursos">
     <div class="hero-content">
         <div class="hero-title">INOVAÇÃO ABSOLUTA</div>
         <div class="hero-subtitle">Design que transcende limites</div>
@@ -653,11 +661,11 @@ hero_html = '''<div class="hero-section" id="recursos">
         </div>
     </div>
 </div>'''
-st.markdown(hero_html, unsafe_allow_html=True)
+    st.markdown(hero_html, unsafe_allow_html=True)
 
-# ==================== FEATURES SECTION ====================
-# ✅ ALTERE: Recursos - Mude os títulos, descrições e emojis dos cards
-features_html = '''<div class="features-section">
+    # ==================== FEATURES SECTION ====================
+    # ✅ ALTERE: Recursos - Mude os títulos, descrições e emojis dos cards
+    features_html = '''<div class="features-section">
     <div class="features-grid">
         <div class="feature-card">
             <div class="feature-icon">⚡</div>
@@ -691,11 +699,11 @@ features_html = '''<div class="features-section">
         </div>
     </div>
 </div>'''
-st.markdown(features_html, unsafe_allow_html=True)
+    st.markdown(features_html, unsafe_allow_html=True)
 
-# ==================== SHOWCASE SECTION ====================
-# ✅ ALTERE: Números - Mude os valores e labels dos cards
-showcase_html = '''<div class="showcase-section" id="portfolio">
+    # ==================== SHOWCASE SECTION ====================
+    # ✅ ALTERE: Números - Mude os valores e labels dos cards
+    showcase_html = '''<div class="showcase-section" id="portfolio">
     <div class="showcase-title">NÚMEROS QUE FALAM</div>
     <div class="showcase-grid">
         <div class="showcase-card">
@@ -716,24 +724,24 @@ showcase_html = '''<div class="showcase-section" id="portfolio">
         </div>
     </div>
 </div>'''
-st.markdown(showcase_html, unsafe_allow_html=True)
+    st.markdown(showcase_html, unsafe_allow_html=True)
 
-# ==================== CTA FINAL ====================
-# ✅ ALTERE: CTA Final - Mude o texto e URL do botão
-cta_final_html = '''<div class="cta-final-section" id="sobre">
+    # ==================== CTA FINAL ====================
+    # ✅ ALTERE: CTA Final - Mude o texto e URL do botão
+    cta_final_html = '''<div class="cta-final-section" id="sobre">
     <div class="cta-final-content">
         <div class="cta-final-title">Pronto para Revolucionar?</div>
         <div class="cta-final-desc">Junte-se aos líderes que já transformaram seus negócios com design de campeão.</div>
         <a href="https://www.google.com/" target="_blank" class="cta-final-button">Começar Sua Revolução</a>
     </div>
 </div>'''
-st.markdown(cta_final_html, unsafe_allow_html=True)
+    st.markdown(cta_final_html, unsafe_allow_html=True)
 
-# ==================== FOOTER ====================
-# ✅ ALTERE: Footer - Mude email, telefone, endereço e copyright
-footer_html = '''<div class="footer" id="contato">
+    # ==================== FOOTER ====================
+    # ✅ ALTERE: Footer - Mude email, telefone, endereço e copyright
+    footer_html = '''<div class="footer" id="contato">
     <div class="footer-text">Email: hello@champion.com | Telefone: +55 (99) 99999-9999</div>
     <div class="footer-text">Endereço: Av. Inovação, 1000 - São Paulo, SP</div>
     <div class="footer-copyright">© 2025 Champion Design. Todos os direitos reservados. Design que vence campeonatos.</div>
 </div>'''
-st.markdown(footer_html, unsafe_allow_html=True)
+    st.markdown(footer_html, unsafe_allow_html=True)
