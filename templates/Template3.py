@@ -585,6 +585,11 @@ def render():
                 font-size: 36px;
             }
         }
+        
+        /* ❌ NÃO ALTERE: Esconde o header padrão do Streamlit */
+        [data-testid="stHeader"] { 
+            display: none;  /* Oculta o header */
+        }
     </style>
     """
 
