@@ -418,6 +418,9 @@ def render():
             font-size: 14px;
             color: #999999;
         }
+        
+        /* ❌ NÃO ALTERE: Esconde o ícone do GitHub do Streamlit */
+        [data-testid="stToolbarActions"] { display: none; }
     </style>
     """
 
@@ -525,7 +528,7 @@ def render():
     <div id="cta" class="cta-section">
         <h2>Pronto para Transformar seu Negócio?</h2>
         <p>Agende uma consultoria gratuita com nossos especialistas</p>
-        <a href="https://www.google.com/" class="cta-button" style="background: white; color: #0066FF; padding: 16px 48px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);">Agendar Agora</a>
+        <a href="https://www.google.com/" class="cta-button cta-button-secondary" style="padding: 16px 48px;">Agendar Agora</a>
     </div>
     """
     st.markdown(cta_html, unsafe_allow_html=True)
