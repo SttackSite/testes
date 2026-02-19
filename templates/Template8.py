@@ -15,19 +15,22 @@ otimizada para vendas.
 
 import streamlit as st  # ❌ NÃO ALTERE: Importa a biblioteca Streamlit para criar a aplicação web
 
-# ========== SEÇÃO 1: CONFIGURAÇÃO DA PÁGINA ==========
-# ❌ NÃO ALTERE: Define as configurações básicas da página
-st.set_page_config(
-    page_title="Nexus AI - Transforme Seus Dados em Lucro",  # ✅ ALTERE: Título que aparece na aba do navegador
-    page_icon="✨",  # ✅ ALTERE: Emoji que aparece na aba do navegador
-    layout="wide",  # ❌ NÃO ALTERE: Define o layout como largura total
-    initial_sidebar_state="collapsed"  # ❌ NÃO ALTERE: Oculta a barra lateral
-)
+def render():
+    """Renderiza o template 8 - Nexus AI"""
+    
+    # ========== SEÇÃO 1: CONFIGURAÇÃO DA PÁGINA ==========
+    # ❌ NÃO ALTERE: Define as configurações básicas da página
+    st.set_page_config(
+        page_title="Nexus AI - Transforme Seus Dados em Lucro",  # ✅ ALTERE: Título que aparece na aba do navegador
+        page_icon="✨",  # ✅ ALTERE: Emoji que aparece na aba do navegador
+        layout="wide",  # ❌ NÃO ALTERE: Define o layout como largura total
+        initial_sidebar_state="collapsed"  # ❌ NÃO ALTERE: Oculta a barra lateral
+    )
 
-# ========== SEÇÃO 2: CSS E ESTILOS VISUAIS ==========
-# ❌ NÃO ALTERE: Bloco CSS que define todas as cores, fontes, animações e efeitos
-# Alterar aqui pode quebrar completamente o design da página
-st.markdown('''
+    # ========== SEÇÃO 2: CSS E ESTILOS VISUAIS ==========
+    # ❌ NÃO ALTERE: Bloco CSS que define todas as cores, fontes, animações e efeitos
+    # Alterar aqui pode quebrar completamente o design da página
+    st.markdown('''
 <style>
     /* ❌ NÃO ALTERE: Reset de estilos padrão */
     * {
@@ -409,12 +412,17 @@ st.markdown('''
             transform: scale(1);  /* Remove aumento em mobile */
         }
     }
+    
+    /* ❌ NÃO ALTERE: Esconde o header padrão do Streamlit */
+    [data-testid="stHeader"] { 
+        display: none;  /* Oculta o header */
+    }
 </style>
 ''', unsafe_allow_html=True)
 
-# ========== SEÇÃO 3: HERO ==========
-# ✅ ALTERE: Título, descrição e botão
-st.markdown('''
+    # ========== SEÇÃO 3: HERO ==========
+    # ✅ ALTERE: Título, descrição e botão
+    st.markdown('''
 <div class="hero-section">
     <div class="hero-text">
         <!-- ✅ ALTERE: Título principal -->
@@ -432,15 +440,15 @@ st.markdown('''
 </div>
 ''', unsafe_allow_html=True)
 
-# ========== SEÇÃO 4: FEATURES ==========
-# ✅ ALTERE: Título, ícones, títulos e descrições
-st.markdown('<div class="section">', unsafe_allow_html=True)
-st.markdown('<h2 class="section-title">Funcionalidades que Vendem</h2>', unsafe_allow_html=True)
+    # ========== SEÇÃO 4: FEATURES ==========
+    # ✅ ALTERE: Título, ícones, títulos e descrições
+    st.markdown('<div class="section">', unsafe_allow_html=True)
+    st.markdown('<h2 class="section-title">Funcionalidades que Vendem</h2>', unsafe_allow_html=True)
 
-col1, col2, col3 = st.columns(3)
+    col1, col2, col3 = st.columns(3)
 
-with col1:
-    st.markdown('''
+    with col1:
+        st.markdown('''
     <div class="feature-card">
         <div class="feature-icon">🔮</div>  <!-- ✅ ALTERE: Emoji -->
         <h3>Análise Preditiva</h3>  <!-- ✅ ALTERE: Título -->
