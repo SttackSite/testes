@@ -7,19 +7,22 @@
 
 import streamlit as st  # ❌ NÃO ALTERE: Importa a biblioteca Streamlit
 
-# ========== SEÇÃO 1: CONFIGURAÇÃO DA PÁGINA ==========
-# ❌ NÃO ALTERE: Define as configurações básicas da página
-st.set_page_config(
-    page_title="Criativa Pink - Criatividade em Cores",  # ✅ ALTERE: Título da aba
-    page_icon="💖",  # ✅ ALTERE: Emoji da aba
-    layout="wide",  # ❌ NÃO ALTERE: Layout em largura total
-    initial_sidebar_state="collapsed"  # ❌ NÃO ALTERE: Oculta a barra lateral
-)
+def render():
+    """Renderiza o template 6 - Criativa Pink"""
+    
+    # ========== SEÇÃO 1: CONFIGURAÇÃO DA PÁGINA ==========
+    # ❌ NÃO ALTERE: Define as configurações básicas da página
+    st.set_page_config(
+        page_title="Criativa Pink - Criatividade em Cores",  # ✅ ALTERE: Título da aba
+        page_icon="💖",  # ✅ ALTERE: Emoji da aba
+        layout="wide",  # ❌ NÃO ALTERE: Layout em largura total
+        initial_sidebar_state="collapsed"  # ❌ NÃO ALTERE: Oculta a barra lateral
+    )
 
-# ========== SEÇÃO 2: CSS E ESTILOS VISUAIS ==========
-# ❌ NÃO ALTERE: Bloco CSS que define todas as cores, fontes, animações e efeitos
-# Alterar aqui pode quebrar completamente o design da página
-custom_css = """
+    # ========== SEÇÃO 2: CSS E ESTILOS VISUAIS ==========
+    # ❌ NÃO ALTERE: Bloco CSS que define todas as cores, fontes, animações e efeitos
+    # Alterar aqui pode quebrar completamente o design da página
+    custom_css = """
 <style>
     /* ❌ NÃO ALTERE: Importação de fontes do Google */
     @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
@@ -613,15 +616,20 @@ custom_css = """
         .pricing-table { font-size: 12px; }
         .pricing-table th, .pricing-table td { padding: 15px; }
     }
+    
+    /* ❌ NÃO ALTERE: Esconde o header padrão do Streamlit */
+    [data-testid="stHeader"] { 
+        display: none;  /* Oculta o header */
+    }
 </style>
 """
 
-# ❌ NÃO ALTERE: Renderiza o CSS
-st.markdown(custom_css, unsafe_allow_html=True)
+    # ❌ NÃO ALTERE: Renderiza o CSS
+    st.markdown(custom_css, unsafe_allow_html=True)
 
-# ========== SEÇÃO 3: NAVBAR ==========
-# ✅ ALTERE: Logo, textos dos links e URLs
-navbar_html = '''<div class="navbar">
+    # ========== SEÇÃO 3: NAVBAR ==========
+    # ✅ ALTERE: Logo, textos dos links e URLs
+    navbar_html = '''<div class="navbar">
     <!-- ✅ ALTERE: Logo -->
     <div class="navbar-logo">criativa PINK</div>
     <div class="navbar-links">
@@ -634,11 +642,11 @@ navbar_html = '''<div class="navbar">
         <a href="https://www.google.com/" target="_blank" class="navbar-cta">Entrar</a>
     </div>
 </div>'''
-st.markdown(navbar_html, unsafe_allow_html=True)
+    st.markdown(navbar_html, unsafe_allow_html=True)
 
-# ========== SEÇÃO 4: HERO ==========
-# ✅ ALTERE: Título, subtítulo e botões
-hero_html = '''<div class="hero-section" id="colecao">
+    # ========== SEÇÃO 4: HERO ===========
+    # ✅ ALTERE: Título, subtítulo e botões
+    hero_html = '''<div class="hero-section" id="colecao">
     <div class="hero-content">
         <!-- ✅ ALTERE: Título -->
         <div class="hero-title">VIBE criativa</div>
@@ -652,11 +660,11 @@ hero_html = '''<div class="hero-section" id="colecao">
         </div>
     </div>
 </div>'''
-st.markdown(hero_html, unsafe_allow_html=True)
+    st.markdown(hero_html, unsafe_allow_html=True)
 
-# ========== SEÇÃO 5: FEATURES ==========
-# ✅ ALTERE: Título, ícones, títulos e descrições
-features_html = '''<div class="features-section" id="vibes">
+    # ========== SEÇÃO 5: FEATURES ===========
+    # ✅ ALTERE: Título, ícones, títulos e descrições
+    features_html = '''<div class="features-section" id="vibes">
     <!-- ✅ ALTERE: Título da seção -->
     <div class="section-title">Por Que Amar</div>
     <div class="features-grid">
@@ -698,11 +706,11 @@ features_html = '''<div class="features-section" id="vibes">
         </div>
     </div>
 </div>'''
-st.markdown(features_html, unsafe_allow_html=True)
+    st.markdown(features_html, unsafe_allow_html=True)
 
-# ========== SEÇÃO 6: PRICING ==========
-# ✅ ALTERE: Título, nomes dos planos, preços e features
-pricing_html = '''<div class="pricing-section" id="precos">
+    # ========== SEÇÃO 6: PRICING ===========
+    # ✅ ALTERE: Título, nomes dos planos, preços e features
+    pricing_html = '''<div class="pricing-section" id="precos">
     <!-- ✅ ALTERE: Título da seção -->
     <div class="pricing-title">Planos Incríveis</div>
     <div class="pricing-table-wrapper">
@@ -763,11 +771,11 @@ pricing_html = '''<div class="pricing-section" id="precos">
         </table>
     </div>
 </div>'''
-st.markdown(pricing_html, unsafe_allow_html=True)
+    st.markdown(pricing_html, unsafe_allow_html=True)
 
-# ========== SEÇÃO 7: CTA FINAL ==========
-# ✅ ALTERE: Título, descrição e botão
-cta_final_html = '''<div class="cta-final-section" id="contato">
+    # ========== SEÇÃO 7: CTA FINAL ===========
+    # ✅ ALTERE: Título, descrição e botão
+    cta_final_html = '''<div class="cta-final-section" id="contato">
     <div class="cta-final-content">
         <!-- ✅ ALTERE: Título -->
         <div class="cta-final-title">Pronta para Brilhar?</div>
@@ -777,11 +785,11 @@ cta_final_html = '''<div class="cta-final-section" id="contato">
         <a href="https://www.google.com/" target="_blank" class="cta-final-button">Começar a Jornada</a>
     </div>
 </div>'''
-st.markdown(cta_final_html, unsafe_allow_html=True)
+    st.markdown(cta_final_html, unsafe_allow_html=True)
 
-# ========== SEÇÃO 8: FOOTER ==========
-# ✅ ALTERE: Email, telefone, endereço e copyright
-footer_html = '''<div class="footer">
+    # ========== SEÇÃO 8: FOOTER ===========
+    # ✅ ALTERE: Email, telefone, endereço e copyright
+    footer_html = '''<div class="footer">
     <!-- ✅ ALTERE: Email e telefone -->
     <div class="footer-text">Email: hello@criativapink.com | Telefone: +55 (99) 99999-9999</div>
     <!-- ✅ ALTERE: Endereço -->
@@ -789,7 +797,7 @@ footer_html = '''<div class="footer">
     <!-- ✅ ALTERE: Copyright -->
     <div class="footer-copyright">© 2025 criativa Pink. Todos os direitos reservados. Vibe Rosa é Vibe Boa!</div>
 </div>'''
-st.markdown(footer_html, unsafe_allow_html=True)
+    st.markdown(footer_html, unsafe_allow_html=True)
 
 # ========== FIM DO TEMPLATE ==========
 # Lembre-se: Altere apenas o que tem ✅ ALTERE
