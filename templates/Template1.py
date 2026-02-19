@@ -419,6 +419,11 @@ def render():
             color: #999999;
         }
         
+        /* ❌ NÃO ALTERE: Esconde o header padrão do Streamlit */
+        [data-testid="stHeader"] { 
+            display: none;  /* Oculta o header */
+        }
+        
         /* ❌ NÃO ALTERE: Esconde o ícone do GitHub do Streamlit */
         [data-testid="stToolbarActions"] { display: none; }
     </style>
