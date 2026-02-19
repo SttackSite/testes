@@ -293,9 +293,13 @@ def render():
         
         .cta-button-secondary {
             background: white;
-            color: #0066FF;
+            color: #0066FF !important;
             border: 2px solid #0066FF;
             box-shadow: none;
+        }
+        
+        .cta-button-secondary:visited {
+            color: #0066FF !important;
         }
         
         .cta-button-secondary:hover {
