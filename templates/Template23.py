@@ -225,7 +225,7 @@ def render():
             desde a textura da parede até o encaixe da madeira, conte uma história de autenticidade e respeito ao ambiente.
         </p>
         <div style="margin-top: 60px;">
-            <a href="https://www.google.com/" target="_blank" class="action-button">Conheça Nosso Trabalho</a>  <!-- ✅ ALTERE: Texto do botão e URL -->
+            <a href="https://www.google.com/" target="_blank" class="action-button">Conheça Nosso Trabalho</a>
         </div>
     </div>
     """, unsafe_allow_html=True)
@@ -248,7 +248,7 @@ def render():
     <div style="padding: 30px 5%; font-size: 9px; color: #bbb; letter-spacing: 1px;">
         © 2026 PAIX DESIGN. TODOS OS DIREITOS RESERVADOS.
     </div>
-    """, unsafe_allow_html=True)  # ✅ ALTERE: Nome da empresa, endereço, redes sociais e email
+    """, unsafe_allow_html=True)
 
     # ========== FIM DO TEMPLATE ==========
     # Lembre-se: Altere apenas o que tem ✅ ALTERE
