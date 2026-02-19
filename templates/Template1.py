@@ -115,7 +115,7 @@ def render():
         }
         
         /* ✅ ALTERE: Botão CTA da navbar - Mude o texto e URL */
-        .cta-button {
+        .navbar-cta {
             background: linear-gradient(90deg, #0066FF, #0052CC);
             color: white !important;
             padding: 10px 28px;
@@ -127,6 +127,7 @@ def render():
             border: none;
             cursor: pointer;
             box-shadow: 0 4px 12px rgba(0, 102, 255, 0.2);
+            display: inline-block;
         }
         
         .navbar-cta:hover {
@@ -276,11 +277,13 @@ def render():
             border-radius: 8px;
             font-weight: 700;
             font-size: 16px;
-            text-decoration: none;
+            text-decoration: none !important;
             transition: all 0.3s ease;
             border: none;
             cursor: pointer;
             box-shadow: 0 4px 12px rgba(0, 102, 255, 0.25);
+            margin-right: 20px;
+            margin-bottom: 20px;
         }
         
         .cta-button:hover {
@@ -320,60 +323,59 @@ def render():
             font-weight: 900;
             margin-bottom: 20px;
             color: #1a1a1a;
-            letter-spacing: -0.5px;
         }
         
-        /* ✅ ALTERE: Parte destacada do título da seção - Mude a cor conforme sua marca */
+        /* ✅ ALTERE: Parte destacada do título da seção */
         .section-title-highlight {
             color: #0066FF;
         }
         
-        /* ✅ ALTERE: Descrição das seções - Mude o texto conforme sua marca */
+        /* ✅ ALTERE: Descrição da seção - Mude o texto conforme sua marca */
         .section-description {
             font-size: 18px;
             color: #666666;
-            line-height: 1.7;
-            font-weight: 400;
+            line-height: 1.6;
         }
         
         /* ❌ NÃO ALTERE: Grid de features */
         .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 40px;
-            max-width: 1400px;
-            margin: 0 auto;
         }
         
         /* ❌ NÃO ALTERE: Card de feature */
         .feature-card {
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(10px);
-            padding: 40px;
+            background: white;
+            padding: 40px 30px;
             border-radius: 12px;
-            border: 1px solid rgba(0, 102, 255, 0.15);
-            transition: all 0.4s ease;
-            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0, 102, 255, 0.1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
         }
         
         .feature-card:hover {
             transform: translateY(-8px);
-            border-color: #0066FF;
-            box-shadow: 0 20px 40px rgba(0, 102, 255, 0.15);
+            box-shadow: 0 12px 24px rgba(0, 102, 255, 0.15);
+            border-color: rgba(0, 102, 255, 0.3);
         }
         
+        /* ✅ ALTERE: Ícone da feature */
         .feature-icon {
             font-size: 48px;
             margin-bottom: 20px;
         }
         
+        /* ✅ ALTERE: Título da feature */
         .feature-title {
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 700;
-            margin-bottom: 12px;
+            margin-bottom: 15px;
             color: #1a1a1a;
         }
         
+        /* ✅ ALTERE: Descrição da feature */
         .feature-description {
             font-size: 15px;
             color: #666666;
@@ -382,22 +384,22 @@ def render():
         
         /* ❌ NÃO ALTERE: CTA SECTION - Seção de chamada para ação */
         .cta-section {
-            padding: 100px 60px;
             background: linear-gradient(135deg, #0066FF, #0052CC);
+            color: white;
+            padding: 100px 60px;
             text-align: center;
         }
         
         .cta-section h2 {
             font-size: 48px;
             font-weight: 900;
-            color: white;
             margin-bottom: 20px;
         }
         
         .cta-section p {
             font-size: 18px;
-            color: rgba(255, 255, 255, 0.9);
             margin-bottom: 40px;
+            opacity: 0.9;
         }
         
         /* ❌ NÃO ALTERE: FOOTER - Rodapé da página */
@@ -425,7 +427,7 @@ def render():
             <a href="#features" class="navbar-link">Serviços</a>
             <a href="#cta" class="navbar-link">Sobre</a>
             <a href="#footer" class="navbar-link">Contato</a>
-            <a href="https://www.google.com/" class="cta-button" style="padding: 10px 28px; border-radius: 8px;">Começar</a>
+            <a href="https://www.google.com/" class="navbar-cta">Começar</a>
         </div>
     </div>
     """
@@ -448,7 +450,7 @@ def render():
             </p>
             <div style="margin-bottom: 60px;">
                 <a href="https://www.google.com/" class="cta-button">Solicitar Consultoria</a>
-                <a href="https://www.google.com/" class="cta-button cta-button-secondary" style="margin-left: 20px;">Ver Portfólio</a>
+                <a href="https://www.google.com/" class="cta-button cta-button-secondary">Ver Portfólio</a>
             </div>
             <div class="hero-stats">
                 <div class="hero-stat">
@@ -519,7 +521,7 @@ def render():
     <div id="cta" class="cta-section">
         <h2>Pronto para Transformar seu Negócio?</h2>
         <p>Agende uma consultoria gratuita com nossos especialistas</p>
-        <a href="https://www.google.com/" class="cta-button" style="background: white; color: #0066FF; padding: 16px 48px;">Agendar Agora</a>
+        <a href="https://www.google.com/" class="cta-button" style="background: white; color: #0066FF; padding: 16px 48px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);">Agendar Agora</a>
     </div>
     """
     st.markdown(cta_html, unsafe_allow_html=True)
