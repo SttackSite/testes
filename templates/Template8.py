@@ -1,13 +1,5 @@
 # -*- coding: utf-8 -*-
 """
-Landing Page Premium em Streamlit - Nexus AI
-
-Autor: Manus AI
-Data: 11 de Fevereiro de 2026
-
-Uma landing page profissional e interativa para maximizar conversões.
-Inclui design moderno, animações CSS, componentes interativos e estrutura
-otimizada para vendas.
 
 ✅ ALTERE: Títulos, descrições, preços, emails e URLs
 ❌ NÃO ALTERE: CSS, estrutura HTML, configurações do Streamlit
