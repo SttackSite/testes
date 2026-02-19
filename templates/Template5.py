@@ -1,15 +1,18 @@
 import streamlit as st
 
-# ❌ NÃO ALTERE: Configuração da página - Define o título da aba, ícone e layout
-st.set_page_config(
-    page_title="Bela Feminine - Elegância Absoluta",  # ✅ ALTERE: Título da aba do navegador
-    page_icon="✨",  # ✅ ALTERE: Ícone que aparece na aba
-    layout="wide",  # ❌ NÃO ALTERE: Layout da página
-    initial_sidebar_state="collapsed"  # ❌ NÃO ALTERE: Esconde a sidebar
-)
+def render():
+    """Renderiza o template 5 - Bela Feminine"""
+    
+    # ❌ NÃO ALTERE: Configuração da página - Define o título da aba, ícone e layout
+    st.set_page_config(
+        page_title="Bela Feminine - Elegância Absoluta",  # ✅ ALTERE: Título da aba do navegador
+        page_icon="✨",  # ✅ ALTERE: Ícone que aparece na aba
+        layout="wide",  # ❌ NÃO ALTERE: Layout da página
+        initial_sidebar_state="collapsed"  # ❌ NÃO ALTERE: Esconde a sidebar
+    )
 
-# ❌ NÃO ALTERE: CSS PREMIUM FEMININO - Estilos visuais da página inteira
-custom_css = """
+    # ❌ NÃO ALTERE: CSS PREMIUM FEMININO - Estilos visuais da página inteira
+    custom_css = """
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=Cormorant+Garamond:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700;800&display=swap');
     
@@ -697,15 +700,20 @@ custom_css = """
             padding: 15px;
         }
     }
+    
+    /* ❌ NÃO ALTERE: Esconde o header padrão do Streamlit */
+    [data-testid="stHeader"] { 
+        display: none;  /* Oculta o header */
+    }
 </style>
 """
 
-# ❌ NÃO ALTERE: Injetar CSS na página - Aplica todos os estilos acima
-st.markdown(custom_css, unsafe_allow_html=True)
+    # ❌ NÃO ALTERE: Injetar CSS na página - Aplica todos os estilos acima
+    st.markdown(custom_css, unsafe_allow_html=True)
 
-# ==================== NAVBAR ====================
-# ✅ ALTERE: Navbar - Mude os textos dos links e URLs das seções
-navbar_html = '''<div class="navbar">
+    # ==================== NAVBAR ====================
+    # ✅ ALTERE: Navbar - Mude os textos dos links e URLs das seções
+    navbar_html = '''<div class="navbar">
     <div class="navbar-logo">Bela</div>
     <div class="navbar-links">
         <a href="#colecao" class="navbar-link">Coleção</a>
@@ -715,11 +723,11 @@ navbar_html = '''<div class="navbar">
         <a href="https://www.google.com/" target="_blank" class="navbar-cta">Começar Agora</a>
     </div>
 </div>'''
-st.markdown(navbar_html, unsafe_allow_html=True)
+    st.markdown(navbar_html, unsafe_allow_html=True)
 
-# ==================== HERO SECTION ====================
-# ✅ ALTERE: Hero - Mude os textos dos botões e URLs
-hero_html = '''<div class="hero-section" id="colecao">
+    # ==================== HERO SECTION ====================
+    # ✅ ALTERE: Hero - Mude os textos dos botões e URLs
+    hero_html = '''<div class="hero-section" id="colecao">
     <div class="hero-content">
         <div class="hero-title">Elegância Absoluta</div>
         <div class="hero-subtitle">Experiência Premium para Mulheres Sofisticadas</div>
@@ -729,11 +737,11 @@ hero_html = '''<div class="hero-section" id="colecao">
         </div>
     </div>
 </div>'''
-st.markdown(hero_html, unsafe_allow_html=True)
+    st.markdown(hero_html, unsafe_allow_html=True)
 
-# ==================== BENEFITS SECTION ====================
-# ✅ ALTERE: Benefícios - Mude os títulos, descrições e emojis dos cards
-benefits_html = '''<div class="benefits-section" id="beneficios">
+    # ==================== BENEFITS SECTION ====================
+    # ✅ ALTERE: Benefícios - Mude os títulos, descrições e emojis dos cards
+    benefits_html = '''<div class="benefits-section" id="beneficios">
     <div class="section-title">Por Que Escolher</div>
     <div class="benefits-grid">
         <div class="benefit-card">
@@ -753,11 +761,11 @@ benefits_html = '''<div class="benefits-section" id="beneficios">
         </div>
     </div>
 </div>'''
-st.markdown(benefits_html, unsafe_allow_html=True)
+    st.markdown(benefits_html, unsafe_allow_html=True)
 
-# ==================== PRICING TABLE ====================
-# ✅ ALTERE: Preços - Mude os valores, nomes dos planos e features
-pricing_html = '''<div class="pricing-section" id="precos">
+    # ==================== PRICING SECTION ====================
+    # ✅ ALTERE: Preços - Mude os valores, nomes dos planos e features
+    pricing_html = '''<div class="pricing-section" id="precos">
     <div class="pricing-title">Nossos Planos</div>
     <div class="pricing-table-wrapper">
         <table class="pricing-table">
@@ -816,11 +824,11 @@ pricing_html = '''<div class="pricing-section" id="precos">
         </table>
     </div>
 </div>'''
-st.markdown(pricing_html, unsafe_allow_html=True)
+    st.markdown(pricing_html, unsafe_allow_html=True)
 
-# ==================== COMPARISON SECTION ====================
-# ✅ ALTERE: Números - Mude os valores e labels dos cards
-comparison_html = '''<div class="comparison-section">
+    # ==================== COMPARISON SECTION ====================
+    # ✅ ALTERE: Números - Mude os valores e labels dos cards
+    comparison_html = '''<div class="comparison-section">
     <div class="comparison-title">Números que Falam</div>
     <div class="comparison-grid">
         <div class="comparison-card">
@@ -837,24 +845,24 @@ comparison_html = '''<div class="comparison-section">
         </div>
     </div>
 </div>'''
-st.markdown(comparison_html, unsafe_allow_html=True)
+    st.markdown(comparison_html, unsafe_allow_html=True)
 
-# ==================== CTA FINAL ====================
-# ✅ ALTERE: CTA Final - Mude o texto e URL do botão
-cta_final_html = '''<div class="cta-final-section">
+    # ==================== CTA FINAL ====================
+    # ✅ ALTERE: CTA Final - Mude o texto e URL do botão
+    cta_final_html = '''<div class="cta-final-section">
     <div class="cta-final-content">
         <div class="cta-final-title">Pronta para Brilhar?</div>
         <div class="cta-final-desc">Junte-se a milhares de mulheres que já descobriram a verdadeira elegância.</div>
         <a href="https://www.google.com/" target="_blank" class="cta-final-button">Acessar Agora</a>
     </div>
 </div>'''
-st.markdown(cta_final_html, unsafe_allow_html=True)
+    st.markdown(cta_final_html, unsafe_allow_html=True)
 
-# ==================== FOOTER ====================
-# ✅ ALTERE: Footer - Mude email, telefone, endereço e copyright
-footer_html = '''<div class="footer" id="contato">
+    # ==================== FOOTER ====================
+    # ✅ ALTERE: Footer - Mude email, telefone, endereço e copyright
+    footer_html = '''<div class="footer" id="contato">
     <div class="footer-text">Email: hello@Bela.com.br | Telefone: +55 (99) 99999-9999</div>
     <div class="footer-text">Endereço: Av. Paulista, 1000 - São Paulo, SP</div>
     <div class="footer-copyright">© 2025 Bela Feminine. Todos os direitos reservados. Elegância é um estilo de vida.</div>
 </div>'''
-st.markdown(footer_html, unsafe_allow_html=True)
+    st.markdown(footer_html, unsafe_allow_html=True)
