@@ -1,14 +1,5 @@
 # -*- coding: utf-8 -*-
 """
-Landing Page Premium em Streamlit - Nexus AI
-
-Autor: Manus AI
-Data: 11 de Fevereiro de 2026
-
-Uma landing page profissional e interativa para maximizar conversões.
-Inclui design moderno, animações CSS, componentes interativos e estrutura
-otimizada para vendas.
-
 ✅ ALTERE: Títulos, descrições, preços, emails e URLs
 ❌ NÃO ALTERE: CSS, estrutura HTML, configurações do Streamlit
 """
@@ -456,8 +447,8 @@ def render():
     </div>
     ''', unsafe_allow_html=True)
 
-with col2:
-    st.markdown('''
+    with col2:
+        st.markdown('''
     <div class="feature-card">
         <div class="feature-icon">⚙️</div>  <!-- ✅ ALTERE: Emoji -->
         <h3>Automação Inteligente</h3>  <!-- ✅ ALTERE: Título -->
@@ -465,8 +456,8 @@ with col2:
     </div>
     ''', unsafe_allow_html=True)
 
-with col3:
-    st.markdown('''
+    with col3:
+        st.markdown('''
     <div class="feature-card">
         <div class="feature-icon">💡</div>  <!-- ✅ ALTERE: Emoji -->
         <h3>Insights Acionáveis</h3>  <!-- ✅ ALTERE: Título -->
@@ -474,14 +465,14 @@ with col3:
     </div>
     ''', unsafe_allow_html=True)
 
-st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
 
-# ========== SEÇÃO 5: SOCIAL PROOF ==========
-# ✅ ALTERE: Título, logos e depoimento
-st.markdown('<div class="section">', unsafe_allow_html=True)
-st.markdown('<h2 class="section-title">Aprovado pelas Maiores Empresas</h2>', unsafe_allow_html=True)
+    # ========== SEÇÃO 5: SOCIAL PROOF ==========
+    # ✅ ALTERE: Título, logos e depoimento
+    st.markdown('<div class="section">', unsafe_allow_html=True)
+    st.markdown('<h2 class="section-title">Aprovado pelas Maiores Empresas</h2>', unsafe_allow_html=True)
 
-st.markdown('''
+    st.markdown('''
 <div class="logos-container">
     <div class="logo-item">🏢 Tech Corp</div>  <!-- ✅ ALTERE: Logo/nome da empresa -->
     <div class="logo-item">🏢 Finance Plus</div>  <!-- ✅ ALTERE: Logo/nome da empresa -->
@@ -491,7 +482,7 @@ st.markdown('''
 </div>
 ''', unsafe_allow_html=True)
 
-st.markdown('''
+    st.markdown('''
 <div style="text-align: center; margin-top: 2rem;">
     <!-- ✅ ALTERE: Avaliação e depoimento -->
     <p style="font-size: 1.2rem; color: #00bcd4; font-weight: 700;">
@@ -503,17 +494,17 @@ st.markdown('''
 </div>
 ''', unsafe_allow_html=True)
 
-st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
 
 # ========== SEÇÃO 6: PRICING ==========
 # ✅ ALTERE: Títulos, preços e features
-st.markdown('<div class="section">', unsafe_allow_html=True)
-st.markdown('<h2 class="section-title">Escolha o Plano Perfeito</h2>', unsafe_allow_html=True)
+    st.markdown('<div class="section">', unsafe_allow_html=True)
+    st.markdown('<h2 class="section-title">Escolha o Plano Perfeito</h2>', unsafe_allow_html=True)
 
-col1, col2, col3 = st.columns(3)
+    col1, col2, col3 = st.columns(3)
 
-with col1:
-    st.markdown('''
+    with col1:
+        st.markdown('''
     <div class="pricing-card">
         <h3>Starter</h3>  <!-- ✅ ALTERE: Nome do plano -->
         <div class="price">R$ 299<span class="price-period">/mês</span></div>  <!-- ✅ ALTERE: Preço -->
@@ -528,8 +519,8 @@ with col1:
     </div>
     ''', unsafe_allow_html=True)
 
-with col2:
-    st.markdown('''
+    with col2:
+        st.markdown('''
     <div class="pricing-card featured">
         <h3>⭐ Pro (Mais Popular)</h3>  <!-- ✅ ALTERE: Nome do plano -->
         <div class="price">R$ 899<span class="price-period">/mês</span></div>  <!-- ✅ ALTERE: Preço -->
@@ -544,8 +535,8 @@ with col2:
     </div>
     ''', unsafe_allow_html=True)
 
-with col3:
-    st.markdown('''
+    with col3:
+        st.markdown('''
     <div class="pricing-card">
         <h3>Enterprise</h3>  <!-- ✅ ALTERE: Nome do plano -->
         <div class="price">Customizado</div>  <!-- ✅ ALTERE: Preço -->
@@ -560,14 +551,14 @@ with col3:
     </div>
     ''', unsafe_allow_html=True)
 
-st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
 
 # ========== SEÇÃO 7: TESTIMONIALS ==========
 # ✅ ALTERE: Depoimentos e autores
-st.markdown('<div class="section">', unsafe_allow_html=True)
-st.markdown('<h2 class="section-title">O Que Nossos Clientes Dizem</h2>', unsafe_allow_html=True)
+    st.markdown('<div class="section">', unsafe_allow_html=True)
+    st.markdown('<h2 class="section-title">O Que Nossos Clientes Dizem</h2>', unsafe_allow_html=True)
 
-st.markdown('''
+    st.markdown('''
 <div class="testimonial-card">
     <!-- ✅ ALTERE: Depoimento 1 -->
     <p class="testimonial-text">
@@ -589,13 +580,13 @@ st.markdown('''
 </div>
 ''', unsafe_allow_html=True)
 
-st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
 
 # ========== SEÇÃO 8: CTA FINAL ==========
 # ✅ ALTERE: Título e descrição
-st.markdown('<div class="section">', unsafe_allow_html=True)
-st.markdown('<div id="cta"></div>', unsafe_allow_html=True)
-st.markdown('''
+    st.markdown('<div class="section">', unsafe_allow_html=True)
+    st.markdown('<div id="cta"></div>', unsafe_allow_html=True)
+    st.markdown('''
 <div class="cta-section">
     <!-- ✅ ALTERE: Título CTA -->
     <h2 class="cta-title">Pronto para Faturar Milhões?</h2>
@@ -610,7 +601,7 @@ st.markdown('''
 # ✅ ALTERE: Placeholder do email e mensagens
 col1, col2, col3 = st.columns([1, 2, 1])
 
-with col2:
+    with col2:
     # ✅ ALTERE: Placeholder do input
     email = st.text_input(
         "Seu melhor email",
@@ -627,11 +618,11 @@ with col2:
             # ✅ ALTERE: Mensagem de erro
             st.error("❌ Por favor, insira um email válido.")
 
-st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
 
 # ========== SEÇÃO 10: FOOTER ==========
 # ✅ ALTERE: Copyright, links e empresa
-st.markdown('''
+    st.markdown('''
 <div class="footer">
     <!-- ✅ ALTERE: Copyright -->
     <p>© 2026 Nexus AI. Todos os direitos reservados.</p>
