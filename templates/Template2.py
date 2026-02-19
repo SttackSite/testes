@@ -637,6 +637,11 @@ def render():
                 transform: scale(1);
             }
         }
+        
+        /* ❌ NÃO ALTERE: Esconde o header padrão do Streamlit */
+        [data-testid="stHeader"] { 
+            display: none;  /* Oculta o header */
+        }
     </style>
     """
 
