@@ -1,5 +1,14 @@
 # -*- coding: utf-8 -*-
 """
+Landing Page Premium em Streamlit - Nexus AI
+
+Autor: Manus AI
+Data: 11 de Fevereiro de 2026
+
+Uma landing page profissional e interativa para maximizar conversões.
+Inclui design moderno, animações CSS, componentes interativos e estrutura
+otimizada para vendas.
+
 ✅ ALTERE: Títulos, descrições, preços, emails e URLs
 ❌ NÃO ALTERE: CSS, estrutura HTML, configurações do Streamlit
 """
@@ -496,8 +505,8 @@ def render():
 
     st.markdown('</div>', unsafe_allow_html=True)
 
-# ========== SEÇÃO 6: PRICING ==========
-# ✅ ALTERE: Títulos, preços e features
+    # ========== SEÇÃO 6: PRICING ==========
+    # ✅ ALTERE: Títulos, preços e features
     st.markdown('<div class="section">', unsafe_allow_html=True)
     st.markdown('<h2 class="section-title">Escolha o Plano Perfeito</h2>', unsafe_allow_html=True)
 
@@ -553,8 +562,8 @@ def render():
 
     st.markdown('</div>', unsafe_allow_html=True)
 
-# ========== SEÇÃO 7: TESTIMONIALS ==========
-# ✅ ALTERE: Depoimentos e autores
+    # ========== SEÇÃO 7: TESTIMONIALS ==========
+    # ✅ ALTERE: Depoimentos e autores
     st.markdown('<div class="section">', unsafe_allow_html=True)
     st.markdown('<h2 class="section-title">O Que Nossos Clientes Dizem</h2>', unsafe_allow_html=True)
 
@@ -582,8 +591,8 @@ def render():
 
     st.markdown('</div>', unsafe_allow_html=True)
 
-# ========== SEÇÃO 8: CTA FINAL ==========
-# ✅ ALTERE: Título e descrição
+    # ========== SEÇÃO 8: CTA FINAL ==========
+    # ✅ ALTERE: Título e descrição
     st.markdown('<div class="section">', unsafe_allow_html=True)
     st.markdown('<div id="cta"></div>', unsafe_allow_html=True)
     st.markdown('''
@@ -597,31 +606,31 @@ def render():
 </div>
 ''', unsafe_allow_html=True)
 
-# ========== SEÇÃO 9: FORMULÁRIO DE INSCRIÇÃO ==========
-# ✅ ALTERE: Placeholder do email e mensagens
-col1, col2, col3 = st.columns([1, 2, 1])
+    # ========== SEÇÃO 9: FORMULÁRIO DE INSCRIÇÃO ==========
+    # ✅ ALTERE: Placeholder do email e mensagens
+    col1, col2, col3 = st.columns([1, 2, 1])
 
     with col2:
-    # ✅ ALTERE: Placeholder do input
-    email = st.text_input(
-        "Seu melhor email",
-        placeholder="seu.email@empresa.com",  # ✅ ALTERE: Placeholder
-        label_visibility="collapsed"
-    )
-    
-    # ✅ ALTERE: Texto do botão e URLs
-    if st.button("🚀 Começar Teste Grátis", use_container_width=True):
-        if email and "@" in email:
-            # ✅ ALTERE: Mensagem de sucesso
-            st.success(f"✅ Ótimo! Enviamos um email de confirmação para {email}. Verifique sua caixa de entrada!")
-        else:
-            # ✅ ALTERE: Mensagem de erro
-            st.error("❌ Por favor, insira um email válido.")
+        # ✅ ALTERE: Placeholder do input
+        email = st.text_input(
+            "Seu melhor email",
+            placeholder="seu.email@empresa.com",  # ✅ ALTERE: Placeholder
+            label_visibility="collapsed"
+        )
+        
+        # ✅ ALTERE: Texto do botão e URLs
+        if st.button("🚀 Começar Teste Grátis", use_container_width=True):
+            if email and "@" in email:
+                # ✅ ALTERE: Mensagem de sucesso
+                st.success(f"✅ Ótimo! Enviamos um email de confirmação para {email}. Verifique sua caixa de entrada!")
+            else:
+                # ✅ ALTERE: Mensagem de erro
+                st.error("❌ Por favor, insira um email válido.")
 
     st.markdown('</div>', unsafe_allow_html=True)
 
-# ========== SEÇÃO 10: FOOTER ==========
-# ✅ ALTERE: Copyright, links e empresa
+    # ========== SEÇÃO 10: FOOTER ==========
+    # ✅ ALTERE: Copyright, links e empresa
     st.markdown('''
 <div class="footer">
     <!-- ✅ ALTERE: Copyright -->
@@ -635,6 +644,9 @@ col1, col2, col3 = st.columns([1, 2, 1])
 </div>
 ''', unsafe_allow_html=True)
 
-# ========== FIM DO TEMPLATE ==========
-# Lembre-se: Altere apenas o que tem ✅ ALTERE
-# Não mexa no que tem ❌ NÃO ALTERE
+    # ========== FIM DO TEMPLATE ==========
+    # Lembre-se: Altere apenas o que tem ✅ ALTERE
+    # Não mexa no que tem ❌ NÃO ALTERE
+
+# Chamar a função render para exibir o template
+render()
