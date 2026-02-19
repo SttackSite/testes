@@ -9,19 +9,22 @@ Elite Portfolio - Landing Page Premium em Streamlit
 
 import streamlit as st  # ❌ NÃO ALTERE: Importa a biblioteca Streamlit
 
-# ========== SEÇÃO 1: CONFIGURAÇÃO DA PÁGINA ==========
-# ❌ NÃO ALTERE: Define as configurações básicas da página
-st.set_page_config(
-    page_title="Portfolio Premium - Profissional de Elite",  # ✅ ALTERE: Título da aba
-    page_icon="✨",  # ✅ ALTERE: Emoji da aba
-    layout="wide",  # ❌ NÃO ALTERE: Layout em largura total
-    initial_sidebar_state="collapsed"  # ❌ NÃO ALTERE: Oculta a barra lateral
-)
+def render():
+    """Renderiza o template 7 - Elite Portfolio"""
+    
+    # ========== SEÇÃO 1: CONFIGURAÇÃO DA PÁGINA ==========
+    # ❌ NÃO ALTERE: Define as configurações básicas da página
+    st.set_page_config(
+        page_title="Portfolio Premium - Profissional de Elite",  # ✅ ALTERE: Título da aba
+        page_icon="✨",  # ✅ ALTERE: Emoji da aba
+        layout="wide",  # ❌ NÃO ALTERE: Layout em largura total
+        initial_sidebar_state="collapsed"  # ❌ NÃO ALTERE: Oculta a barra lateral
+    )
 
-# ========== SEÇÃO 2: CSS E ESTILOS VISUAIS ==========
-# ❌ NÃO ALTERE: Bloco CSS que define todas as cores, fontes, animações e efeitos
-# Alterar aqui pode quebrar completamente o design da página
-custom_css = """
+    # ========== SEÇÃO 2: CSS E ESTILOS VISUAIS ==========
+    # ❌ NÃO ALTERE: Bloco CSS que define todas as cores, fontes, animações e efeitos
+    # Alterar aqui pode quebrar completamente o design da página
+    custom_css = """
 <style>
     /* ❌ NÃO ALTERE: Importação de fontes do Google */
     @import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@400;500;600;700&display=swap');
@@ -597,15 +600,20 @@ custom_css = """
         .cta-section { padding: 100px 20px; }
         .cta-title { font-size: 36px; }
     }
+    
+    /* ❌ NÃO ALTERE: Esconde o header padrão do Streamlit */
+    [data-testid="stHeader"] { 
+        display: none;  /* Oculta o header */
+    }
 </style>
 """
 
-# ❌ NÃO ALTERE: Renderiza o CSS
-st.markdown(custom_css, unsafe_allow_html=True)
+    # ❌ NÃO ALTERE: Renderiza o CSS
+    st.markdown(custom_css, unsafe_allow_html=True)
 
-# ========== SEÇÃO 3: NAVBAR ==========
-# ✅ ALTERE: Logo, textos dos links e URLs
-navbar_html = '''<div class="navbar">
+    # ========== SEÇÃO 3: NAVBAR ==========
+    # ✅ ALTERE: Logo, textos dos links e URLs
+    navbar_html = '''<div class="navbar">
     <!-- ✅ ALTERE: Logo -->
     <div class="navbar-logo">ELITE</div>
     <div class="navbar-nav">
@@ -616,11 +624,11 @@ navbar_html = '''<div class="navbar">
         <a href="#contato" class="nav-link">Contato</a>
     </div>
 </div>'''
-st.markdown(navbar_html, unsafe_allow_html=True)
+    st.markdown(navbar_html, unsafe_allow_html=True)
 
-# ========== SEÇÃO 4: HERO ==========
-# ✅ ALTERE: Label, título, descrição e botões
-hero_html = '''<div class="hero" id="sobre">
+    # ========== SEÇÃO 4: HERO ===========
+    # ✅ ALTERE: Label, título, descrição e botões
+    hero_html = '''<div class="hero" id="sobre">
     <div class="hero-container">
         <!-- ✅ ALTERE: Label -->
         <div class="hero-label">Bem-vindo</div>
@@ -636,11 +644,11 @@ hero_html = '''<div class="hero" id="sobre">
         </div>
     </div>
 </div>'''
-st.markdown(hero_html, unsafe_allow_html=True)
+    st.markdown(hero_html, unsafe_allow_html=True)
 
-# ========== SEÇÃO 5: STATS ==========
-# ✅ ALTERE: Números e labels
-stats_html = '''<div class="stats-section">
+    # ========== SEÇÃO 5: STATS ===========
+    # ✅ ALTERE: Números e labels
+    stats_html = '''<div class="stats-section">
     <div class="stat-box">
         <!-- ✅ ALTERE: Número e label -->
         <div class="stat-number">150+</div>
@@ -662,11 +670,11 @@ stats_html = '''<div class="stats-section">
         <div class="stat-label">Impacto Gerado</div>
     </div>
 </div>'''
-st.markdown(stats_html, unsafe_allow_html=True)
+    st.markdown(stats_html, unsafe_allow_html=True)
 
-# ========== SEÇÃO 6: EXPERTISE ==========
-# ✅ ALTERE: Título da seção, números, títulos e descrições
-expertise_html = '''<div class="expertise-section" id="expertise">
+    # ========== SEÇÃO 6: EXPERTISE ===========
+    # ✅ ALTERE: Título da seção, números, títulos e descrições
+    expertise_html = '''<div class="expertise-section" id="expertise">
     <!-- ✅ ALTERE: Título da seção -->
     <div class="section-title">Expertise</div>
     <div class="expertise-grid">
@@ -696,11 +704,11 @@ expertise_html = '''<div class="expertise-section" id="expertise">
         </div>
     </div>
 </div>'''
-st.markdown(expertise_html, unsafe_allow_html=True)
+    st.markdown(expertise_html, unsafe_allow_html=True)
 
-# ========== SEÇÃO 7: TRABALHOS ==========
-# ✅ ALTERE: Títulos, descrições e emojis
-work_html = '''<div class="work-section" id="trabalhos">
+    # ========== SEÇÃO 7: WORK ==============
+    # ✅ ALTERE: Títulos, descrições e emojis
+    work_html = '''<div class="work-section" id="trabalhos">
     <!-- ✅ ALTERE: Título da seção -->
     <div class="section-title">Trabalhos em Destaque</div>
     <div class="work-grid">
@@ -733,11 +741,11 @@ work_html = '''<div class="work-section" id="trabalhos">
         </div>
     </div>
 </div>'''
-st.markdown(work_html, unsafe_allow_html=True)
+    st.markdown(work_html, unsafe_allow_html=True)
 
-# ========== SEÇÃO 8: CTA FINAL ==========
-# ✅ ALTERE: Título, descrição e botão
-cta_html = '''<div class="cta-section" id="contato">
+    # ========== SEÇÃO 8: CTA FINAL ===========
+    # ✅ ALTERE: Título, descrição e botão
+    cta_html = '''<div class="cta-section" id="contato">
     <div class="cta-content">
         <!-- ✅ ALTERE: Título -->
         <div class="cta-title">Pronto para Crescer?</div>
@@ -747,11 +755,11 @@ cta_html = '''<div class="cta-section" id="contato">
         <a href="https://www.google.com/" target="_blank" class="cta-btn">Conversar Agora</a>
     </div>
 </div>'''
-st.markdown(cta_html, unsafe_allow_html=True)
+    st.markdown(cta_html, unsafe_allow_html=True)
 
-# ========== SEÇÃO 9: FOOTER ==========
-# ✅ ALTERE: Email, telefone, links e copyright
-footer_html = '''<div class="footer">
+    # ========== SEÇÃO 9: FOOTER ===========
+    # ✅ ALTERE: Email, telefone, links e copyright
+    footer_html = '''<div class="footer">
     <!-- ✅ ALTERE: Email e telefone -->
     <div class="footer-text">Email: contato@elite.com | Telefone: +55 (99) 99999-9999</div>
     <!-- ✅ ALTERE: Links -->
@@ -759,7 +767,7 @@ footer_html = '''<div class="footer">
     <!-- ✅ ALTERE: Copyright -->
     <div class="footer-copyright">© 2025 Elite Portfolio. Todos os direitos reservados.</div>
 </div>'''
-st.markdown(footer_html, unsafe_allow_html=True)
+    st.markdown(footer_html, unsafe_allow_html=True)
 
 # ========== FIM DO TEMPLATE ==========
 # Lembre-se: Altere apenas o que tem ✅ ALTERE
