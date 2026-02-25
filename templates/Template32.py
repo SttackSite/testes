@@ -1,7 +1,7 @@
 import streamlit as st
 
 def render():
-    # --- SISTEMA DE DESIGN UNESCO MUSEUM ---
+    # --- SISTEMA DE DESIGN SCENCO MUSEUM ---
     st.markdown("""
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;600&display=swap');
@@ -111,7 +111,7 @@ def render():
     # --- NAVBAR ---
     st.markdown("""
     <div class="un-nav">
-        <div style="font-weight: 700; font-size: 20px; letter-spacing: 2px;">UNESCO</div>
+        <div style="font-weight: 700; font-size: 20px; letter-spacing: 2px;">SCENCO</div>
         <div style="display: flex; gap: 40px; font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;">
             <span>Exposições</span>
             <span>Coleções</span>
@@ -180,8 +180,8 @@ def render():
     <div class="un-footer">
         <div style="display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 80px; margin-bottom: 100px;">
             <div>
-                <div style="font-weight: 700; font-size: 28px; margin-bottom: 30px;">UNESCO</div>
-                <p style="opacity: 0.6; line-height: 1.6;">O Museu do Patrimônio Mundial da UNESCO é uma iniciativa para preservar a memória cultural através da inovação digital.</p>
+                <div style="font-weight: 700; font-size: 28px; margin-bottom: 30px;">SCENCO</div>
+                <p style="opacity: 0.6; line-height: 1.6;">O Museu do Patrimônio Mundial da SCENCO é uma iniciativa para preservar a memória cultural através da inovação digital.</p>
             </div>
             <div>
                 <p style="font-weight: 700; margin-bottom: 25px;">EXPLORAR</p>
@@ -210,12 +210,12 @@ def render():
             </div>
         </div>
         <div style="border-top: 1px solid #333; padding-top: 40px; display: flex; justify-content: space-between; font-size: 11px; opacity: 0.4; letter-spacing: 1px;">
-            <span>UNESCO WORLD HERITAGE CENTRE © 2026.</span>
+            <span>SCENCO WORLD HERITAGE CENTRE © 2026.</span>
             <span>POLÍTICAS DE PRESERVAÇÃO DIGITAL | TERMOS DE USO</span>
         </div>
     </div>
     """, unsafe_allow_html=True)
 
 if __name__ == "__main__":
-    st.set_page_config(layout="wide", page_title="UNESCO | Museu Digital")
+    st.set_page_config(layout="wide", page_title="SCENCO | Museu Digital")
     render()
