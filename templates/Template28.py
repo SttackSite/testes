@@ -1,234 +1,189 @@
 import streamlit as st
 
 def render():
-    """Renderiza o template 28 - What Is Missing"""
-    
-    # ❌ NÃO ALTERE: Importações necessárias para o funcionamento do Streamlit
-    # Estas linhas carregam as bibliotecas essenciais para a aplicação rodar
-
-    # ✅ ALTERE: Configuração da Página (Título, Ícone, Layout)
-    # Você pode mudar o "page_title" para o nome do seu projeto
-    # Você pode mudar o "page_icon" para o emoji que preferir
-    st.set_page_config(
-        page_title="What Is Missing? | Memorial Global",  # ✅ ALTERE: Nome da página (aparece na aba do navegador)
-        page_icon="🌏",  # ✅ ALTERE: Emoji do ícone
-        layout="wide"  # ❌ NÃO ALTERE: Define o layout da página como largura total
-    )
-
-    # ❌ NÃO ALTERE: Bloco de CSS (Estilos Visuais)
-    # Este bloco define todas as cores, fontes, animações e efeitos visuais da página
-    # Alterar aqui pode quebrar completamente o design
+    # --- CSS IGT COACHING STYLE ---
     st.markdown("""
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;1,300&family=Inter:wght@200;300&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Open+Sans:wght@400;600&display=swap');
 
-        .stApp {
-            background-color: #000000;
-            color: #ffffff;
+        :root {
+            --igt-blue: #003366;
+            --igt-accent: #ffcc00;
+            --igt-text: #333333;
+            --igt-bg-gray: #f2f2f2;
         }
 
+        .stApp {
+            background-color: white;
+            color: var(--igt-text);
+        }
+        
         [data-testid="stHeader"] { display: none; }
         .block-container { padding: 0 !important; max-width: 100% !important; }
 
+        /* Tipografia de Alta Conversão */
         html, body, [class*="css"] {
-            font-family: 'Inter', sans-serif;
-            font-weight: 200;
+            font-family: 'Open Sans', sans-serif;
         }
 
-        h1, h2, .serif-italic {
-            font-family: 'Cormorant Garamond', serif;
-            font-style: italic;
-            font-weight: 300;
-            letter-spacing: 1px;
-        }
-
-        .corner-nav {
-            position: fixed;
-            font-size: 11px;
+        h1, h2, h3 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 900;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            color: rgba(255,255,255,0.6);
-            z-index: 1000;
-            padding: 40px;
+            color: var(--igt-blue);
         }
 
-        .hero-missing {
-            height: 100vh;
+        /* 1 & 2. HERO - PROMETIDA E AUTORIDADE */
+        .hero-igt {
+            background: linear-gradient(90deg, #003366 40%, rgba(0,51,102,0.8) 100%), 
+                        url('https://images.unsplash.com/photo-1475721027785-f74dea327912?w=1600');
+            background-size: cover;
+            background-position: center;
+            padding: 120px 10%;
+            color: white;
+            min-height: 80vh;
             display: flex;
-            flex-direction: column;
-            justify-content: center;
             align-items: center;
-            text-align: center;
-            background: radial-gradient(circle, rgba(40,40,40,1) 0%, rgba(0,0,0,1) 70%);
         }
 
-        .particle {
-            position: absolute;
+        .hero-h1 { font-size: clamp(35px, 5vw, 60px); line-height: 1.1; color: white; margin-bottom: 20px; }
+        .hero-sub { font-size: 22px; color: var(--igt-accent); font-weight: 700; margin-bottom: 30px; }
+
+        /* 3 & 4. CARDS DE PROGRAMAS */
+        .program-card {
             background: white;
-            border-radius: 50%;
-            opacity: 0.4;
-            filter: blur(1px);
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            padding: 40px;
+            text-align: center;
+            height: 100%;
+            border-top: 5px solid var(--igt-blue);
+            transition: 0.3s;
+        }
+        .program-card:hover {
+            transform: translateY(-10px);
+            border-top-color: var(--igt-accent);
         }
 
-        .content-block {
-            padding: 150px 20%;
-            line-height: 2;
+        /* 5. SEÇÃO DE NÚMEROS */
+        .stat-igt {
+            background: var(--igt-blue);
+            color: white;
+            padding: 60px 10%;
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+        }
+
+        /* 8. BOTÃO ESTILO IGT */
+        div.stButton > button {
+            background: var(--igt-accent);
+            color: var(--igt-blue);
+            border: none;
+            padding: 20px 50px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 900;
+            text-transform: uppercase;
             font-size: 18px;
-            color: rgba(255,255,255,0.8);
+            border-radius: 50px;
+            transition: 0.3s;
+            box-shadow: 0 5px 15px rgba(255, 204, 0, 0.4);
+            width: 100%;
+        }
+        div.stButton > button:hover {
+            background: white;
+            color: var(--igt-blue);
+            transform: scale(1.05);
         }
 
-        .stat-number {
-            font-size: 60px;
-            color: #fff;
-            margin-bottom: 20px;
-        }
-
-        .extinction-item {
-            border-left: 1px solid rgba(255,255,255,0.2);
-            padding-left: 30px;
-            margin-bottom: 80px;
-            transition: 0.5s;
-        }
-        
-        .extinction-item:hover {
-            border-left: 1px solid #fff;
-        }
-
-        .action-button {
-            display: inline-block !important;
-            background: black !important;
-            color: white !important;
-            border: 1px solid white !important;
-            padding: 15px 40px !important;
-            font-size: 12px !important;
-            text-transform: uppercase !important;
-            letter-spacing: 2px !important;
-            text-decoration: none !important;
-            transition: 0.3s !important;
-            cursor: pointer !important;
-        }
-
-        .action-button:hover {
-            background: white !important;
-            color: black !important;
-            text-decoration: none !important;
-        }
-
-        .action-button:visited {
-            color: white !important;
-            text-decoration: none !important;
+        /* 9. DEPOIMENTOS */
+        .testimony-box {
+            background: var(--igt-bg-gray);
+            padding: 30px;
+            border-radius: 15px;
+            font-style: italic;
+            border-left: 10px solid var(--igt-accent);
         }
     </style>
     """, unsafe_allow_html=True)
 
-    # ========== SEÇÃO 1: NAVEGAÇÃO DE CANTOS ==========
-    # ❌ NÃO ALTERE: Estrutura de navegação fixa
-    # Estes elementos aparecem nos 4 cantos da página
-    st.markdown('<div class="corner-nav" style="top:0; left:0;">What is Missing?</div>', unsafe_allow_html=True)  # ✅ ALTERE: Texto do canto superior esquerdo
-    st.markdown('<div class="corner-nav" style="top:0; right:0;">Memorial / Mapa / Ação</div>', unsafe_allow_html=True)  # ✅ ALTERE: Texto do canto superior direito
-    st.markdown('<div class="corner-nav" style="bottom:0; left:0;">Maya Lin Studio</div>', unsafe_allow_html=True)  # ✅ ALTERE: Texto do canto inferior esquerdo
-    st.markdown('<div class="corner-nav" style="bottom:0; right:0;">Contribuir</div>', unsafe_allow_html=True)  # ✅ ALTERE: Texto do canto inferior direito
-
-    # ========== SEÇÃO 2: HERO (O VAZIO) ==========
-    # ❌ NÃO ALTERE: Estrutura visual do hero
-    # Esta seção ocupa toda a altura da tela com efeito visual de partículas
+    # --- NAVEGAÇÃO ---
     st.markdown("""
-    <div class="hero-missing">
-        <div class="particle" style="top:20%; left:15%; width:4px; height:4px;"></div>
-        <div class="particle" style="top:60%; left:80%; width:2px; height:2px;"></div>
-        <div class="particle" style="top:40%; left:50%; width:3px; height:3px; opacity:0.8;"></div>
-        <h1 style="font-size: 50px; margin-bottom: 20px;">O que está desaparecendo?</h1>
-        <p class="serif-italic" style="font-size: 24px; color: rgba(255,255,255,0.5);">
-            Um memorial para a sexta extinção em massa.
-        </p>
-        <div style="margin-top: 50px; width: 1px; height: 100px; background: linear-gradient(to bottom, white, transparent);"></div>
+    <div style="padding: 20px 10%; display: flex; justify-content: space-between; align-items: center; background: white; position: sticky; top:0; z-index:999; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+        <div style="font-weight: 900; font-size: 30px; color: var(--igt-blue);">IGT<span style="color:var(--igt-accent)">.</span></div>
+        <div style="display: flex; gap: 30px; font-weight: 700; font-size: 13px; color: var(--igt-blue);">
+            <span>TREINAMENTOS</span>
+            <span>FORMAÇÕES</span>
+            <span>SOBRE</span>
+            <span style="background: var(--igt-blue); color: white; padding: 5px 15px; border-radius: 20px;">ENTRAR</span>
+        </div>
     </div>
     """, unsafe_allow_html=True)
 
-    # ========== SEÇÃO 3: MANIFESTO ==========
-    # ✅ ALTERE: Conteúdo principal do manifesto
+    # --- 1 & 2. HERO SECTION ---
     st.markdown("""
-    <div class="content-block">
-        <h2 class="serif-italic" style="font-size: 42px; color: #fff; text-align: center; margin-bottom: 60px;">
-            Nós não podemos proteger o que não lembramos.
-        </h2>
-        <p>
-            "What Is Missing?" é um memorial permanente dedicado às espécies e habitats que já perdemos e àqueles que ainda podemos salvar. 
-            Ao contrário de um memorial físico estático, ele vive no espaço digital, conectando histórias de extinção com soluções para o futuro.
-        </p>
-    </div>
+    <div class="hero-igt">
+        <div style="max-width: 700px;">
+            <p class="hero-sub">VOCÊ NASCEU PARA ALGO MAIOR</p>
+            <h1 class="hero-h1">TRANSFORME A SUA PAIXÃO POR AJUDAR PESSOAS EM UMA PROFISSÃO LUCRATIVA.</h1>
+            <p style="font-size: 18px; opacity: 0.9; margin-bottom: 40px;">Participe da maior comunidade de coaches e líderes que estão mudando o Brasil.</p>
     """, unsafe_allow_html=True)
+    st.button("QUERO COMEÇAR AGORA")
+    st.markdown("</div></div>", unsafe_allow_html=True)
 
-    # ========== SEÇÃO 4: ESTATÍSTICAS SILENCIOSAS ==========
-    # ❌ NÃO ALTERE: Estrutura de colunas
-    # Divide a página em 2 colunas para exibir estatísticas lado a lado
-    col1, col2 = st.columns(2)
+    # --- 3 & 4. PROGRAMAS (GRID) ---
+    st.markdown('<div style="padding: 100px 10%;">', unsafe_allow_html=True)
+    st.markdown('<h2 style="text-align: center; margin-bottom: 60px;">NOSSAS SOLUÇÕES</h2>', unsafe_allow_html=True)
+    
+    col1, col2, col3 = st.columns(3, gap="large")
 
-    with col1:
-        st.markdown("""
-        <div style="padding: 100px 10% 100px 20%;">
-            <div class="stat-number serif-italic">70%</div>
-            <p style="font-size: 14px; text-transform: uppercase; letter-spacing: 2px;">
-                Da vida selvagem do planeta desapareceu nos últimos 50 anos.
-            </p>
-        </div>
-        """, unsafe_allow_html=True)  # ✅ ALTERE: Número e descrição da estatística 1
+    def render_igt_card(col, title, subtitle, desc):
+        with col:
+            st.markdown(f"""
+            <div class="program-card">
+                <h3 style="font-size: 22px;">{title}</h3>
+                <p style="color: var(--igt-accent); font-weight: 700; margin-bottom: 20px;">{subtitle}</p>
+                <p style="font-size: 15px; color: #666; line-height: 1.6;">{desc}</p>
+            </div>
+            """, unsafe_allow_html=True)
+            st.write("")
+            st.button(f"VER DETALHES", key=title)
 
-    with col2:
-        st.markdown("""
-        <div style="padding: 100px 20% 100px 10%;">
-            <div class="stat-number serif-italic">1 Milhão</div>
-            <p style="font-size: 14px; text-transform: uppercase; letter-spacing: 2px;">
-                De espécies estão atualmente sob risco de extinção.
-            </p>
-        </div>
-        """, unsafe_allow_html=True)  # ✅ ALTERE: Número e descrição da estatística 2
-
-    # ========== SEÇÃO 5: LINHA DO TEMPO DE MEMÓRIAS ==========
-    # ❌ NÃO ALTERE: Estrutura da função de renderização
-    # Esta função cria itens da linha do tempo de forma dinâmica
-    st.markdown('<div class="content-block" style="padding-top: 50px;">', unsafe_allow_html=True)
-    st.markdown('<h3 style="margin-bottom: 100px; font-size: 12px; letter-spacing: 4px; text-align: center;">MEMÓRIAS DO QUE SE FOI</h3>', unsafe_allow_html=True)
-
-    def render_memory(year, title, desc):
-        # ❌ NÃO ALTERE: Função que renderiza um item da linha do tempo
-        st.markdown(f"""
-        <div class="extinction-item">
-            <span style="font-size: 12px; opacity: 0.5;">{year}</span>
-            <h3 class="serif-italic" style="font-size: 28px; margin: 10px 0;">{title}</h3>
-            <p style="font-size: 15px; opacity: 0.7;">{desc}</p>
-        </div>
-        """, unsafe_allow_html=True)
-
-    # ✅ ALTERE: Adicione, remova ou modifique os eventos da linha do tempo
-    render_memory("1900s", "O Céu Escurecido", "Relatos de quando os bandos de pombos-passageiros eram tão vastos que bloqueavam o sol por horas em sua passagem.")
-    render_memory("1950s", "Silêncio nos Rios", "O desaparecimento gradual do esturjão e de outras espécies migratórias que antes fervilhavam nas águas doces.")
-    render_memory("2024", "O Canto Solitário", "O último registro sonoro de espécies de pássaros em florestas tropicais que não encontram mais pares para acasalamento.")
-
+    render_igt_card(col1, "FORMAÇÃO EM COACHING", "O Começo de Tudo", "O treinamento número #1 para quem deseja dominar as ferramentas e começar a atender.")
+    render_igt_card(col2, "MENTORIA IMPACTO", "Alta Performance", "Para profissionais que já faturam e querem escalar o seu negócio e impacto.")
+    render_igt_card(col3, "LIDERANÇA PRO", "Gestão de Equipas", "Desenvolva a mentalidade de um líder que inspira e gera resultados fora da curva.")
     st.markdown('</div>', unsafe_allow_html=True)
 
-    # ========== SEÇÃO 6: CHAMADA PARA AÇÃO ==========
-    # ✅ ALTERE: Conteúdo da seção de ação
+    # --- 5. NÚMEROS (IMPACTO) ---
     st.markdown("""
-    <div style="background: white; color: black; padding: 150px 8%; text-align: center;">
-        <h2 class="serif-italic" style="font-size: 50px; margin-bottom: 30px;">Ainda há tempo.</h2>
-        <p style="max-width: 800px; margin: 0 auto 50px auto; font-size: 18px; line-height: 1.8;">
-            O projeto também destaca planos de conservação e visões de um mundo onde a humanidade e a natureza coexistem em equilíbrio. 
-            Proteja um habitat. Restaure uma floresta. Reduza sua pegada.
-        </p>
-        <a href="https://www.google.com/" target="_blank" class="action-button">Saiba Mais</a>
+    <div class="stat-igt">
+        <div><h1 style="color:var(--igt-accent); margin:0;">+100k</h1><p>Alunos Formados</p></div>
+        <div><h1 style="color:var(--igt-accent); margin:0;">+15</h1><p>Anos de Experiência</p></div>
+        <div><h1 style="color:var(--igt-accent); margin:0;">4.9/5</h1><p>Avaliação Média</p></div>
     </div>
-    """, unsafe_allow_html=True)  # ✅ ALTERE: Título, descrição, texto do botão e URL
+    """, unsafe_allow_html=True)
 
-    # ========== SEÇÃO 7: FOOTER ==========
-    # ✅ ALTERE: Informações do rodapé
+    # --- 6. PROVA SOCIAL / DEPOIMENTOS ---
+    st.markdown('<div style="padding: 100px 15%; background: white;">', unsafe_allow_html=True)
+    st.markdown('<h2 style="text-align:center;">O QUE DIZEM NOSSOS ALUNOS</h2><br><br>', unsafe_allow_html=True)
+    
+    t_col1, t_col2 = st.columns(2)
+    with t_col1:
+        st.markdown("""<div class="testimony-box">"Minha vida mudou completamente após o treinamento. Hoje tenho clareza de propósito e faturo 3x mais."<br><br><b>- Maria Oliveira</b></div>""", unsafe_allow_html=True)
+    with t_col2:
+        st.markdown("""<div class="testimony-box">"O melhor investimento que fiz na minha carreira. As ferramentas são práticas e os resultados imediatos."<br><br><b>- João Pedro</b></div>""", unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
+
+    # --- FOOTER ---
     st.markdown("""
-    <div style="padding: 100px 8%; text-align: center; color: rgba(255,255,255,0.3); font-size: 11px; letter-spacing: 2px;">
-        WHAT IS MISSING? FOUNDATION © 2026 <br>
-        CIÊNCIA / ARTE / ATIVISMO
+    <div style="padding: 60px 10%; background: var(--igt-blue); color: white; text-align: center;">
+        <h3 style="color: white; margin-bottom: 20px;">IGT - INSTITUTO GERÔNIMO THEML</h3>
+        <p style="font-size: 14px; opacity: 0.7;">Termos de Uso | Políticas de Privacidade</p>
+        <p style="font-size: 12px; margin-top: 30px; opacity: 0.5;">© 2026 Todos os direitos reservados.</p>
     </div>
-    """, unsafe_allow_html=True)  # ✅ ALTERE: Texto do copyright e informações
+    """, unsafe_allow_html=True)
 
-    # ========== FIM DO TEMPLATE ==========
-    # Lembre-se: Altere apenas o que tem ✅ ALTERE
-    # Não mexa no que tem ❌ NÃO ALTERE
+# Execução direta
+if __name__ == "__main__":
+    st.set_page_config(layout="wide", page_title="IGT | Coaching e Liderança")
+    render()
