@@ -1,724 +1,225 @@
-import streamlit as st  # ❌ NÃO ALTERE: Importa a biblioteca Streamlit para criar a aplicação web
+import streamlit as st
 
 def render():
-    """Renderiza o template 9 - Corporativo Premium"""
+    """Renderiza o template Dockyard Social - Edição Sofisticada"""
     
-    # ========== SEÇÃO 1: CONFIGURAÇÃO DA PÁGINA ==========
-    # ❌ NÃO ALTERE: Define as configurações básicas da página
-    st.set_page_config(
-        page_title="Corporativo Premium - Ambev Style",  # ✅ ALTERE: Título que aparece na aba do navegador
-        page_icon="🏢",  # ✅ ALTERE: Emoji que aparece na aba do navegador
-        layout="wide",  # ❌ NÃO ALTERE: Define o layout como largura total
-        initial_sidebar_state="collapsed"  # ❌ NÃO ALTERE: Oculta a barra lateral
-    )
-
-    # ========== SEÇÃO 2: CSS E ESTILOS VISUAIS ==========
-    # ❌ NÃO ALTERE: Bloco CSS que define todas as cores, fontes, animações e efeitos
-    # Alterar aqui pode quebrar completamente o design da página
-    custom_css = """
+    # ❌ NÃO ALTERE: CSS de Alta Fidelidade
+    st.markdown("""
     <style>
-        /* ❌ NÃO ALTERE: Importa as fontes do Google Fonts */
-        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800&display=swap');
-        
-        /* ❌ NÃO ALTERE: Reset de estilos padrão */
-        * {
-            margin: 0;  /* Remove margem padrão */
-            padding: 0;  /* Remove preenchimento padrão */
-            box-sizing: border-box;  /* Inclui borda no tamanho total */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;900&family=Oswald:wght@500;700&display=swap');
+
+        :root {
+            --dock-yellow: #ffcc00;
+            --dock-black: #0e0e0e;
+            --dock-white: #ffffff;
+            --dock-gray: #f8f8f8;
         }
-        
-        /* ❌ NÃO ALTERE: Estilos globais */
-        html, body, [data-testid="stAppViewContainer"] {
-            background: linear-gradient(135deg, #f8f9fa 0%, #f0f2f5 100%);  /* Gradiente de fundo */
-            font-family: 'Montserrat', sans-serif;  /* Fonte padrão */
-            color: #1a1a1a;  /* Cor de texto padrão */
-            overflow-x: hidden;  /* Oculta scroll horizontal */
+
+        /* Reset e Base */
+        .stApp { background-color: var(--dock-white); }
+        [data-testid="stHeader"] { display: none; }
+        .block-container { padding: 0 !important; max-width: 100% !important; }
+
+        /* Tipografia Brutalista */
+        h1, h2, h3 {
+            font-family: 'Oswald', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: -2px;
+            line-height: 0.85;
+            color: var(--dock-black);
         }
-        
-        /* ❌ NÃO ALTERE: Remove decorações do Streamlit */
-        [data-testid="stDecoration"] { display: none; }
-        .main { padding: 0 !important; background: transparent; }
-        
-        /* ❌ NÃO ALTERE: Esconde o header padrão do Streamlit */
-        [data-testid="stHeader"] { 
-            display: none;  /* Oculta o header */
+
+        /* Navegação VIP */
+        .nav-dock {
+            background-color: rgba(14, 14, 14, 0.98);
+            backdrop-filter: blur(10px);
+            color: var(--dock-yellow);
+            padding: 20px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 204, 0, 0.2);
         }
-        
-        /* ❌ NÃO ALTERE: Animações */
-        @keyframes slideInLeft {
-            0% { transform: translateX(-100px); opacity: 0; }  /* Começa fora da tela à esquerda */
-            100% { transform: translateX(0); opacity: 1; }  /* Termina na posição normal */
-        }
-        
-        @keyframes slideInRight {
-            0% { transform: translateX(100px); opacity: 0; }  /* Começa fora da tela à direita */
-            100% { transform: translateX(0); opacity: 1; }  /* Termina na posição normal */
-        }
-        
-        @keyframes fadeInUp {
-            0% { transform: translateY(40px); opacity: 0; }  /* Começa abaixo com opacidade 0 */
-            100% { transform: translateY(0); opacity: 1; }  /* Termina na posição normal */
-        }
-        
-        @keyframes scaleIn {
-            0% { transform: scale(0.95); opacity: 0; }  /* Começa pequeno com opacidade 0 */
-            100% { transform: scale(1); opacity: 1; }  /* Termina no tamanho normal */
-        }
-        
-        @keyframes borderFlow {
-            0% { border-left-color: #e0e0e0; }  /* Borda cinza */
-            50% { border-left-color: #1a1a1a; }  /* Borda preta */
-            100% { border-left-color: #e0e0e0; }  /* Volta para cinza */
-        }
-        
-        /* ❌ NÃO ALTERE: Navbar */
-        .navbar {
-            background: #ffffff;  /* Fundo branco */
-            padding: 25px 80px;  /* Espaçamento interno */
-            display: flex;  /* Layout flexível */
-            justify-content: space-between;  /* Espaça itens nas extremidades */
-            align-items: center;  /* Alinha itens no centro */
-            border-bottom: 1px solid #e0e0e0;  /* Borda inferior cinza clara */
-            position: sticky;  /* Fica fixo ao scroll */
-            top: 0;  /* No topo */
-            z-index: 100;  /* Acima de outros elementos */
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);  /* Sombra suave */
-        }
-        
-        /* ❌ NÃO ALTERE: Logo da navbar */
-        .navbar-logo {
-            font-size: 24px;  /* Tamanho grande */
-            font-weight: 800;  /* Peso muito pesado */
-            color: #1a1a1a;  /* Cor preta */
-            letter-spacing: 1px;  /* Espaçamento entre letras */
-            font-family: 'Poppins', sans-serif;  /* Fonte Poppins */
-        }
-        
-        /* ❌ NÃO ALTERE: Menu de navegação */
-        .navbar-nav {
-            display: flex;  /* Layout flexível */
-            gap: 60px;  /* Espaçamento entre itens */
-        }
-        
-        /* ❌ NÃO ALTERE: Links do menu com efeito underline animado */
+
         .nav-link {
-            color: #666666;  /* Cor cinza */
-            text-decoration: none;  /* Remove sublinhado */
-            font-size: 11px;  /* Tamanho pequeno */
-            font-weight: 600;  /* Peso pesado */
-            text-transform: uppercase;  /* Maiúsculas */
-            letter-spacing: 1px;  /* Espaçamento entre letras */
-            transition: all 0.3s ease;  /* Animação suave */
-            position: relative;  /* Posicionamento relativo para o ::after */
+            color: white !important;
+            text-decoration: none !important;
+            font-family: 'Oswald';
+            font-size: 14px;
+            letter-spacing: 2px;
+            transition: 0.4s;
+            text-transform: uppercase;
+        }
+
+        .nav-link:hover { color: var(--dock-yellow) !important; }
+
+        /* Hero Section Impacto */
+        .hero-dock {
+            background-color: var(--dock-yellow);
+            padding: 120px 8%;
+            clip-path: polygon(0 0, 100% 0, 100% 90%, 0% 100%);
+            margin-bottom: -50px;
+        }
+
+        .hero-h1 { font-size: clamp(50px, 10vw, 130px); }
+
+        /* Cards Estilo Galeria */
+        .dock-card {
+            background: var(--dock-white);
+            border: 1px solid #ddd;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            margin-bottom: 20px;
         }
         
-        /* ❌ NÃO ALTERE: Underline animado (pseudo-elemento) */
-        .nav-link::after {
-            content: '';  /* Cria elemento vazio */
-            position: absolute;  /* Posicionamento absoluto */
-            bottom: -8px;  /* Posição abaixo do texto */
-            left: 0;  /* Alinhado à esquerda */
-            width: 0;  /* Largura inicial 0 */
-            height: 2px;  /* Altura da linha */
-            background: #1a1a1a;  /* Cor preta */
-            transition: width 0.3s ease;  /* Animação suave da largura */
+        .dock-card:hover {
+            transform: translateY(-10px) rotate(1deg);
+            box-shadow: 20px 20px 0px var(--dock-black);
+            border-color: var(--dock-black);
         }
-        
-        /* ❌ NÃO ALTERE: Efeito hover nos links */
-        .nav-link:hover { color: #1a1a1a; }  /* Texto fica preto */
-        .nav-link:hover::after { width: 100%; }  /* Underline expande para 100% */
-        
-        /* ❌ NÃO ALTERE: Seção hero */
-        .hero {
-            min-height: 100vh;  /* Altura mínima da tela */
-            display: flex;  /* Layout flexível */
-            align-items: center;  /* Alinha itens no centro */
-            justify-content: space-between;  /* Espaça itens nas extremidades */
-            padding: 100px 80px;  /* Espaçamento interno */
-            background: linear-gradient(135deg, #f8f9fa 0%, #f0f2f5 100%);  /* Gradiente de fundo */
-            position: relative;  /* Posicionamento relativo */
-            overflow: hidden;  /* Oculta conteúdo que sai da área */
+
+        .card-img-container {
+            height: 300px;
+            overflow: hidden;
+            background: var(--dock-black);
         }
-        
-        /* ❌ NÃO ALTERE: Efeito de fundo do hero */
-        .hero::before {
-            content: '';  /* Cria elemento vazio */
-            position: absolute;  /* Posicionamento absoluto */
-            width: 600px;  /* Largura */
-            height: 600px;  /* Altura */
-            background: linear-gradient(135deg, rgba(26, 26, 26, 0.05) 0%, transparent 70%);  /* Gradiente radial */
-            border-radius: 50%;  /* Círculo */
-            top: -200px;  /* Posição no topo */
-            right: -200px;  /* Posição à direita */
+
+        .card-img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: 0.8s;
+            opacity: 0.9;
         }
-        
-        /* ❌ NÃO ALTERE: Conteúdo do hero */
-        .hero-content {
-            max-width: 650px;  /* Largura máxima */
-            position: relative;  /* Posicionamento relativo */
-            z-index: 2;  /* Acima do efeito de fundo */
-            animation: slideInLeft 0.8s ease-out;  /* Animação de entrada */
+
+        .dock-card:hover img {
+            transform: scale(1.1);
+            opacity: 1;
         }
-        
-        /* ❌ NÃO ALTERE: Label do hero */
-        .hero-label {
-            font-size: 12px;  /* Tamanho pequeno */
-            color: #999999;  /* Cor cinza */
-            text-transform: uppercase;  /* Maiúsculas */
-            letter-spacing: 2px;  /* Espaçamento entre letras */
-            margin-bottom: 20px;  /* Espaçamento inferior */
-            font-weight: 600;  /* Peso pesado */
+
+        /* Botões Sofisticados */
+        .custom-btn {
+            display: inline-block;
+            background-color: var(--dock-black);
+            color: var(--dock-yellow) !important;
+            padding: 18px 45px;
+            font-family: 'Oswald', sans-serif;
+            font-size: 18px;
+            text-decoration: none !important;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: 0.3s;
+            border: 2px solid var(--dock-black);
+            cursor: pointer;
+            text-align: center;
         }
-        
-        /* ❌ NÃO ALTERE: Título do hero */
-        .hero-title {
-            font-size: 72px;  /* Tamanho muito grande */
-            font-weight: 800;  /* Peso muito pesado */
-            line-height: 1.1;  /* Altura da linha compacta */
-            margin-bottom: 30px;  /* Espaçamento inferior */
-            color: #1a1a1a;  /* Texto preto */
-            font-family: 'Poppins', sans-serif;  /* Fonte Poppins */
-            letter-spacing: -1px;  /* Espaçamento negativo entre letras */
+
+        .custom-btn:hover {
+            background-color: transparent;
+            color: var(--dock-black) !important;
+            box-shadow: 8px 8px 0px var(--dock-yellow);
         }
-        
-        /* ❌ NÃO ALTERE: Descrição do hero */
-        .hero-desc {
-            font-size: 16px;  /* Tamanho médio */
-            color: #666666;  /* Texto cinza */
-            margin-bottom: 50px;  /* Espaçamento inferior */
-            line-height: 1.8;  /* Altura da linha generosa */
-            font-weight: 400;  /* Peso normal */
-        }
-        
-        /* ❌ NÃO ALTERE: CTA do hero */
-        .hero-cta {
-            display: flex;  /* Layout flexível */
-            gap: 20px;  /* Espaçamento entre itens */
-            flex-wrap: wrap;  /* Quebra em múltiplas linhas */
-        }
-        
-        /* ❌ NÃO ALTERE: Botão primário */
-        .btn-primary {
-            background: #1a1a1a;  /* Fundo preto */
-            color: #ffffff;  /* Texto branco */
-            padding: 16px 50px;  /* Espaçamento interno */
-            border: none;  /* Sem borda */
-            border-radius: 2px;  /* Arredondamento mínimo */
-            font-weight: 700;  /* Peso pesado */
-            font-size: 12px;  /* Tamanho pequeno */
-            text-transform: uppercase;  /* Maiúsculas */
-            letter-spacing: 1px;  /* Espaçamento entre letras */
-            cursor: pointer;  /* Cursor de clique */
-            transition: all 0.3s ease;  /* Animação suave */
-        }
-        
-        /* ❌ NÃO ALTERE: Efeito hover no botão primário */
-        .btn-primary:hover {
-            background: #333333;  /* Preto mais claro */
-            transform: translateY(-2px);  /* Levanta o botão */
-        }
-        
-        /* ❌ NÃO ALTERE: Botão secundário */
-        .btn-secondary {
-            background: transparent;  /* Fundo transparente */
-            color: #1a1a1a;  /* Texto preto */
-            padding: 16px 50px;  /* Espaçamento interno */
-            border: 2px solid #1a1a1a;  /* Borda preta */
-            border-radius: 2px;  /* Arredondamento mínimo */
-            font-weight: 700;  /* Peso pesado */
-            font-size: 12px;  /* Tamanho pequeno */
-            text-transform: uppercase;  /* Maiúsculas */
-            letter-spacing: 1px;  /* Espaçamento entre letras */
-            cursor: pointer;  /* Cursor de clique */
-            transition: all 0.3s ease;  /* Animação suave */
-        }
-        
-        /* ❌ NÃO ALTERE: Efeito hover no botão secundário */
-        .btn-secondary:hover {
-            background: #1a1a1a;  /* Fundo preto */
-            color: #ffffff;  /* Texto branco */
-        }
-        
-        /* ❌ NÃO ALTERE: Visual do hero */
-        .hero-visual {
-            position: relative;  /* Posicionamento relativo */
-            z-index: 2;  /* Acima do efeito de fundo */
-            width: 500px;  /* Largura */
-            height: 500px;  /* Altura */
-            background: linear-gradient(135deg, #f0f0f0 0%, #e8e8e8 100%);  /* Gradiente de fundo */
-            border: 1px solid #e0e0e0;  /* Borda cinza clara */
-            display: flex;  /* Layout flexível */
-            align-items: center;  /* Alinha itens no centro */
-            justify-content: center;  /* Centraliza itens */
-            font-size: 100px;  /* Tamanho muito grande */
-            animation: slideInRight 0.8s ease-out;  /* Animação de entrada */
-        }
-        
-        /* ❌ NÃO ALTERE: Seção de estatísticas */
-        .stats-section {
-            padding: 80px;  /* Espaçamento interno */
-            background: #ffffff;  /* Fundo branco */
-            border-bottom: 1px solid #f0f0f0;  /* Borda inferior */
-        }
-        
-        /* ❌ NÃO ALTERE: Grid de estatísticas */
-        .stats-grid {
-            display: grid;  /* Layout em grade */
-            grid-template-columns: repeat(4, 1fr);  /* 4 colunas iguais */
-            gap: 40px;  /* Espaçamento entre itens */
-            max-width: 1200px;  /* Largura máxima */
-            margin: 0 auto;  /* Centraliza */
-        }
-        
-        /* ❌ NÃO ALTERE: Item de estatística */
-        .stat-item {
-            text-align: center;  /* Texto centralizado */
-            padding: 20px;  /* Espaçamento interno */
-            border-left: 3px solid #1a1a1a;  /* Borda esquerda preta */
-            animation: fadeInUp 0.8s ease-out;  /* Animação de entrada */
-        }
-        
-        /* ❌ NÃO ALTERE: Número da estatística */
-        .stat-number {
-            font-size: 48px;  /* Tamanho muito grande */
-            font-weight: 800;  /* Peso muito pesado */
-            color: #1a1a1a;  /* Cor preta */
-            margin-bottom: 10px;  /* Espaçamento inferior */
-            font-family: 'Poppins', sans-serif;  /* Fonte Poppins */
-        }
-        
-        /* ❌ NÃO ALTERE: Label da estatística */
-        .stat-label {
-            font-size: 13px;  /* Tamanho pequeno */
-            color: #666666;  /* Cor cinza */
-            text-transform: uppercase;  /* Maiúsculas */
-            letter-spacing: 1px;  /* Espaçamento entre letras */
-            font-weight: 600;  /* Peso pesado */
-        }
-        
-        /* ❌ NÃO ALTERE: Seção de serviços */
-        .services-section {
-            padding: 120px 80px;  /* Espaçamento interno */
-            background: #f8f9fa;  /* Fundo cinza claro */
-        }
-        
-        /* ❌ NÃO ALTERE: Título da seção */
-        .section-title {
-            font-size: 36px;  /* Tamanho grande */
-            font-weight: 800;  /* Peso muito pesado */
-            color: #1a1a1a;  /* Cor preta */
-            margin-bottom: 80px;  /* Espaçamento inferior */
-            text-align: center;  /* Texto centralizado */
-            font-family: 'Poppins', sans-serif;  /* Fonte Poppins */
-            position: relative;  /* Posicionamento relativo */
-        }
-        
-        /* ❌ NÃO ALTERE: Linha decorativa do título */
-        .section-title::after {
-            content: '';  /* Cria elemento vazio */
-            position: absolute;  /* Posicionamento absoluto */
-            bottom: -20px;  /* Posição abaixo do texto */
-            left: 50%;  /* Centralizado horizontalmente */
-            transform: translateX(-50%);  /* Centraliza */
-            width: 60px;  /* Largura */
-            height: 4px;  /* Altura */
-            background: #1a1a1a;  /* Cor preta */
-        }
-        
-        /* ❌ NÃO ALTERE: Grid de serviços */
-        .services-grid {
-            display: grid;  /* Layout em grade */
-            grid-template-columns: repeat(3, 1fr);  /* 3 colunas iguais */
-            gap: 40px;  /* Espaçamento entre itens */
-            max-width: 1200px;  /* Largura máxima */
-            margin: 0 auto;  /* Centraliza */
-        }
-        
-        /* ❌ NÃO ALTERE: Card de serviço */
-        .service-card {
-            background: #ffffff;  /* Fundo branco */
-            padding: 50px 40px;  /* Espaçamento interno */
-            border-radius: 2px;  /* Arredondamento mínimo */
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);  /* Sombra suave */
-            transition: all 0.4s ease;  /* Animação suave */
-            border-bottom: 3px solid transparent;  /* Borda inferior transparente */
-        }
-        
-        /* ❌ NÃO ALTERE: Efeito hover no card de serviço */
-        .service-card:hover {
-            transform: translateY(-10px);  /* Levanta o card */
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);  /* Sombra aumentada */
-            border-bottom-color: #1a1a1a;  /* Borda inferior preta */
-        }
-        
-        /* ❌ NÃO ALTERE: Ícone do serviço */
-        .service-icon {
-            font-size: 40px;  /* Tamanho grande */
-            margin-bottom: 30px;  /* Espaçamento inferior */
-        }
-        
-        /* ❌ NÃO ALTERE: Título do serviço */
-        .service-title {
-            font-size: 20px;  /* Tamanho médio */
-            font-weight: 700;  /* Peso pesado */
-            color: #1a1a1a;  /* Cor preta */
-            margin-bottom: 20px;  /* Espaçamento inferior */
-        }
-        
-        /* ❌ NÃO ALTERE: Descrição do serviço */
-        .service-desc {
-            font-size: 14px;  /* Tamanho pequeno */
-            color: #666666;  /* Cor cinza */
-            line-height: 1.8;  /* Altura da linha generosa */
-        }
-        
-        /* ❌ NÃO ALTERE: Seção de portfólio */
-        .portfolio-section {
-            padding: 120px 80px;  /* Espaçamento interno */
-            background: #ffffff;  /* Fundo branco */
-        }
-        
-        /* ❌ NÃO ALTERE: Grid de portfólio */
-        .portfolio-grid {
-            display: grid;  /* Layout em grade */
-            grid-template-columns: repeat(2, 1fr);  /* 2 colunas iguais */
-            gap: 60px;  /* Espaçamento entre itens */
-            max-width: 1200px;  /* Largura máxima */
-            margin: 0 auto;  /* Centraliza */
-        }
-        
-        /* ❌ NÃO ALTERE: Item de portfólio */
-        .portfolio-item {
-            position: relative;  /* Posicionamento relativo */
-            padding-left: 80px;  /* Espaçamento à esquerda */
-        }
-        
-        /* ❌ NÃO ALTERE: Número do portfólio */
-        .portfolio-number {
-            position: absolute;  /* Posicionamento absoluto */
-            left: 0;  /* À esquerda */
-            top: 0;  /* No topo */
-            font-size: 60px;  /* Tamanho muito grande */
-            font-weight: 900;  /* Peso muito pesado */
-            color: #f0f0f0;  /* Cor cinza muito clara */
-            font-family: 'Poppins', sans-serif;  /* Fonte Poppins */
-            line-height: 1;  /* Altura da linha compacta */
-            z-index: 1;  /* Atrás do texto */
-        }
-        
-        /* ❌ NÃO ALTERE: Título do portfólio */
-        .portfolio-title {
-            font-size: 24px;  /* Tamanho grande */
-            font-weight: 700;  /* Peso pesado */
-            color: #1a1a1a;  /* Cor preta */
-            margin-bottom: 15px;  /* Espaçamento inferior */
-            position: relative;  /* Posicionamento relativo */
-            z-index: 2;  /* Acima do número */
-        }
-        
-        /* ❌ NÃO ALTERE: Descrição do portfólio */
-        .portfolio-desc {
-            font-size: 15px;  /* Tamanho médio */
-            color: #666666;  /* Cor cinza */
-            line-height: 1.8;  /* Altura da linha generosa */
-            position: relative;  /* Posicionamento relativo */
-            z-index: 2;  /* Acima do número */
-        }
-        
-        /* ❌ NÃO ALTERE: Seção CTA */
-        .cta-section {
-            padding: 120px 80px;  /* Espaçamento interno */
-            background: #1a1a1a;  /* Fundo preto */
-            text-align: center;  /* Texto centralizado */
-            color: #ffffff;  /* Texto branco */
-        }
-        
-        /* ❌ NÃO ALTERE: Título CTA */
-        .cta-title {
-            font-size: 48px;  /* Tamanho muito grande */
-            font-weight: 800;  /* Peso muito pesado */
-            margin-bottom: 30px;  /* Espaçamento inferior */
-            font-family: 'Poppins', sans-serif;  /* Fonte Poppins */
-        }
-        
-        /* ❌ NÃO ALTERE: Descrição CTA */
-        .cta-desc {
-            font-size: 18px;  /* Tamanho médio */
-            color: #999999;  /* Cor cinza */
-            margin-bottom: 50px;  /* Espaçamento inferior */
-            max-width: 600px;  /* Largura máxima */
-            margin-left: auto;  /* Centraliza */
-            margin-right: auto;  /* Centraliza */
-        }
-        
-        /* ❌ NÃO ALTERE: Botão CTA */
-        .cta-btn {
-            display: inline-block;  /* Exibe como bloco inline */
-            background: #ffffff;  /* Fundo branco */
-            color: #1a1a1a;  /* Texto preto */
-            padding: 20px 60px;  /* Espaçamento interno */
-            text-decoration: none;  /* Remove sublinhado */
-            font-weight: 700;  /* Peso pesado */
-            text-transform: uppercase;  /* Maiúsculas */
-            letter-spacing: 1px;  /* Espaçamento entre letras */
-            border-radius: 2px;  /* Arredondamento mínimo */
-            transition: all 0.3s ease;  /* Animação suave */
-        }
-        
-        /* ❌ NÃO ALTERE: Efeito hover no botão CTA */
-        .cta-btn:hover {
-            background: #e0e0e0;  /* Fundo cinza claro */
-            transform: scale(1.05);  /* Aumenta ligeiramente */
-        }
-        
-        /* ❌ NÃO ALTERE: Footer */
-        .footer {
-            background: #111111;  /* Fundo preto muito escuro */
-            padding: 80px 80px 40px;  /* Espaçamento interno */
-            color: #666666;  /* Texto cinza */
-        }
-        
-        /* ❌ NÃO ALTERE: Grid do footer */
-        .footer-grid {
-            display: grid;  /* Layout em grade */
-            grid-template-columns: repeat(4, 1fr);  /* 4 colunas iguais */
-            gap: 40px;  /* Espaçamento entre itens */
-            max-width: 1200px;  /* Largura máxima */
-            margin: 0 auto 60px;  /* Centraliza e margem inferior */
-        }
-        
-        /* ❌ NÃO ALTERE: Títulos do footer */
-        .footer-col h4 {
-            color: #ffffff;  /* Texto branco */
-            font-size: 14px;  /* Tamanho pequeno */
-            font-weight: 700;  /* Peso pesado */
-            text-transform: uppercase;  /* Maiúsculas */
-            letter-spacing: 1px;  /* Espaçamento entre letras */
-            margin-bottom: 25px;  /* Espaçamento inferior */
-        }
-        
-        /* ❌ NÃO ALTERE: Links do footer */
-        .footer-col a {
-            display: block;  /* Exibe como bloco */
-            color: #999999;  /* Texto cinza */
-            text-decoration: none;  /* Remove sublinhado */
-            font-size: 13px;  /* Tamanho pequeno */
-            margin-bottom: 12px;  /* Espaçamento inferior */
-            transition: color 0.3s ease;  /* Animação suave */
-        }
-        
-        /* ❌ NÃO ALTERE: Efeito hover nos links do footer */
-        .footer-col a:hover { color: #ffffff; }  /* Fica branco ao passar o mouse */
-        
-        /* ❌ NÃO ALTERE: Rodapé do footer */
-        .footer-bottom {
-            text-align: center;  /* Texto centralizado */
-            padding-top: 40px;  /* Espaçamento superior */
-            border-top: 1px solid #333333;  /* Borda superior cinza */
-            font-size: 12px;  /* Tamanho muito pequeno */
-        }
-        
-        /* ❌ NÃO ALTERE: Responsividade */
-        @media (max-width: 768px) {
-            .navbar { padding: 15px 20px; flex-direction: column; gap: 15px; }
-            .hero { flex-direction: column; padding: 50px 20px; }
-            .hero-title { font-size: 42px; }
-            .hero-visual { width: 100%; margin-top: 40px; }
-            .stats-grid { grid-template-columns: repeat(2, 1fr); }
-            .services-grid { grid-template-columns: 1fr; }
-            .portfolio-grid { grid-template-columns: 1fr; }
-            .footer-grid { grid-template-columns: repeat(2, 1fr); }
+
+        .announcement {
+            background: var(--dock-black);
+            color: var(--dock-yellow);
+            padding: 12px;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-align: center;
+            font-family: 'Inter';
         }
     </style>
-    """
+    """, unsafe_allow_html=True)
 
-    st.markdown(custom_css, unsafe_allow_html=True)
-
-    # ========== SEÇÃO 3: NAVBAR ==========
-    # ✅ ALTERE: Logo e menu
-    navbar_html = '''<div class="navbar">
-        <!-- ✅ ALTERE: Nome da empresa -->
-        <div class="navbar-logo">CORPORATIVO</div>
-        <!-- ✅ ALTERE: Menu de navegação -->
-        <div class="navbar-nav">
-            <a href="#sobre" class="nav-link">Sobre</a>  <!-- ✅ ALTERE: Texto do menu -->
-            <a href="#servicos" class="nav-link">Serviços</a>  <!-- ✅ ALTERE: Texto do menu -->
-            <a href="#portfolio" class="nav-link">Portfólio</a>  <!-- ✅ ALTERE: Texto do menu -->
-            <a href="#contato" class="nav-link">Contato</a>  <!-- ✅ ALTERE: Texto do menu -->
+    # ========== SEÇÃO 1: NAVEGAÇÃO ==========
+    st.markdown('<div class="announcement">OPENING HOURS: FRI 5PM-11PM • SAT 12PM-11PM • SUN 12PM-8PM</div>', unsafe_allow_html=True)
+    st.markdown("""
+    <div class="nav-dock">
+        <div style="font-size: 28px; font-family: 'Oswald'; font-weight: 700; letter-spacing: -1px;">DOCKYARD<span style="color:white">.</span></div>
+        <div style="display: flex; gap: 40px;">
+            <a href="#" class="nav-link">O QUE ROLA</a>
+            <a href="#" class="nav-link">FOOD</a>
+            <a href="#" class="nav-link">DRINKS</a>
+            <a href="#" class="nav-link" style="color:var(--dock-yellow) !important;">BOOK NOW</a>
         </div>
-    </div>'''
-    st.markdown(navbar_html, unsafe_allow_html=True)
+    </div>
+    """, unsafe_allow_html=True)
 
-    # ========== SEÇÃO 4: HERO ==========
-    # ✅ ALTERE: Título, descrição, emoji e botões
-    hero_html = '''<div class="hero">
-        <div class="hero-content">
-            <!-- ✅ ALTERE: Label do hero -->
-            <div class="hero-label">Bem-vindo</div>
-            <!-- ✅ ALTERE: Título principal -->
-            <div class="hero-title">Excelência em Cada Detalhe</div>
-            <!-- ✅ ALTERE: Descrição -->
-            <div class="hero-desc">Soluções corporativas que transformam negócios. Expertise, inovação e resultados mensuráveis.</div>
-            <!-- ✅ ALTERE: Botões e URLs -->
-            <div class="hero-cta">
-                <a href="https://www.google.com/" target="_blank" class="btn-primary">Começar</a>
-                <a href="https://www.google.com/" target="_blank" class="btn-secondary">Saiba Mais</a>
-            </div>
-        </div>
-        <!-- ✅ ALTERE: Emoji do visual -->
-        <div class="hero-visual">📊</div>
-    </div>'''
-    st.markdown(hero_html, unsafe_allow_html=True)
+    # ========== SEÇÃO 2: HERO ==========
+    st.markdown(f"""
+    <div class="hero-dock">
+        <h1 class="hero-h1">STREET FOOD.<br>CRAFT BEER.<br><span style="color:white">REAL VIBES.</span></h1>
+        <p style="font-family:'Inter'; font-size: 18px; max-width: 600px; margin-top: 30px; font-weight: 400; color: #111; line-height: 1.6;">
+            The best street food vendors in Scotland, world-class cocktails, and an atmosphere that defines Glasgow's weekends.
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
 
-    # ========== SEÇÃO 5: ESTATÍSTICAS ==========
-    # ✅ ALTERE: Números e descrições
-    stats_html = '''<div class="stats-section">
-        <div class="stats-grid">
-            <!-- ✅ ALTERE: Estatística 1 -->
-            <div class="stat-item">
-                <div class="stat-number">500+</div>
-                <div class="stat-label">Projetos Realizados</div>
-            </div>
-            <!-- ✅ ALTERE: Estatística 2 -->
-            <div class="stat-item">
-                <div class="stat-number">98%</div>
-                <div class="stat-label">Satisfação de Clientes</div>
-            </div>
-            <!-- ✅ ALTERE: Estatística 3 -->
-            <div class="stat-item">
-                <div class="stat-number">25+</div>
-                <div class="stat-label">Anos de Experiência</div>
-            </div>
-            <!-- ✅ ALTERE: Estatística 4 -->
-            <div class="stat-item">
-                <div class="stat-number">150+</div>
-                <div class="stat-label">Profissionais Especializados</div>
-            </div>
-        </div>
-    </div>'''
-    st.markdown(stats_html, unsafe_allow_html=True)
+    # ========== SEÇÃO 3: GRID DE CONTEÚDO ==========
+    st.write("")
+    st.write("")
+    st.markdown('<div style="padding: 100px 8% 50px 8%;">', unsafe_allow_html=True)
+    
+    col1, col2, col3 = st.columns(3, gap="large")
 
-    # ========== SEÇÃO 6: SERVIÇOS ==========
-    # ✅ ALTERE: Título, ícones, títulos e descrições
-    services_html = '''<div id="servicos" class="services-section">
-        <!-- ✅ ALTERE: Título da seção -->
-        <div class="section-title">Nossos Serviços</div>
-        <div class="services-grid">
-            <!-- ✅ ALTERE: Serviço 1 -->
-            <div class="service-card">
-                <div class="service-icon">🎯</div>  <!-- ✅ ALTERE: Emoji -->
-                <div class="service-title">Consultoria Estratégica</div>  <!-- ✅ ALTERE: Título -->
-                <div class="service-desc">Análise profunda de mercado e desenvolvimento de estratégias personalizadas para seu negócio.</div>  <!-- ✅ ALTERE: Descrição -->
+    def render_dock_card(col, title, tag, img_url):
+        with col:
+            st.markdown(f"""
+            <div class="dock-card">
+                <div class="card-img-container">
+                    <img src="{img_url}">
+                </div>
+                <div style="padding: 30px;">
+                    <p style="font-size: 12px; font-weight: 900; color: var(--dock-yellow); background: black; display: inline-block; padding: 2px 10px; margin-bottom: 15px;">{tag}</p>
+                    <h2 style="font-size: 35px; margin: 0;">{title}</h2>
+                </div>
             </div>
-            <!-- ✅ ALTERE: Serviço 2 -->
-            <div class="service-card">
-                <div class="service-icon">💼</div>  <!-- ✅ ALTERE: Emoji -->
-                <div class="service-title">Gestão Corporativa</div>  <!-- ✅ ALTERE: Título -->
-                <div class="service-desc">Otimização de processos e implementação de sistemas para máxima eficiência operacional.</div>  <!-- ✅ ALTERE: Descrição -->
+            """, unsafe_allow_html=True)
+
+    render_dock_card(col1, "KITCHEN TAKEOVER", "10+ VENDORS", "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800")
+    render_dock_card(col2, "CRAFT & COCKTAILS", "PREMIUM BAR", "https://images.unsplash.com/photo-1536935338788-846bb9981813?w=800")
+    render_dock_card(col3, "THE WAREHOUSE", "LIVE MUSIC", "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=800")
+    
+    st.markdown('</div>', unsafe_allow_html=True)
+
+    # ========== SEÇÃO 4: CTA RESERVA ==========
+    st.markdown("""
+    <div style="background-color: var(--dock-gray); padding: 120px 8%; text-align: center; border-top: 1px solid #eee;">
+        <h2 style="font-size: 70px; margin-bottom: 20px;">GET IN THE DOCK.</h2>
+        <p style="font-family:'Inter'; font-size: 20px; color: #666; margin-bottom: 50px;">Entry is only £5. Support local, eat well, stay social.</p>
+        <a href="#" class="custom-btn">SECURE YOUR TICKETS</a>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # ========== SEÇÃO 5: FOOTER ==========
+    st.markdown("""
+    <div style="padding: 80px 8%; background: var(--dock-black); color: white;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 40px;">
+            <div style="flex: 1; min-width: 300px;">
+                <h2 style="color: var(--dock-yellow); font-size: 50px;">DOCKYARD<br>SOCIAL.</h2>
+                <p style="opacity: 0.6; margin-top: 20px;">952 South St, Glasgow G14 0BX</p>
             </div>
-            <!-- ✅ ALTERE: Serviço 3 -->
-            <div class="service-card">
-                <div class="service-icon">📈</div>  <!-- ✅ ALTERE: Emoji -->
-                <div class="service-title">Transformação Digital</div>  <!-- ✅ ALTERE: Título -->
-                <div class="service-desc">Modernização tecnológica e adaptação digital para o futuro dos negócios.</div>  <!-- ✅ ALTERE: Descrição -->
+            <div style="flex: 1; min-width: 200px; font-family: 'Oswald';">
+                <p style="color: var(--dock-yellow); letter-spacing: 2px;">SOCIALS</p>
+                <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 15px;">
+                    <a href="#" class="nav-link" style="font-size: 24px;">INSTAGRAM</a>
+                    <a href="#" class="nav-link" style="font-size: 24px;">TIKTOK</a>
+                    <a href="#" class="nav-link" style="font-size: 24px;">FACEBOOK</a>
+                </div>
             </div>
         </div>
-    </div>'''
-    st.markdown(services_html, unsafe_allow_html=True)
-
-    # ========== SEÇÃO 7: PORTFÓLIO ==========
-    # ✅ ALTERE: Título, números, títulos e descrições dos casos
-    portfolio_html = '''<div id="portfolio" class="portfolio-section">
-        <!-- ✅ ALTERE: Título da seção -->
-        <div class="section-title">Casos de Sucesso</div>
-        <div class="portfolio-grid">
-            <!-- ✅ ALTERE: Caso 1 -->
-            <div class="portfolio-item">
-                <div class="portfolio-number">01</div>  <!-- ✅ ALTERE: Número -->
-                <div class="portfolio-title">Empresa Tecnológica</div>  <!-- ✅ ALTERE: Título -->
-                <div class="portfolio-desc">Crescimento de 300% em receita através de estratégia digital integrada e otimização operacional.</div>  <!-- ✅ ALTERE: Descrição -->
-            </div>
-            <!-- ✅ ALTERE: Caso 2 -->
-            <div class="portfolio-item">
-                <div class="portfolio-number">02</div>  <!-- ✅ ALTERE: Número -->
-                <div class="portfolio-title">Indústria de Manufatura</div>  <!-- ✅ ALTERE: Título -->
-                <div class="portfolio-desc">Redução de custos em 45% com implementação de sistemas de gestão modernos.</div>  <!-- ✅ ALTERE: Descrição -->
-            </div>
-            <!-- ✅ ALTERE: Caso 3 -->
-            <div class="portfolio-item">
-                <div class="portfolio-number">03</div>  <!-- ✅ ALTERE: Número -->
-                <div class="portfolio-title">Setor Financeiro</div>  <!-- ✅ ALTERE: Título -->
-                <div class="portfolio-desc">Transformação digital completa com aumento de eficiência de 80% nos processos.</div>  <!-- ✅ ALTERE: Descrição -->
-            </div>
-            <!-- ✅ ALTERE: Caso 4 -->
-            <div class="portfolio-item">
-                <div class="portfolio-number">04</div>  <!-- ✅ ALTERE: Número -->
-                <div class="portfolio-title">Varejo Premium</div>  <!-- ✅ ALTERE: Título -->
-                <div class="portfolio-desc">Experiência de cliente revolucionária gerando aumento de 120% em vendas.</div>  <!-- ✅ ALTERE: Descrição -->
-            </div>
+        <div style="margin-top: 80px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 30px; display: flex; justify-content: space-between; font-size: 11px; opacity: 0.5;">
+            <span>© 2026 DOCKYARD SOCIAL GLASGOW</span>
+            <span>POWERED BY STREAMLIT PRO</span>
         </div>
-    </div>'''
-    st.markdown(portfolio_html, unsafe_allow_html=True)
+    </div>
+    """, unsafe_allow_html=True)
 
-    # ========== SEÇÃO 8: CTA ==========
-    # ✅ ALTERE: Título, descrição e botão
-    cta_html = '''<div id="contato" class="cta-section">
-        <!-- ✅ ALTERE: Título CTA -->
-        <div class="cta-title">Pronto para Transformar seu Negócio?</div>
-        <!-- ✅ ALTERE: Descrição CTA -->
-        <div class="cta-desc">Entre em contato conosco e descubra como podemos impulsionar seu crescimento.</div>
-        <!-- ✅ ALTERE: Texto do botão e URL -->
-        <a href="https://www.google.com/" target="_blank" class="cta-btn">Solicitar Consulta</a>
-    </div>'''
-    st.markdown(cta_html, unsafe_allow_html=True)
-
-    # ========== SEÇÃO 9: FOOTER ==========
-    # ✅ ALTERE: Títulos, links e copyright
-    footer_html = '''<div class="footer">
-        <div class="footer-grid">
-            <!-- ✅ ALTERE: Coluna 1 - Empresa -->
-            <div class="footer-col">
-                <h4>Empresa</h4>
-                <a href="https://www.google.com/" target="_blank">Sobre Nós</a>
-                <a href="https://www.google.com/" target="_blank">Carreira</a>
-                <a href="https://www.google.com/" target="_blank">Imprensa</a>
-                <a href="https://www.google.com/" target="_blank">Blog</a>
-            </div>
-            <!-- ✅ ALTERE: Coluna 2 - Serviços -->
-            <div class="footer-col">
-                <h4>Serviços</h4>
-                <a href="https://www.google.com/" target="_blank">Consultoria</a>
-                <a href="https://www.google.com/" target="_blank">Gestão</a>
-                <a href="https://www.google.com/" target="_blank">Tecnologia</a>
-                <a href="https://www.google.com/" target="_blank">Treinamento</a>
-            </div>
-            <!-- ✅ ALTERE: Coluna 3 - Recursos -->
-            <div class="footer-col">
-                <h4>Recursos</h4>
-                <a href="https://www.google.com/" target="_blank">Documentação</a>
-                <a href="https://www.google.com/" target="_blank">Guias</a>
-                <a href="https://www.google.com/" target="_blank">Webinars</a>
-                <a href="https://www.google.com/" target="_blank">Suporte</a>
-            </div>
-            <!-- ✅ ALTERE: Coluna 4 - Contato -->
-            <div class="footer-col">
-                <h4>Contato</h4>
-                <a href="mailto:contato@corporativo.com.br">contato@corporativo.com.br</a>
-                <a href="tel:+551198765432">+55 (11) 98765-4321</a>
-                <a href="https://www.google.com/" target="_blank">São Paulo, Brasil</a>
-                <a href="https://www.google.com/" target="_blank">LinkedIn</a>
-            </div>
-        </div>
-        <!-- ✅ ALTERE: Copyright -->
-        <div class="footer-bottom">
-            © 2026 Corporativo Premium. Todos os direitos reservados.
-        </div>
-    </div>'''
-    st.markdown(footer_html, unsafe_allow_html=True)
-
-    # ========== FIM DO TEMPLATE ==========
-    # Lembre-se: Altere apenas o que tem ✅ ALTERE
-    # Não mexa no que tem ❌ NÃO ALTERE
-
-# Chamar a função render para exibir o template
-render()
+# ❌ NÃO COLOQUE st.set_page_config() aqui se for usar em um multipage app.
+# Se for rodar este arquivo sozinho, descomente a linha abaixo:
+# if __name__ == "__main__": st.set_page_config(layout="wide"); render()
