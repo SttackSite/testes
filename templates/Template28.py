@@ -115,7 +115,6 @@ def render():
             <span>TREINAMENTOS</span>
             <span>FORMAÇÕES</span>
             <span>SOBRE</span>
-            <span style="background: var(--HGQ-blue); color: white; padding: 5px 15px; border-radius: 20px;">ENTRAR</span>
         </div>
     </div>
     """, unsafe_allow_html=True)
