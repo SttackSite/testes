@@ -43,6 +43,16 @@ TEMPLATES = {
     "template26": "Template26",
     "template27": "Template27",
     "template28": "Template28",
+    "template29": "Template29",
+    "template30": "Template30",
+    "template31": "Template31",
+    "template32": "Template32",
+    "template33": "Template33",
+    "template34": "Template34",
+    "template35": "Template35",
+    "template36": "Template36",
+    "template37": "Template37",
+    "template38": "Template38",
 }
 
 # ✅ OBTER CLIENTE DA URL
