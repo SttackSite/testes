@@ -1,644 +1,242 @@
-# -*- coding: utf-8 -*-
-"""
-
-✅ ALTERE: Títulos, descrições, preços, emails e URLs
-❌ NÃO ALTERE: CSS, estrutura HTML, configurações do Streamlit
-"""
-
-import streamlit as st  # ❌ NÃO ALTERE: Importa a biblioteca Streamlit para criar a aplicação web
+import streamlit as st
 
 def render():
-    """Renderiza o template 8 - Nexus AI"""
-    
-    # ========== SEÇÃO 1: CONFIGURAÇÃO DA PÁGINA ==========
-    # ❌ NÃO ALTERE: Define as configurações básicas da página
-    st.set_page_config(
-        page_title="Nexus AI - Transforme Seus Dados em Lucro",  # ✅ ALTERE: Título que aparece na aba do navegador
-        page_icon="✨",  # ✅ ALTERE: Emoji que aparece na aba do navegador
-        layout="wide",  # ❌ NÃO ALTERE: Define o layout como largura total
-        initial_sidebar_state="collapsed"  # ❌ NÃO ALTERE: Oculta a barra lateral
-    )
+    # --- CSS DE ALTA COSTURA (ESTILO R. YAZBEK) ---
+    st.markdown("""
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400&family=Playfair+Display:ital,wght@0,400;1,400&display=swap');
 
-    # ========== SEÇÃO 2: CSS E ESTILOS VISUAIS ==========
-    # ❌ NÃO ALTERE: Bloco CSS que define todas as cores, fontes, animações e efeitos
-    # Alterar aqui pode quebrar completamente o design da página
-    st.markdown('''
-<style>
-    /* ❌ NÃO ALTERE: Reset de estilos padrão */
-    * {
-        margin: 0;  /* Remove margem padrão */
-        padding: 0;  /* Remove preenchimento padrão */
-        box-sizing: border-box;  /* Inclui borda no tamanho total */
-    }
-    
-    /* ❌ NÃO ALTERE: Estilos do body */
-    body {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;  /* Fonte padrão */
-        background: linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 50%, #16213e 100%);  /* Gradiente de fundo */
-        color: #e0e0e0;  /* Cor de texto padrão */
-        line-height: 1.6;  /* Altura da linha */
-    }
-    
-    /* ❌ NÃO ALTERE: Estilos do main */
-    .main {
-        background: transparent;  /* Fundo transparente */
-    }
-    
-    /* ❌ NÃO ALTERE: Seção hero */
-    .hero-section {
-        background: linear-gradient(135deg, rgba(15, 15, 30, 0.9) 0%, rgba(26, 26, 46, 0.9) 50%, rgba(22, 33, 62, 0.9) 100%);  /* Gradiente de fundo */
-        padding: 6rem 2rem;  /* Espaçamento interno */
-        text-align: center;  /* Texto centralizado */
-        position: relative;  /* Posicionamento relativo */
-        overflow: hidden;  /* Oculta conteúdo que sai da área */
-        border-bottom: 2px solid rgba(0, 188, 212, 0.3);  /* Borda inferior ciano */
-    }
-    
-    /* ❌ NÃO ALTERE: Efeito de fundo do hero */
-    .hero-section::before {
-        content: '';  /* Cria elemento vazio */
-        position: absolute;  /* Posicionamento absoluto */
-        top: 0;  /* No topo */
-        left: 0;  /* À esquerda */
-        right: 0;  /* À direita */
-        bottom: 0;  /* No fundo */
-        background: radial-gradient(circle at 20% 50%, rgba(0, 188, 212, 0.1) 0%, transparent 50%),
-                    radial-gradient(circle at 80% 80%, rgba(255, 64, 129, 0.1) 0%, transparent 50%);  /* Gradientes radiais */
-        pointer-events: none;  /* Não interfere com cliques */
-    }
-    
-    /* ❌ NÃO ALTERE: Conteúdo do hero */
-    .hero-text {
-        position: relative;  /* Posicionamento relativo */
-        z-index: 1;  /* Acima do efeito de fundo */
-        max-width: 900px;  /* Largura máxima */
-        margin: 0 auto;  /* Centraliza */
-    }
-    
-    /* ❌ NÃO ALTERE: Título do hero */
-    .hero-title {
-        font-size: 4rem;  /* Tamanho muito grande */
-        font-weight: 800;  /* Peso muito pesado */
-        margin-bottom: 1.5rem;  /* Espaçamento inferior */
-        background: linear-gradient(135deg, #00bcd4 0%, #ff4081 50%, #00bcd4 100%);  /* Gradiente de cores */
-        -webkit-background-clip: text;  /* Aplica gradiente ao texto (webkit) */
-        -webkit-text-fill-color: transparent;  /* Texto transparente (webkit) */
-        background-clip: text;  /* Aplica gradiente ao texto */
-        animation: gradientShift 3s ease infinite;  /* Animação de mudança de gradiente */
-    }
-    
-    /* ❌ NÃO ALTERE: Animação do gradiente */
-    @keyframes gradientShift {
-        0%, 100% { filter: hue-rotate(0deg); }  /* Rotação de cor normal */
-        50% { filter: hue-rotate(10deg); }  /* Rotação de cor no meio */
-    }
-    
-    /* ❌ NÃO ALTERE: Subtítulo do hero */
-    .hero-subtitle {
-        font-size: 1.3rem;  /* Tamanho grande */
-        color: #b0b0b0;  /* Cor cinza claro */
-        margin-bottom: 2.5rem;  /* Espaçamento inferior */
-        line-height: 1.8;  /* Altura da linha generosa */
-    }
-    
-    /* ❌ NÃO ALTERE: Botão do hero (LINK, não button) */
-    .hero-button {
-        display: inline-block;  /* Exibe como bloco inline */
-        background: linear-gradient(135deg, #00bcd4 0%, #0097a7 100%);  /* Gradiente de fundo ciano */
-        color: white;  /* Texto branco */
-        padding: 1.2rem 2.5rem;  /* Espaçamento interno */
-        border-radius: 50px;  /* Arredondamento máximo */
-        text-decoration: none !important;  /* Remove sublinhado */
-        font-weight: 700;  /* Peso pesado */
-        font-size: 1.1rem;  /* Tamanho grande */
-        transition: all 0.3s ease;  /* Animação suave */
-        box-shadow: 0 10px 30px rgba(0, 188, 212, 0.3);  /* Sombra ciano */
-        border: 2px solid transparent;  /* Borda transparente */
-        cursor: pointer;  /* Cursor de clique */
-    }
-    
-    /* ❌ NÃO ALTERE: Efeito hover no botão */
-    .hero-button:hover {
-        transform: translateY(-3px);  /* Levanta o botão */
-        box-shadow: 0 15px 40px rgba(0, 188, 212, 0.5);  /* Sombra aumentada */
-        background: linear-gradient(135deg, #0097a7 0%, #00838f 100%);  /* Gradiente mais escuro */
-    }
-    
-    /* ❌ NÃO ALTERE: Subtexto do hero */
-    .hero-subtext {
-        margin-top: 1.5rem;  /* Espaçamento superior */
-        color: #888;  /* Cor cinza */
-        font-size: 0.95rem;  /* Tamanho pequeno */
-    }
-    
-    /* ❌ NÃO ALTERE: Seções gerais */
-    .section {
-        padding: 5rem 2rem;  /* Espaçamento interno */
-        max-width: 1200px;  /* Largura máxima */
-        margin: 0 auto;  /* Centraliza */
-    }
-    
-    /* ❌ NÃO ALTERE: Título da seção */
-    .section-title {
-        font-size: 2.8rem;  /* Tamanho muito grande */
-        font-weight: 700;  /* Peso pesado */
-        text-align: center;  /* Texto centralizado */
-        margin-bottom: 3rem;  /* Espaçamento inferior */
-        color: #00bcd4;  /* Cor ciano */
-        position: relative;  /* Posicionamento relativo */
-        padding-bottom: 1rem;  /* Espaçamento inferior */
-    }
-    
-    /* ❌ NÃO ALTERE: Underline do título */
-    .section-title::after {
-        content: '';  /* Cria elemento vazio */
-        position: absolute;  /* Posicionamento absoluto */
-        bottom: 0;  /* No fundo */
-        left: 50%;  /* Centralizado horizontalmente */
-        transform: translateX(-50%);  /* Centraliza */
-        width: 60px;  /* Largura */
-        height: 4px;  /* Altura */
-        background: linear-gradient(90deg, #00bcd4, #ff4081);  /* Gradiente */
-        border-radius: 2px;  /* Arredondamento suave */
-    }
-    
-    /* ❌ NÃO ALTERE: Grid de features */
-    .features-grid {
-        display: grid;  /* Layout em grade */
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));  /* Colunas responsivas */
-        gap: 2rem;  /* Espaçamento entre itens */
-        margin-top: 3rem;  /* Espaçamento superior */
-    }
-    
-    /* ❌ NÃO ALTERE: Card de feature */
-    .feature-card {
-        background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(0, 188, 212, 0.05) 100%);  /* Gradiente de fundo */
-        border: 1px solid rgba(0, 188, 212, 0.2);  /* Borda ciano semi-transparente */
-        border-radius: 15px;  /* Arredondamento */
-        padding: 2.5rem;  /* Espaçamento interno */
-        text-align: center;  /* Texto centralizado */
-        transition: all 0.3s ease;  /* Animação suave */
-        backdrop-filter: blur(10px);  /* Blur de fundo */
-    }
-    
-    /* ❌ NÃO ALTERE: Efeito hover no card */
-    .feature-card:hover {
-        transform: translateY(-10px);  /* Levanta o card */
-        border-color: rgba(0, 188, 212, 0.5);  /* Borda fica mais visível */
-        box-shadow: 0 20px 40px rgba(0, 188, 212, 0.2);  /* Sombra aumentada */
-        background: linear-gradient(135deg, rgba(0, 188, 212, 0.1) 0%, rgba(255, 64, 129, 0.05) 100%);  /* Gradiente mais visível */
-    }
-    
-    /* ❌ NÃO ALTERE: Ícone da feature */
-    .feature-icon {
-        font-size: 3.5rem;  /* Tamanho muito grande */
-        margin-bottom: 1.5rem;  /* Espaçamento inferior */
-        display: inline-block;  /* Exibe como bloco inline */
-        animation: float 3s ease-in-out infinite;  /* Animação de flutuação */
-    }
-    
-    /* ❌ NÃO ALTERE: Animação de flutuação */
-    @keyframes float {
-        0%, 100% { transform: translateY(0px); }  /* Posição normal */
-        50% { transform: translateY(-10px); }  /* Sobe 10px no meio */
-    }
-    
-    /* ❌ NÃO ALTERE: Título do card */
-    .feature-card h3 {
-        font-size: 1.5rem;  /* Tamanho grande */
-        margin-bottom: 1rem;  /* Espaçamento inferior */
-        color: #00bcd4;  /* Cor ciano */
-    }
-    
-    /* ❌ NÃO ALTERE: Descrição do card */
-    .feature-card p {
-        color: #a0a0a0;  /* Cor cinza */
-        line-height: 1.7;  /* Altura da linha generosa */
-    }
-    
-    /* ❌ NÃO ALTERE: Container de logos */
-    .logos-container {
-        display: flex;  /* Layout flexível */
-        justify-content: center;  /* Centraliza horizontalmente */
-        align-items: center;  /* Centraliza verticalmente */
-        gap: 3rem;  /* Espaçamento entre itens */
-        flex-wrap: wrap;  /* Quebra em múltiplas linhas */
-        margin: 3rem 0;  /* Espaçamento vertical */
-        opacity: 0.7;  /* Opacidade reduzida */
-    }
-    
-    /* ❌ NÃO ALTERE: Item de logo */
-    .logo-item {
-        font-size: 1.3rem;  /* Tamanho grande */
-        font-weight: 600;  /* Peso pesado */
-        color: #666;  /* Cor cinza */
-        padding: 1rem 2rem;  /* Espaçamento interno */
-        border: 1px solid rgba(0, 188, 212, 0.2);  /* Borda ciano semi-transparente */
-        border-radius: 8px;  /* Arredondamento */
-        background: rgba(0, 188, 212, 0.05);  /* Fundo ciano semi-transparente */
-    }
-    
-    /* ❌ NÃO ALTERE: Grid de pricing */
-    .pricing-grid {
-        display: grid;  /* Layout em grade */
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));  /* Colunas responsivas */
-        gap: 2rem;  /* Espaçamento entre itens */
-        margin-top: 3rem;  /* Espaçamento superior */
-    }
-    
-    /* ❌ NÃO ALTERE: Card de pricing */
-    .pricing-card {
-        background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(0, 188, 212, 0.05) 100%);  /* Gradiente de fundo */
-        border: 2px solid rgba(0, 188, 212, 0.2);  /* Borda ciano */
-        border-radius: 15px;  /* Arredondamento */
-        padding: 2.5rem;  /* Espaçamento interno */
-        text-align: center;  /* Texto centralizado */
-        transition: all 0.3s ease;  /* Animação suave */
-        position: relative;  /* Posicionamento relativo */
-    }
-    
-    /* ❌ NÃO ALTERE: Card de pricing em destaque */
-    .pricing-card.featured {
-        border-color: rgba(0, 188, 212, 0.8);  /* Borda mais visível */
-        transform: scale(1.05);  /* Aumenta o tamanho */
-        box-shadow: 0 20px 50px rgba(0, 188, 212, 0.3);  /* Sombra aumentada */
-    }
-    
-    /* ❌ NÃO ALTERE: Efeito hover no card */
-    .pricing-card:hover {
-        border-color: rgba(0, 188, 212, 0.6);  /* Borda fica mais visível */
-        box-shadow: 0 15px 40px rgba(0, 188, 212, 0.2);  /* Sombra aumentada */
-    }
-    
-    /* ❌ NÃO ALTERE: Título do card */
-    .pricing-card h3 {
-        font-size: 1.8rem;  /* Tamanho grande */
-        margin-bottom: 1rem;  /* Espaçamento inferior */
-        color: #00bcd4;  /* Cor ciano */
-    }
-    
-    /* ❌ NÃO ALTERE: Preço */
-    .price {
-        font-size: 2.5rem;  /* Tamanho muito grande */
-        font-weight: 800;  /* Peso muito pesado */
-        color: #00bcd4;  /* Cor ciano */
-        margin-bottom: 1.5rem;  /* Espaçamento inferior */
-    }
-    
-    /* ❌ NÃO ALTERE: Período do preço */
-    .price-period {
-        color: #888;  /* Cor cinza */
-        font-size: 0.9rem;  /* Tamanho pequeno */
-    }
-    
-    /* ❌ NÃO ALTERE: Lista de features */
-    .pricing-features {
-        list-style: none;  /* Remove marcadores */
-        margin: 2rem 0;  /* Espaçamento vertical */
-        text-align: left;  /* Texto alinhado à esquerda */
-    }
-    
-    /* ❌ NÃO ALTERE: Item da lista */
-    .pricing-features li {
-        padding: 0.8rem 0;  /* Espaçamento interno */
-        color: #a0a0a0;  /* Cor cinza */
-        border-bottom: 1px solid rgba(0, 188, 212, 0.1);  /* Borda inferior */
-    }
-    
-    /* ❌ NÃO ALTERE: Último item da lista */
-    .pricing-features li:last-child {
-        border-bottom: none;  /* Remove borda */
-    }
-    
-    /* ❌ NÃO ALTERE: Botão de pricing (LINK, não button) */
-    .pricing-button {
-        width: 100%;  /* Largura total */
-        padding: 1rem;  /* Espaçamento interno */
-        margin-top: 1.5rem;  /* Espaçamento superior */
-        background: linear-gradient(135deg, #00bcd4 0%, #0097a7 100%);  /* Gradiente de fundo ciano */
-        color: white;  /* Texto branco */
-        border: none;  /* Sem borda */
-        border-radius: 8px;  /* Arredondamento */
-        font-weight: 700;  /* Peso pesado */
-        cursor: pointer;  /* Cursor de clique */
-        transition: all 0.3s ease;  /* Animação suave */
-        text-decoration: none !important;  /* Remove sublinhado */
-    }
-    
-    /* ❌ NÃO ALTERE: Efeito hover no botão */
-    .pricing-button:hover {
-        transform: translateY(-2px);  /* Levanta o botão */
-        box-shadow: 0 10px 25px rgba(0, 188, 212, 0.3);  /* Sombra aumentada */
-    }
-    
-    /* ❌ NÃO ALTERE: Card de depoimento */
-    .testimonial-card {
-        background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(0, 188, 212, 0.05) 100%);  /* Gradiente de fundo */
-        border-left: 5px solid #00bcd4;  /* Borda esquerda ciano */
-        border-radius: 10px;  /* Arredondamento */
-        padding: 2rem;  /* Espaçamento interno */
-        margin: 2rem 0;  /* Espaçamento vertical */
-        max-width: 700px;  /* Largura máxima */
-        margin-left: auto;  /* Centraliza à esquerda */
-        margin-right: auto;  /* Centraliza à direita */
-    }
-    
-    /* ❌ NÃO ALTERE: Texto do depoimento */
-    .testimonial-text {
-        font-size: 1.1rem;  /* Tamanho grande */
-        color: #c0c0c0;  /* Cor cinza claro */
-        margin-bottom: 1rem;  /* Espaçamento inferior */
-        font-style: italic;  /* Itálico */
-    }
-    
-    /* ❌ NÃO ALTERE: Autor do depoimento */
-    .testimonial-author {
-        color: #00bcd4;  /* Cor ciano */
-        font-weight: 700;  /* Peso pesado */
-    }
-    
-    /* ❌ NÃO ALTERE: Seção CTA */
-    .cta-section {
-        background: linear-gradient(135deg, rgba(0, 188, 212, 0.1) 0%, rgba(255, 64, 129, 0.1) 100%);  /* Gradiente de fundo */
-        border: 2px solid rgba(0, 188, 212, 0.3);  /* Borda ciano */
-        border-radius: 20px;  /* Arredondamento */
-        padding: 4rem 2rem;  /* Espaçamento interno */
-        text-align: center;  /* Texto centralizado */
-        margin: 4rem 0;  /* Espaçamento vertical */
-    }
-    
-    /* ❌ NÃO ALTERE: Título CTA */
-    .cta-title {
-        font-size: 2.5rem;  /* Tamanho muito grande */
-        margin-bottom: 1rem;  /* Espaçamento inferior */
-        color: #00bcd4;  /* Cor ciano */
-    }
-    
-    /* ❌ NÃO ALTERE: Subtítulo CTA */
-    .cta-subtitle {
-        font-size: 1.2rem;  /* Tamanho grande */
-        color: #a0a0a0;  /* Cor cinza */
-        margin-bottom: 2rem;  /* Espaçamento inferior */
-    }
-    
-    /* ❌ NÃO ALTERE: Footer */
-    .footer {
-        text-align: center;  /* Texto centralizado */
-        padding: 3rem 2rem;  /* Espaçamento interno */
-        border-top: 1px solid rgba(0, 188, 212, 0.2);  /* Borda superior */
-        color: #666;  /* Cor cinza */
-        margin-top: 4rem;  /* Espaçamento superior */
-    }
-    
-    /* ❌ NÃO ALTERE: Responsividade */
-    @media (max-width: 768px) {
-        .hero-title {
-            font-size: 2.5rem;  /* Reduz tamanho em mobile */
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #1a1a1a;
+            --light-gray: #f9f9f9;
+            --border-color: #eeeeee;
+        }
+
+        .stApp {
+            background-color: var(--bg-color);
+            color: var(--text-color);
         }
         
-        .section-title {
-            font-size: 2rem;  /* Reduz tamanho em mobile */
+        [data-testid="stHeader"] { display: none; }
+        .block-container { padding: 0 !important; max-width: 100% !important; }
+
+        /* Tipografia */
+        html, body, [class*="css"] {
+            font-family: 'Inter', sans-serif;
+            font-weight: 200;
+            letter-spacing: 0.5px;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Inter', sans-serif;
+            font-weight: 100;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            color: var(--text-color);
+        }
+
+        .serif-italic {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-weight: 400;
+            text-transform: none;
+            letter-spacing: 0px;
+        }
+
+        /* Hero Section Assimétrica */
+        .hero-container {
+            height: 90vh;
+            display: flex;
+            align-items: center;
+            padding: 0 8%;
+            background-color: var(--bg-color);
+        }
+
+        .hero-content {
+            max-width: 600px;
+            border-left: 1px solid var(--text-color);
+            padding-left: 40px;
+        }
+
+        /* Seção de Projetos (Grid Estilo Galeria) */
+        .project-card {
+            margin-bottom: 100px;
+            transition: 0.8s cubic-bezier(0.2, 1, 0.2, 1);
         }
         
-        .pricing-card.featured {
-            transform: scale(1);  /* Remove aumento em mobile */
+        .project-image {
+            width: 100%;
+            height: 70vh;
+            object-fit: cover;
+            filter: grayscale(100%);
+            transition: 0.8s;
         }
-    }
-    
-    /* ❌ NÃO ALTERE: Esconde o header padrão do Streamlit */
-    [data-testid="stHeader"] { 
-        display: none;  /* Oculta o header */
-    }
-</style>
-''', unsafe_allow_html=True)
 
-    # ========== SEÇÃO 3: HERO ==========
-    # ✅ ALTERE: Título, descrição e botão
-    st.markdown('''
-<div class="hero-section">
-    <div class="hero-text">
-        <!-- ✅ ALTERE: Título principal -->
-        <h1 class="hero-title">Nexus AI: Transforme Seus Dados em Lucro</h1>
-        <!-- ✅ ALTERE: Descrição -->
-        <p class="hero-subtitle">
-            Plataforma de IA que automatiza análises, prevê tendências e gera insights acionáveis. 
-            Aumente seu faturamento em até 300% com decisões baseadas em dados inteligentes.
+        .project-image:hover {
+            filter: grayscale(0%);
+        }
+
+        .project-info {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        /* Botão Minimalista */
+        div.stButton > button {
+            background: transparent;
+            color: var(--text-color);
+            border: 1px solid var(--text-color);
+            border-radius: 0;
+            padding: 10px 40px;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: 0.4s;
+        }
+        div.stButton > button:hover {
+            background: var(--text-color);
+            color: white;
+        }
+
+        /* Navegação Lateral Fake */
+        .side-nav {
+            position: fixed;
+            right: 40px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            z-index: 100;
+        }
+        .side-nav-item {
+            font-size: 10px;
+            writing-mode: vertical-rl;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #999;
+        }
+    </style>
+    """, unsafe_allow_html=True)
+
+    # --- NAVEGAÇÃO ---
+    st.markdown("""
+    <div style="padding: 40px 8%; display: flex; justify-content: space-between; align-items: center; position: absolute; width: 100%; z-index: 10;">
+        <div style="font-weight: 400; font-size: 18px; letter-spacing: 4px;">R. YAZBEK</div>
+        <div style="display: flex; gap: 40px; font-size: 11px; letter-spacing: 2px;">
+            <span>PROJETOS</span>
+            <span>ESCRITÓRIO</span>
+            <span>CONTATO</span>
+        </div>
+    </div>
+    <div class="side-nav">
+        <div class="side-nav-item">INSTAGRAM</div>
+        <div class="side-nav-item">LINKEDIN</div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # --- 1. HERO ---
+    st.markdown("""
+    <div class="hero-container">
+        <div class="hero-content">
+            <h1 style="font-size: 40px; margin-bottom: 20px;">Arquitetura de <br><span class="serif-italic">Propósito</span>.</h1>
+            <p style="font-size: 16px; color: #666; line-height: 1.8;">
+                Desenvolvemos espaços que transcendem a estética, focando na experiência humana e na perenidade do design contemporâneo.
+            </p>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # --- 2. PROJETOS (GRID ASSIMÉTRICO) ---
+    st.markdown('<div style="padding: 0 8% 100px 8%;">', unsafe_allow_html=True)
+    
+    # Projeto 1 - Lado Esquerdo (Grande)
+    c1, c2 = st.columns([2, 1])
+    with c1:
+        st.markdown("""
+        <div class="project-card">
+            <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200" class="project-image">
+            <div class="project-info">
+                <h3>RESIDÊNCIA ALTO DE PINHEIROS</h3>
+                <span class="mono">2024</span>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    # Projeto 2 - Lado Direito (Deslocado)
+    c3, c4 = st.columns([1, 2])
+    with c4:
+        st.markdown("""
+        <div class="project-card">
+            <img src="https://images.unsplash.com/photo-1600607687940-477a128f198e?w=1200" class="project-image" style="height: 60vh;">
+            <div class="project-info">
+                <h3>EDIFÍCIO CORPORATIVO JARDINS</h3>
+                <span class="mono">2023</span>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    # Projeto 3 - Centralizado
+    _, c5, _ = st.columns([0.5, 2, 0.5])
+    with c5:
+        st.markdown("""
+        <div class="project-card">
+            <img src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=1200" class="project-image">
+            <div class="project-info">
+                <h3>CASA DO LAGO</h3>
+                <span class="mono">2024</span>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    st.markdown('</div>', unsafe_allow_html=True)
+
+    # --- 3. SOBRE / MANIFESTO ---
+    st.markdown("""
+    <div style="background-color: var(--light-gray); padding: 150px 20%; text-align: center;">
+        <p class="serif-italic" style="font-size: 32px; margin-bottom: 40px; color: #333;">
+            "O design essencial não é o que nada tem, mas o que nada sobra."
         </p>
-        <!-- ✅ ALTERE: Texto do botão e URL -->
-        <a href="https://www.google.com/" target="_blank" class="hero-button">Comece seu Teste Grátis</a>
-        <!-- ✅ ALTERE: Subtexto -->
-        <p class="hero-subtext">✓ Sem cartão de crédito | ✓ Acesso completo por 14 dias | ✓ Cancele quando quiser</p>
+        <div style="width: 40px; height: 1px; background: #1a1a1a; margin: 0 auto 40px auto;"></div>
+        <p style="font-size: 14px; text-transform: uppercase; letter-spacing: 3px; color: #999;">
+            R. Yazbek Arquitetos Associados
+        </p>
     </div>
-</div>
-''', unsafe_allow_html=True)
+    """, unsafe_allow_html=True)
 
-    # ========== SEÇÃO 4: FEATURES ==========
-    # ✅ ALTERE: Título, ícones, títulos e descrições
-    st.markdown('<div class="section">', unsafe_allow_html=True)
-    st.markdown('<h2 class="section-title">Funcionalidades que Vendem</h2>', unsafe_allow_html=True)
-
-    col1, col2, col3 = st.columns(3)
-
-    with col1:
-        st.markdown('''
-    <div class="feature-card">
-        <div class="feature-icon">🔮</div>  <!-- ✅ ALTERE: Emoji -->
-        <h3>Análise Preditiva</h3>  <!-- ✅ ALTERE: Título -->
-        <p>Modelos de machine learning que antecipam tendências do mercado com 95% de precisão. Saiba o que vai acontecer antes de seus concorrentes.</p>  <!-- ✅ ALTERE: Descrição -->
-    </div>
-    ''', unsafe_allow_html=True)
-
-    with col2:
-        st.markdown('''
-    <div class="feature-card">
-        <div class="feature-icon">⚙️</div>  <!-- ✅ ALTERE: Emoji -->
-        <h3>Automação Inteligente</h3>  <!-- ✅ ALTERE: Título -->
-        <p>Automatize 80% das suas tarefas repetitivas. Libere seu time para focar em estratégia enquanto a IA trabalha 24/7.</p>  <!-- ✅ ALTERE: Descrição -->
-    </div>
-    ''', unsafe_allow_html=True)
-
-    with col3:
-        st.markdown('''
-    <div class="feature-card">
-        <div class="feature-icon">💡</div>  <!-- ✅ ALTERE: Emoji -->
-        <h3>Insights Acionáveis</h3>  <!-- ✅ ALTERE: Título -->
-        <p>Dashboards intuitivos que transformam dados complexos em decisões claras. Veja o que importa em segundos.</p>  <!-- ✅ ALTERE: Descrição -->
-    </div>
-    ''', unsafe_allow_html=True)
-
+    # --- 4. CONTATO ---
+    st.markdown('<div style="padding: 100px 8%; text-align: left;">', unsafe_allow_html=True)
+    st.markdown('<h2>VAMOS CONVERSAR?</h2><br>', unsafe_allow_html=True)
+    
+    col_f1, col_f2 = st.columns(2)
+    with col_f1:
+        st.markdown("""
+        <div style="font-size: 14px; line-height: 2;">
+            RUA AMAURI, 116<br>
+            SÃO PAULO, BRASIL<br><br>
+            +55 11 3078 0000<br>
+            CONTATO@RYAZBEK.COM.BR
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col_f2:
+        st.button("ENVIAR MENSAGEM")
     st.markdown('</div>', unsafe_allow_html=True)
 
-    # ========== SEÇÃO 5: SOCIAL PROOF ==========
-    # ✅ ALTERE: Título, logos e depoimento
-    st.markdown('<div class="section">', unsafe_allow_html=True)
-    st.markdown('<h2 class="section-title">Aprovado pelas Maiores Empresas</h2>', unsafe_allow_html=True)
-
-    st.markdown('''
-<div class="logos-container">
-    <div class="logo-item">🏢 Tech Corp</div>  <!-- ✅ ALTERE: Logo/nome da empresa -->
-    <div class="logo-item">🏢 Finance Plus</div>  <!-- ✅ ALTERE: Logo/nome da empresa -->
-    <div class="logo-item">🏢 Retail Max</div>  <!-- ✅ ALTERE: Logo/nome da empresa -->
-    <div class="logo-item">🏢 Cloud Sys</div>  <!-- ✅ ALTERE: Logo/nome da empresa -->
-    <div class="logo-item">🏢 Data Hub</div>  <!-- ✅ ALTERE: Logo/nome da empresa -->
-</div>
-''', unsafe_allow_html=True)
-
-    st.markdown('''
-<div style="text-align: center; margin-top: 2rem;">
-    <!-- ✅ ALTERE: Avaliação e depoimento -->
-    <p style="font-size: 1.2rem; color: #00bcd4; font-weight: 700;">
-        ⭐ 4.9/5 em 2.500+ avaliações
-    </p>
-    <p style="color: #a0a0a0;">
-        "Aumentamos nosso ROI em 250% em 3 meses" - CEO da Tech Corp
-    </p>
-</div>
-''', unsafe_allow_html=True)
-
-    st.markdown('</div>', unsafe_allow_html=True)
-
-    # ========== SEÇÃO 6: PRICING ==========
-    # ✅ ALTERE: Títulos, preços e features
-    st.markdown('<div class="section">', unsafe_allow_html=True)
-    st.markdown('<h2 class="section-title">Escolha o Plano Perfeito</h2>', unsafe_allow_html=True)
-
-    col1, col2, col3 = st.columns(3)
-
-    with col1:
-        st.markdown('''
-    <div class="pricing-card">
-        <h3>Starter</h3>  <!-- ✅ ALTERE: Nome do plano -->
-        <div class="price">R$ 299<span class="price-period">/mês</span></div>  <!-- ✅ ALTERE: Preço -->
-        <ul class="pricing-features">
-            <li>✓ Análise Preditiva Básica</li>  <!-- ✅ ALTERE: Feature -->
-            <li>✓ 10.000 Requisições/mês</li>  <!-- ✅ ALTERE: Feature -->
-            <li>✓ 1 Dashboard</li>  <!-- ✅ ALTERE: Feature -->
-            <li>✓ Suporte por Email</li>  <!-- ✅ ALTERE: Feature -->
-            <li>✗ Automação Avançada</li>  <!-- ✅ ALTERE: Feature -->
-        </ul>
-        <a href="https://www.google.com/" target="_blank" class="pricing-button">Começar Agora</a>  <!-- ✅ ALTERE: Texto do botão e URL -->
+    # --- FOOTER ---
+    st.markdown("""
+    <div style="padding: 40px 8%; border-top: 1px solid var(--border-color); display: flex; justify-content: space-between; font-size: 10px; color: #bbb; letter-spacing: 2px;">
+        <span>© 2024 R. YAZBEK</span>
+        <span>DESIGN BY STREAMLIT</span>
     </div>
-    ''', unsafe_allow_html=True)
+    """, unsafe_allow_html=True)
 
-    with col2:
-        st.markdown('''
-    <div class="pricing-card featured">
-        <h3>⭐ Pro (Mais Popular)</h3>  <!-- ✅ ALTERE: Nome do plano -->
-        <div class="price">R$ 899<span class="price-period">/mês</span></div>  <!-- ✅ ALTERE: Preço -->
-        <ul class="pricing-features">
-            <li>✓ Análise Preditiva Avançada</li>  <!-- ✅ ALTERE: Feature -->
-            <li>✓ 100.000 Requisições/mês</li>  <!-- ✅ ALTERE: Feature -->
-            <li>✓ 10 Dashboards</li>  <!-- ✅ ALTERE: Feature -->
-            <li>✓ Automação Inteligente</li>  <!-- ✅ ALTERE: Feature -->
-            <li>✓ Suporte Prioritário 24/7</li>  <!-- ✅ ALTERE: Feature -->
-        </ul>
-        <a href="https://www.google.com/" target="_blank" class="pricing-button">Começar Agora</a>  <!-- ✅ ALTERE: Texto do botão e URL -->
-    </div>
-    ''', unsafe_allow_html=True)
-
-    with col3:
-        st.markdown('''
-    <div class="pricing-card">
-        <h3>Enterprise</h3>  <!-- ✅ ALTERE: Nome do plano -->
-        <div class="price">Customizado</div>  <!-- ✅ ALTERE: Preço -->
-        <ul class="pricing-features">
-            <li>✓ Tudo do Pro</li>  <!-- ✅ ALTERE: Feature -->
-            <li>✓ Requisições Ilimitadas</li>  <!-- ✅ ALTERE: Feature -->
-            <li>✓ Dashboards Ilimitados</li>  <!-- ✅ ALTERE: Feature -->
-            <li>✓ Gerente de Conta Dedicado</li>  <!-- ✅ ALTERE: Feature -->
-            <li>✓ Integrações Customizadas</li>  <!-- ✅ ALTERE: Feature -->
-        </ul>
-        <a href="https://www.google.com/" target="_blank" class="pricing-button">Falar com Vendas</a>  <!-- ✅ ALTERE: Texto do botão e URL -->
-    </div>
-    ''', unsafe_allow_html=True)
-
-    st.markdown('</div>', unsafe_allow_html=True)
-
-    # ========== SEÇÃO 7: TESTIMONIALS ==========
-    # ✅ ALTERE: Depoimentos e autores
-    st.markdown('<div class="section">', unsafe_allow_html=True)
-    st.markdown('<h2 class="section-title">O Que Nossos Clientes Dizem</h2>', unsafe_allow_html=True)
-
-    st.markdown('''
-<div class="testimonial-card">
-    <!-- ✅ ALTERE: Depoimento 1 -->
-    <p class="testimonial-text">
-        "A Nexus AI revolucionou nossa forma de analisar dados. Em apenas 3 meses, aumentamos nosso ROI em 250%. 
-        É simplesmente incrível como a plataforma nos ajuda a tomar decisões mais rápidas e precisas."
-    </p>
-    <!-- ✅ ALTERE: Autor 1 -->
-    <p class="testimonial-author">— João Silva, CEO da Tech Corp</p>
-</div>
-
-<div class="testimonial-card">
-    <!-- ✅ ALTERE: Depoimento 2 -->
-    <p class="testimonial-text">
-        "Economizamos 40 horas por semana em tarefas manuais. O time agora foca em estratégia enquanto a IA faz o trabalho pesado. 
-        Recomendo para qualquer empresa que quer crescer rápido."
-    </p>
-    <!-- ✅ ALTERE: Autor 2 -->
-    <p class="testimonial-author">— Maria Santos, Diretora de Operações da Finance Plus</p>
-</div>
-''', unsafe_allow_html=True)
-
-    st.markdown('</div>', unsafe_allow_html=True)
-
-    # ========== SEÇÃO 8: CTA FINAL ==========
-    # ✅ ALTERE: Título e descrição
-    st.markdown('<div class="section">', unsafe_allow_html=True)
-    st.markdown('<div id="cta"></div>', unsafe_allow_html=True)
-    st.markdown('''
-<div class="cta-section">
-    <!-- ✅ ALTERE: Título CTA -->
-    <h2 class="cta-title">Pronto para Faturar Milhões?</h2>
-    <!-- ✅ ALTERE: Descrição CTA -->
-    <p class="cta-subtitle">
-        Junte-se a 500+ empresas que já estão transformando seus negócios com a Nexus AI.
-    </p>
-</div>
-''', unsafe_allow_html=True)
-
-    # ========== SEÇÃO 9: FORMULÁRIO DE INSCRIÇÃO ==========
-    # ✅ ALTERE: Placeholder do email e mensagens
-    col1, col2, col3 = st.columns([1, 2, 1])
-
-    with col2:
-        # ✅ ALTERE: Placeholder do input
-        email = st.text_input(
-            "Seu melhor email",
-            placeholder="seu.email@empresa.com",  # ✅ ALTERE: Placeholder
-            label_visibility="collapsed"
-        )
-        
-        # ✅ ALTERE: Texto do botão e URLs
-        if st.button("🚀 Começar Teste Grátis", use_container_width=True):
-            if email and "@" in email:
-                # ✅ ALTERE: Mensagem de sucesso
-                st.success(f"✅ Ótimo! Enviamos um email de confirmação para {email}. Verifique sua caixa de entrada!")
-            else:
-                # ✅ ALTERE: Mensagem de erro
-                st.error("❌ Por favor, insira um email válido.")
-
-    st.markdown('</div>', unsafe_allow_html=True)
-
-    # ========== SEÇÃO 10: FOOTER ==========
-    # ✅ ALTERE: Copyright, links e empresa
-    st.markdown('''
-<div class="footer">
-    <!-- ✅ ALTERE: Copyright -->
-    <p>© 2026 Nexus AI. Todos os direitos reservados.</p>
-    <p style="margin-top: 1rem; font-size: 0.9rem;">
-        <!-- ✅ ALTERE: Créditos e links -->
-        Feito por Nexus</strong> | 
-        <a href="https://www.google.com/" target="_blank" style="color: #00bcd4; text-decoration: none;">Privacidade</a> | 
-        <a href="https://www.google.com/" target="_blank" style="color: #00bcd4; text-decoration: none;">Termos</a>
-    </p>
-</div>
-''', unsafe_allow_html=True)
-
-    # ========== FIM DO TEMPLATE ==========
-    # Lembre-se: Altere apenas o que tem ✅ ALTERE
-    # Não mexa no que tem ❌ NÃO ALTERE
-
-# Chamar a função render para exibir o template
-render()
+# Execução direta para teste
+if __name__ == "__main__":
+    st.set_page_config(layout="wide", page_title="R. Yazbek | Arquitetura")
+    render()
