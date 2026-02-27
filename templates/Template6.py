@@ -17,7 +17,7 @@ def render():
             background-color: white;
             color: var(--bautz-black);
         }
-        
+
         [data-testid="stHeader"] { display: none; }
         .block-container { padding: 0 !important; max-width: 100% !important; }
 
@@ -40,7 +40,7 @@ def render():
             color: #888;
         }
 
-        /* 1 & 2. HERO - A ESTRUTURA */
+        /* 1 & 2. HERO */
         .hero-bautz {
             padding: 150px 8% 100px 8%;
             border-bottom: 1px solid var(--bautz-border);
@@ -49,7 +49,7 @@ def render():
         .hero-h1 { font-size: clamp(40px, 6vw, 80px); line-height: 0.9; margin-bottom: 40px; }
         .hero-sub { font-size: 20px; max-width: 700px; color: #666; font-weight: 300; line-height: 1.6; }
 
-        /* 3 & 4. TEMPLATES - GRID DE ENGENHARIA */
+        /* 3 & 4. TEMPLATES */
         .template-grid-item {
             border: 1px solid var(--bautz-border);
             background: white;
@@ -64,7 +64,7 @@ def render():
             border-top: 1px solid var(--bautz-border);
         }
 
-        /* 6. É PARA VOCÊ QUE - MÓDULOS */
+        /* 6. MÓDULOS */
         .module-card {
             padding: 40px;
             border-left: 1px solid var(--bautz-accent);
@@ -72,7 +72,7 @@ def render():
             margin-bottom: 20px;
         }
 
-        /* 7. PASSO A PASSO - FLUXO DE TRABALHO */
+        /* 7. WORKFLOW */
         .workflow-line {
             display: flex;
             align-items: flex-start;
@@ -81,7 +81,7 @@ def render():
             border-top: 1px solid var(--bautz-border);
         }
 
-        /* 8. PREÇOS - UNIDADES DE NEGÓCIO */
+        /* 8. PREÇOS */
         .price-industrial {
             border: 1px solid var(--bautz-border);
             padding: 40px;
@@ -91,40 +91,59 @@ def render():
             color: white;
         }
 
-        /* Botão Técnico */
-        div.stButton > button {
+        /* Botão Técnico (link estilizado) */
+        .bautz-btn {
+            display: inline-block;
             background: var(--bautz-black);
-            color: white;
+            color: white !important;
             border: none;
             padding: 15px 35px;
             border-radius: 0;
+            font-family: 'Inter', sans-serif;
             font-weight: 700;
+            font-size: 14px;
             text-transform: uppercase;
             letter-spacing: 1px;
-            transition: 0.3s;
+            text-decoration: none !important;
+            transition: background 0.3s;
+            cursor: pointer;
+            margin-top: 14px;
         }
-        div.stButton > button:hover {
+        .bautz-btn:hover {
             background: var(--bautz-accent);
-            color: white;
+            color: white !important;
+        }
+        .bautz-btn-full {
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .bautz-btn-accent {
+            background: var(--bautz-accent);
+        }
+        .bautz-btn-accent:hover {
+            background: #003494;
         }
     </style>
     """, unsafe_allow_html=True)
 
     # --- 1 & 2. HERO SECTION ---
     st.markdown("""
-    <div class="hero-bautz">
+    <div class="hero-bautz" id="hero">
         <p class="mono">Codeless Architecture v2.0</p>
         <h1 class="hero-h1">SITES DE ALTA<br>PRECISÃO.</h1>
         <p class="hero-sub">
-            Desenvolva a sua presença digital com a eficiência de um processo industrial. 
+            Desenvolva a sua presença digital com a eficiência de um processo industrial.
             Templates otimizados para velocidade, conversão e autonomia total.
         </p>
+        <a href="#catalogo" class="bautz-btn">CONFIGURAR AGORA</a>
+    </div>
     """, unsafe_allow_html=True)
-    st.button("CONFIGURAR AGORA")
-    st.markdown("</div>", unsafe_allow_html=True)
 
     # --- 3 & 4. TEMPLATES (SHOWCASE TÉCNICO) ---
-    st.markdown('<div style="padding: 100px 8%;">', unsafe_allow_html=True)
+    st.markdown('<div id="catalogo" style="padding: 100px 8%;">', unsafe_allow_html=True)
     st.markdown('<p class="mono">// CATÁLOGO DE COMPONENTES</p>', unsafe_allow_html=True)
     st.markdown('<h2 style="margin-bottom: 60px;">MODELOS DISPONÍVEIS</h2>', unsafe_allow_html=True)
 
@@ -139,19 +158,21 @@ def render():
                     <p class="mono" style="font-size:10px;">REF: {ref}</p>
                     <h3 style="font-size:20px; margin: 10px 0;">{name}</h3>
                     <p style="font-size:13px; color:#888;">Estrutura modular com 100% de pontuação no Core Web Vitals.</p>
+                    <a href="https://www.google.com/" target="_blank" class="bautz-btn bautz-btn-full">
+                        INSPECIONAR {ref}
+                    </a>
                 </div>
             </div>
             """, unsafe_allow_html=True)
-            st.button(f"INSPECIONAR {ref}", key=ref)
 
     render_bautz_item(t1, "STRUCTURAL MINIMAL", "BTZ-01", "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600")
-    render_bautz_item(t2, "DYNAMIC FLOW", "BTZ-02", "https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=600")
-    render_bautz_item(t3, "CORPORATE CORE", "BTZ-03", "https://images.unsplash.com/photo-1497215728101-856f4ea42174?w=600")
+    render_bautz_item(t2, "DYNAMIC FLOW",        "BTZ-02", "https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=600")
+    render_bautz_item(t3, "CORPORATE CORE",      "BTZ-03", "https://images.unsplash.com/photo-1497215728101-856f4ea42174?w=600")
     st.markdown('</div>', unsafe_allow_html=True)
 
     # --- 5. PROVA SOCIAL (LOGOS EM GRID) ---
     st.markdown("""
-    <div style="padding: 60px 8%; border-top: 1px solid var(--bautz-border); border-bottom: 1px solid var(--bautz-border); display: flex; justify-content: space-between; align-items: center; opacity: 0.5;">
+    <div id="clientes" style="padding: 60px 8%; border-top: 1px solid var(--bautz-border); border-bottom: 1px solid var(--bautz-border); display: flex; justify-content: space-between; align-items: center; opacity: 0.5;">
         <span class="mono">TRUSTED BY INDUSTRY LEADERS:</span>
         <span style="font-weight:900; font-size:20px;">MATTEL</span>
         <span style="font-weight:900; font-size:20px;">SIEMENS</span>
@@ -161,7 +182,7 @@ def render():
     """, unsafe_allow_html=True)
 
     # --- 6. É PARA VOCÊ QUE ---
-    st.markdown('<div style="padding: 100px 8%; background: var(--bautz-gray);">', unsafe_allow_html=True)
+    st.markdown('<div id="aplicacoes" style="padding: 100px 8%; background: var(--bautz-gray);">', unsafe_allow_html=True)
     st.markdown('<h2 style="margin-bottom: 50px;">APLICAÇÕES DO SISTEMA</h2>', unsafe_allow_html=True)
 
     col_v1, col_v2 = st.columns(2)
@@ -174,7 +195,7 @@ def render():
     st.markdown('</div>', unsafe_allow_html=True)
 
     # --- 7. PASSO A PASSO (WORKFLOW) ---
-    st.markdown('<div style="padding: 100px 8%;">', unsafe_allow_html=True)
+    st.markdown('<div id="workflow" style="padding: 100px 8%;">', unsafe_allow_html=True)
     st.markdown('<h2>FLUXO DE IMPLEMENTAÇÃO</h2>', unsafe_allow_html=True)
 
     def render_flow(num, title, desc):
@@ -190,31 +211,58 @@ def render():
 
     render_flow("01", "AQUISIÇÃO DO MÓDULO", "Acesso imediato ao repositório de códigos fonte após a validação.")
     render_flow("02", "ASSEMBLY (MONTAGEM)", "Substitua textos e imagens seguindo o nosso manual de diretrizes visuais.")
-    render_flow("03", "DEPLOYMENT", "Conecte o seu domínio e publique o site em servidores de alta velocidade.")
-    render_flow("04", "OPERAÇÃO", "Seu site está pronto para gerar resultados com manutenção zero.")
+    render_flow("03", "DEPLOYMENT",          "Conecte o seu domínio e publique o site em servidores de alta velocidade.")
+    render_flow("04", "OPERAÇÃO",            "Seu site está pronto para gerar resultados com manutenção zero.")
     st.markdown('</div>', unsafe_allow_html=True)
 
     # --- 8. PREÇOS (TABELA INDUSTRIAL) ---
-    st.markdown('<div style="padding: 100px 8%; background: white;">', unsafe_allow_html=True)
+    st.markdown('<div id="precos" style="padding: 100px 8%; background: white;">', unsafe_allow_html=True)
     st.markdown('<h2 style="text-align:center; margin-bottom:60px;">PLANOS DE ACESSO</h2>', unsafe_allow_html=True)
 
     p1, p2, p3 = st.columns(3, gap="small")
 
     with p1:
-        st.markdown('<div class="price-industrial"><p class="mono">BASIC UNIT</p><h1>R$ 97</h1><hr><p>1 Template Modular</p><p>Manual de Montagem</p></div>', unsafe_allow_html=True)
-        st.button("ADQUIRIR BASIC", key="b1")
+        st.markdown("""
+        <div class="price-industrial">
+            <p class="mono">BASIC UNIT</p>
+            <h1>R$ 97</h1>
+            <hr>
+            <p>1 Template Modular</p>
+            <p>Manual de Montagem</p>
+            <a href="https://www.google.com/" target="_blank" class="bautz-btn bautz-btn-full">ADQUIRIR BASIC</a>
+        </div>
+        """, unsafe_allow_html=True)
 
     with p2:
-        st.markdown('<div class="price-industrial active"><p class="mono" style="color:var(--bautz-accent)">FULL STACK</p><h1>R$ 197</h1><hr><p>Todos os Templates</p><p>Suporte Técnico Direto</p><p>Updates de Engenharia</p></div>', unsafe_allow_html=True)
-        st.button("ADQUIRIR FULL", key="b2")
+        st.markdown("""
+        <div class="price-industrial active">
+            <p class="mono" style="color:var(--bautz-accent)">FULL STACK</p>
+            <h1>R$ 197</h1>
+            <hr>
+            <p>Todos os Templates</p>
+            <p>Suporte Técnico Direto</p>
+            <p>Updates de Engenharia</p>
+            <a href="https://www.google.com/" target="_blank" class="bautz-btn bautz-btn-accent bautz-btn-full">ADQUIRIR FULL</a>
+        </div>
+        """, unsafe_allow_html=True)
 
     with p3:
-        st.markdown('<div class="price-industrial"><p class="mono">ENTERPRISE</p><h1>R$ 497</h1><hr><p>Licença Comercial</p><p>Whitelabel Ready</p><p>Consultoria de Deploy</p></div>', unsafe_allow_html=True)
-        st.button("ADQUIRIR ENTERPRISE", key="b3")
+        st.markdown("""
+        <div class="price-industrial">
+            <p class="mono">ENTERPRISE</p>
+            <h1>R$ 497</h1>
+            <hr>
+            <p>Licença Comercial</p>
+            <p>Whitelabel Ready</p>
+            <p>Consultoria de Deploy</p>
+            <a href="https://www.google.com/" target="_blank" class="bautz-btn bautz-btn-full">ADQUIRIR ENTERPRISE</a>
+        </div>
+        """, unsafe_allow_html=True)
+
     st.markdown('</div>', unsafe_allow_html=True)
 
     # --- 9. FAQ ---
-    st.markdown('<div style="padding: 100px 20%; background: var(--bautz-gray);">', unsafe_allow_html=True)
+    st.markdown('<div id="faq" style="padding: 100px 20%; background: var(--bautz-gray);">', unsafe_allow_html=True)
     with st.expander("O CÓDIGO É OTIMIZADO PARA SEO?"):
         st.write("Sim, todos os modelos seguem a semântica correta de HTML5 para máxima indexação.")
     with st.expander("POSSO ALTERAR AS CORES E FONTES?"):
@@ -229,6 +277,7 @@ def render():
         <span class="mono">BUILD_V.4.0.1</span>
     </div>
     """, unsafe_allow_html=True)
+
 
 # Execução direta se o script for rodado sozinho
 if __name__ == "__main__":
