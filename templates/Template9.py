@@ -223,7 +223,7 @@ def render():
             </div>
             <div>
                 <h4 style="font-size: 14px; margin-bottom: 15px;">CONTATO</h4>
-                <p style="color: #888; font-size: 14px;">contato@wis.digital<br>(11) 5199-1380</p>
+                <p style="color: #888; font-size: 14px;">contato@wis.digital<br>(11) 5555-5555</p>
             </div>
             <div>
                 <h4 style="font-size: 14px; margin-bottom: 15px;">SIGA A GENTE</h4>
