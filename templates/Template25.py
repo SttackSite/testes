@@ -178,7 +178,7 @@ def render():
     st.markdown("""
     <div class="hero-pp">
         <p style="text-transform: uppercase; letter-spacing: 4px; font-size: 12px; margin-bottom: 20px;">Estratégia · Design · Rebeldia</p>
-        <h1 class="hero-title">SAQUEAMOS<br>O COMUM.</h1>
+        <h1 class="hero-title">MUDAMOS<br>O COMUM.</h1>
         <div class="divider" style="max-width: 300px; margin: 40px auto;"></div>
         <p style="max-width: 700px; margin: 0 auto; font-size: 18px; line-height: 1.6;">
             Somos uma agência de criação para marcas que não têm medo de quebrar as regras. 
