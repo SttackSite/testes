@@ -23,7 +23,7 @@ st.markdown("""
         background-color: var(--deep-space);
         color: #ffffff;
     }
-    
+
     [data-testid="stHeader"] { display: none; }
     .block-container { padding: 0 !important; max-width: 100% !important; }
 
@@ -41,7 +41,7 @@ st.markdown("""
         text-transform: uppercase;
     }
 
-    /* 1 & 2. HERO - NAVE DE COMANDO */
+    /* 1 & 2. HERO */
     .hero-space {
         height: 100vh;
         display: flex;
@@ -49,7 +49,7 @@ st.markdown("""
         justify-content: center;
         align-items: center;
         text-align: center;
-        background-image: linear-gradient(rgba(2, 4, 10, 0.8), rgba(2, 4, 10, 0.8)), 
+        background-image: linear-gradient(rgba(2, 4, 10, 0.8), rgba(2, 4, 10, 0.8)),
                           url('https://images.unsplash.com/photo-1614728263952-84ea256f9679?w=1600');
         background-size: cover;
         background-position: center;
@@ -63,7 +63,7 @@ st.markdown("""
         margin-bottom: 20px;
     }
 
-    /* 3 & 4. TEMPLATES - GALERIA DE NAVES */
+    /* 3 & 4. TEMPLATES - GALERIA */
     .ship-card {
         background: rgba(255, 255, 255, 0.02);
         border: 1px solid var(--border-color);
@@ -85,7 +85,7 @@ st.markdown("""
         text-align: center;
     }
 
-    /* 6. É PARA VOCÊ QUE - MISSION OBJECTIVES */
+    /* 6. MISSION OBJECTIVES */
     .mission-box {
         background: linear-gradient(90deg, rgba(0,242,255,0.1) 0%, transparent 100%);
         border-left: 4px solid var(--cyan);
@@ -93,7 +93,7 @@ st.markdown("""
         margin-bottom: 20px;
     }
 
-    /* 7. PASSO A PASSO - DEPLOYMENT SEQUENCE */
+    /* 7. PASSO A PASSO */
     .step-container {
         display: flex;
         align-items: center;
@@ -111,9 +111,10 @@ st.markdown("""
         color: var(--deep-space);
         font-weight: 900;
         font-family: 'Orbitron';
+        flex-shrink: 0;
     }
 
-    /* 8. PREÇOS - ACCESS TIERS */
+    /* 8. PREÇOS */
     .price-tier {
         background: rgba(2, 4, 10, 0.9);
         border: 1px solid var(--border-color);
@@ -128,42 +129,54 @@ st.markdown("""
         background: linear-gradient(90deg, transparent, var(--cyan), transparent);
     }
 
-    /* Botão de Comando */
-    div.stButton > button {
+    /* Botão de Comando (link estilizado) */
+    .cmd-btn {
+        display: inline-block;
         background: transparent;
-        color: var(--cyan);
+        color: var(--cyan) !important;
         border: 1px solid var(--cyan);
         padding: 15px 40px;
         font-family: 'Orbitron', sans-serif;
         font-weight: 700;
+        font-size: 14px;
         text-transform: uppercase;
-        border-radius: 0;
+        letter-spacing: 2px;
+        text-decoration: none !important;
         transition: 0.3s;
         box-shadow: inset 0 0 10px rgba(0, 242, 255, 0.2);
+        cursor: pointer;
+        margin-top: 16px;
     }
-    div.stButton > button:hover {
+    .cmd-btn:hover {
         background: var(--cyan);
-        color: var(--deep-space);
+        color: var(--deep-space) !important;
         box-shadow: 0 0 30px var(--cyan);
+    }
+    .cmd-btn-full {
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+        text-align: center;
+        margin-top: 20px;
     }
 </style>
 """, unsafe_allow_html=True)
 
 # --- 1 & 2. HERO SECTION ---
 st.markdown("""
-<div class="hero-space">
+<div class="hero-space" id="hero">
     <p class="mono-font">[ STATUS: READY FOR DEPLOYMENT ]</p>
     <h1 class="glitch-text">CONSTRUA SUA<br>ESTAÇÃO DIGITAL.</h1>
     <p style="max-width: 700px; font-size: 18px; color: rgba(255,255,255,0.6); margin-bottom: 40px; font-family: 'Inter';">
-        Aprenda a criar seu novo site profissional em minutos, sem a dependência de um programador. 
+        Aprenda a criar seu novo site profissional em minutos, sem a dependência de um programador.
         Economize 80% do tempo e lance sua marca na velocidade da luz.
     </p>
+    <a href="#templates" class="cmd-btn">INICIAR SEQUÊNCIA →</a>
+</div>
 """, unsafe_allow_html=True)
-st.button("INICIAR SEQUÊNCIA →")
-st.markdown("</div>", unsafe_allow_html=True)
 
-# --- 3 & 4. TEMPLATES CARROSSEL (SIMULADO) ---
-st.markdown('<div style="padding: 100px 8%;">', unsafe_allow_html=True)
+# --- 3 & 4. TEMPLATES CARROSSEL ---
+st.markdown('<div id="templates" style="padding: 100px 8%;">', unsafe_allow_html=True)
 st.markdown('<p class="mono-font">// EXPLORAR CATÁLOGO DE TEMPLATES</p>', unsafe_allow_html=True)
 st.markdown('<h2 style="font-size: 32px; margin-bottom: 60px;">ESQUADRÃO DE ELITE</h2>', unsafe_allow_html=True)
 
@@ -179,19 +192,21 @@ def render_ship(col, name, tier, img):
                 <h3 style="font-family: 'Orbitron'; font-size: 18px; margin: 10px 0;">{name}</h3>
                 <div style="width: 100%; height: 1px; background: var(--border-color); margin-bottom: 15px;"></div>
                 <p style="font-size: 12px; opacity: 0.6;">Configurado para máxima conversão e SEO otimizado.</p>
+                <a href="https://www.google.com/" target="_blank" class="cmd-btn cmd-btn-full">
+                    VER DATA-SHEET {name.split()[0]}
+                </a>
             </div>
         </div>
         """, unsafe_allow_html=True)
-        st.button(f"VER DATA-SHEET {name.split()[0]}", key=name)
 
-render_ship(t_col1, "NEON PULSE", "LEGENDARY", "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=600")
-render_ship(t_col2, "QUANTUM SUITE", "EPIC", "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600")
-render_ship(t_col3, "VOID MINIMAL", "RARE", "https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?w=600")
+render_ship(t_col1, "NEON PULSE",    "LEGENDARY", "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=600")
+render_ship(t_col2, "QUANTUM SUITE", "EPIC",       "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600")
+render_ship(t_col3, "VOID MINIMAL",  "RARE",       "https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?w=600")
 st.markdown('</div>', unsafe_allow_html=True)
 
 # --- 5. PROVA SOCIAL (DATA NODES) ---
 st.markdown("""
-<div style="background: rgba(0, 242, 255, 0.02); padding: 80px 8%; border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color);">
+<div id="stats" style="background: rgba(0, 242, 255, 0.02); padding: 80px 8%; border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color);">
     <div style="display: grid; grid-template-columns: repeat(4, 1fr);">
         <div class="data-node">
             <h2 style="color: var(--cyan);">1.2K</h2>
@@ -214,7 +229,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # --- 6. É PARA VOCÊ QUE ---
-st.markdown('<div style="padding: 100px 8%;">', unsafe_allow_html=True)
+st.markdown('<div id="missao" style="padding: 100px 8%;">', unsafe_allow_html=True)
 st.markdown('<h2>OBJETIVOS DA MISSÃO</h2><br>', unsafe_allow_html=True)
 
 def mission_item(text):
@@ -224,13 +239,13 @@ def mission_item(text):
     </div>
     """, unsafe_allow_html=True)
 
-mission_item("Quer criar seu próprio site e customiza-lo em minutos pelo menor preço de mercado.")
+mission_item("Quer criar seu próprio site e customizá-lo em minutos pelo menor preço de mercado.")
 mission_item("Deseja trabalhar vendendo sites de elite para terceiros com alta margem.")
 mission_item("Precisa escalar a conversão de seus produtos físicos ou digitais.")
 st.markdown('</div>', unsafe_allow_html=True)
 
 # --- 7. PASSO A PASSO ---
-st.markdown('<div style="padding: 100px 8%; background: #000;">', unsafe_allow_html=True)
+st.markdown('<div id="protocolo" style="padding: 100px 8%; background: #000;">', unsafe_allow_html=True)
 st.markdown('<h2>PROTOCOLO DE LANÇAMENTO</h2><br>', unsafe_allow_html=True)
 
 def render_step(num, title, desc):
@@ -244,14 +259,14 @@ def render_step(num, title, desc):
     </div>
     """, unsafe_allow_html=True)
 
-render_step("01", "DOWNLOAD DOS ASSETS", "Após a compra, todos os templates são disponibilizados no seu painel de comando.")
-render_step("02", "CUSTOMIZAÇÃO DE DADOS", "Siga nosso passo a passo visual para inserir suas informações e imagens.")
-render_step("03", "DEPLOY EM SEGUNDOS", "Configure sua URL personalizada e suba os arquivos para a rede global.")
-render_step("04", "SISTEMA ONLINE", "Seu site está no ar e pronto para operações em larga escala.")
+render_step("01", "DOWNLOAD DOS ASSETS",    "Após a compra, todos os templates são disponibilizados no seu painel de comando.")
+render_step("02", "CUSTOMIZAÇÃO DE DADOS",  "Siga nosso passo a passo visual para inserir suas informações e imagens.")
+render_step("03", "DEPLOY EM SEGUNDOS",     "Configure sua URL personalizada e suba os arquivos para a rede global.")
+render_step("04", "SISTEMA ONLINE",         "Seu site está no ar e pronto para operações em larga escala.")
 st.markdown('</div>', unsafe_allow_html=True)
 
 # --- 8. PREÇOS ---
-st.markdown('<div style="padding: 100px 8%;">', unsafe_allow_html=True)
+st.markdown('<div id="precos" style="padding: 100px 8%;">', unsafe_allow_html=True)
 st.markdown('<h2 style="text-align:center;">ACESSO À FROTA</h2><br>', unsafe_allow_html=True)
 
 p_col1, p_col2, p_col3 = st.columns(3)
@@ -263,9 +278,9 @@ with p_col1:
         <h1 style="font-size: 50px; margin: 20px 0;">R$ 97</h1>
         <p>1 Template de Elite</p>
         <p>Suporte Básico</p>
+        <a href="https://www.google.com/" target="_blank" class="cmd-btn cmd-btn-full">SELECIONAR PILOT</a>
     </div>
     """, unsafe_allow_html=True)
-    st.button("SELECIONAR PILOT", key="p1")
 
 with p_col2:
     st.markdown("""
@@ -275,9 +290,9 @@ with p_col2:
         <p>Todos os Templates</p>
         <p>Acesso à Comunidade</p>
         <p>Suporte Prioritário</p>
+        <a href="https://www.google.com/" target="_blank" class="cmd-btn cmd-btn-full">ADQUIRIR COMMANDER</a>
     </div>
     """, unsafe_allow_html=True)
-    st.button("ADQUIRIR COMMANDER", key="p2")
 
 with p_col3:
     st.markdown("""
@@ -287,13 +302,14 @@ with p_col3:
         <p>Licença Comercial</p>
         <p>Mentoria 1:1</p>
         <p>Updates Vitalícios</p>
+        <a href="https://www.google.com/" target="_blank" class="cmd-btn cmd-btn-full">TORNAR-SE ADMIRAL</a>
     </div>
     """, unsafe_allow_html=True)
-    st.button("TORNAR-SE ADMIRAL", key="p3")
+
 st.markdown('</div>', unsafe_allow_html=True)
 
 # --- 9. FAQ ---
-st.markdown('<div style="padding: 100px 20%; background: #010206;">', unsafe_allow_html=True)
+st.markdown('<div id="faq" style="padding: 100px 20%; background: #010206;">', unsafe_allow_html=True)
 st.markdown('<h2 style="text-align:center;">DATABASE / FAQ</h2><br>', unsafe_allow_html=True)
 
 with st.expander("COMO É FEITA A TRANSFERÊNCIA DOS ARQUIVOS?"):
@@ -301,6 +317,7 @@ with st.expander("COMO É FEITA A TRANSFERÊNCIA DOS ARQUIVOS?"):
 
 with st.expander("TEREI SUPORTE NA CONFIGURAÇÃO DO DOMÍNIO?"):
     st.write("Sim, fornecemos manuais detalhados e suporte técnico para garantir que sua URL personalizada funcione perfeitamente.")
+
 st.markdown('</div>', unsafe_allow_html=True)
 
 # --- FOOTER ---
